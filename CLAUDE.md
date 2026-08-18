@@ -10,6 +10,8 @@ No implementes funcionalidad de backend, framework JS ni build tools aquí: este
 
 Una galería de **sistemas de diseño UI/UX independientes**, cada uno explorando una estética distinta: Apple Pro Studio, Bento, Brutalismo, Glassmorphism, Industrial, Linear, Minimalista, Nordic Functional, Stripe Enterprise y Vercel Modernist. Cada estilo demuestra el mismo par de vistas —una landing y un dashboard— resueltas con un lenguaje visual propio, para que se puedan comparar lado a lado.
 
+Además, `glassmorphism/` tiene cuatro variantes de color hermanas que comparten exactamente su mismo mecanismo (blur, aurora translúcida, layout) pero con acento cian institucional + un secundario distinto cada una: `glass-aurum/` (+ oro), `glass-ember/` (+ coral), `glass-borealis/` (+ lima) y `glass-neon/` (+ fucsia). Si tocas la estructura o los componentes de `glassmorphism/`, valora si el mismo ajuste aplica a estas cuatro para no desincronizarlas.
+
 ## Estructura de un estilo
 
 Cada carpeta de estilo (nombre en minúsculas, ej. `bento/`, `glassmorphism/`) sigue esta forma exacta:
