@@ -3,8 +3,6 @@
    Máxima densidad, telemetría pura, cero ruido
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
-
 :root {
   --bg-primary: #050505;
   --bg-secondary: #0c0c0c;
@@ -34,14 +32,14 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.4;
   font-size: 13px; /* Densidad alta */
 }
 
-.mono { font-family: 'JetBrains Mono', monospace; }
+.mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; }
 
 /* Layout Industrial */
 .navbar {
@@ -52,7 +50,7 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-.logo { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 12px; color: var(--primary-color); }
+.logo { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-weight: 600; font-size: 12px; color: var(--primary-color); }
 
 /* Botones funcionales */
 .btn {
@@ -69,7 +67,7 @@ body {
 
 /* Badges Telemetría */
 .badge {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 10px;
   padding: 2px 6px;
   border: 1px solid var(--border-color);
@@ -98,6 +96,6 @@ body {
 .sidebar-item { padding: 0.5rem; font-size: 12px; display: block; color: var(--text-secondary); text-decoration: none; border-left: 2px solid transparent; }
 .sidebar-item.active { border-left-color: var(--primary-color); color: var(--text-primary); }
 
-.data-table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.data-table { width: 100%; border-collapse: collapse; font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size: 12px; }
 .data-table th { color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding: 0.75rem; text-align: left; }
 .data-table td { border-bottom: 1px solid var(--border-color); padding: 0.75rem; }

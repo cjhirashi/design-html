@@ -3,8 +3,6 @@
    Organización modular asimétrica y limpia
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 :root {
   --bg-primary: #f1f5f9;
   --bg-secondary: #ffffff;
@@ -87,13 +85,13 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
 }
 
-code, .mono { font-family: 'JetBrains Mono', monospace; }
+code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; }
 
 /* Navbar Bento */
 .navbar {

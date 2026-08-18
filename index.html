@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System Gallery — Índice de Estilos</title>
+<style>
+:root {
+  --bg-primary: #f7f7f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eeeeef;
+
+  --text-primary: #0a0a0b;
+  --text-secondary: #55565c;
+  --text-muted: #98999e;
+
+  --border-color: #e2e2e5;
+
+  --accent: #4f46e5;
+  --accent-text: #ffffff;
+
+  --success-bg: #f0fdf4;
+  --success-text: #16a34a;
+  --success-border: #86efac;
+
+  --muted-bg: #f4f4f5;
+  --muted-text: #71717a;
+  --muted-border: #d4d4d8;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.06);
+  --shadow-lg: 0 20px 48px rgba(0,0,0,.10);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --transition-smooth: all .2s cubic-bezier(.16,1,.3,1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #08090b;
+  --bg-secondary: #0e1013;
+  --bg-tertiary: #16181c;
+
+  --text-primary: #f5f5f6;
+  --text-secondary: #a2a3a9;
+  --text-muted: #64656b;
+
+  --border-color: #212328;
+
+  --accent: #818cf8;
+  --accent-text: #08090b;
+
+  --success-bg: rgba(22,163,74,.12);
+  --success-text: #4ade80;
+  --success-border: rgba(74,222,128,.25);
+
+  --muted-bg: #16181c;
+  --muted-text: #7c7d84;
+  --muted-border: #26282e;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.35);
+  --shadow-lg: 0 20px 48px rgba(0,0,0,.5);
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  transition: var(--transition-smooth);
+}
+
+.mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; }
+
+a { color: inherit; }
+
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Header */
+.top {
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+}
+
+.top-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1.1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 700;
+  font-size: .95rem;
+  letter-spacing: -.01em;
+}
+
+.brand svg { color: var(--accent); }
+
+.brand span.tag {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: .7rem;
+}
+
+/* Theme switch (mismo componente que los estilos hijos) */
+.theme-switch {
+  position: relative;
+  display: flex;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.theme-switch-btn {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: var(--transition-smooth);
+}
+
+.theme-switch-btn svg { width: 14px; height: 14px; }
+
+.theme-switch-btn:hover { color: var(--text-primary); }
+
+.theme-switch[data-theme-mode="light"] .theme-switch-btn[data-theme-target="light"],
+.theme-switch[data-theme-mode="system"] .theme-switch-btn[data-theme-target="system"],
+.theme-switch[data-theme-mode="dark"] .theme-switch-btn[data-theme-target="dark"] {
+  background: var(--bg-secondary);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Hero */
+.hero {
+  padding: 5rem 0 3.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  padding: .35rem .7rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.1rem, 4vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.08;
+  margin: 0 0 1.1rem;
+  max-width: 720px;
+}
+
+.hero p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 620px;
+  line-height: 1.6;
+  margin: 0 0 2rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-stat .num {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hero-stat .label {
+  font-size: .78rem;
+  color: var(--text-muted);
+  margin-top: .15rem;
+}
+
+/* Grid */
+.section {
+  padding: 3.5rem 0 6rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.section-head h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  margin: 0;
+}
+
+.section-head .count {
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  position: relative;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-smooth);
+}
+
+.card:not(.card-pending):hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-color));
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.badge {
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  padding: .3rem .55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-live {
+  background: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-border);
+}
+
+.badge-pending {
+  background: var(--muted-bg);
+  color: var(--muted-text);
+  border: 1px solid var(--muted-border);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+.card p {
+  margin: 0;
+  font-size: .85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  flex-grow: 1;
+}
+
+.card-actions {
+  display: flex;
+  gap: .6rem;
+  margin-top: .25rem;
+}
+
+.btn {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .55rem .8rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--bg-secondary);
+}
+
+.btn-primary:hover { opacity: .85; }
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover { border-color: var(--text-muted); }
+
+.btn-disabled {
+  flex: 1;
+  text-align: center;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .55rem .8rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.card-pending {
+  border-style: dashed;
+}
+
+.card-pending .swatch {
+  background: var(--bg-tertiary) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+footer {
+  border-top: 1px solid var(--border-color);
+  padding: 2.5rem 0;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      DESIGN SYSTEM GALLERY <span class="tag mono">Charlie Studio</span>
+    </div>
+
+    <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+      <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      </button>
+      <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+      </button>
+      <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Sistema de Diseño Multi-Estilo</span>
+    <h1>Un mismo producto, resuelto en múltiples lenguajes visuales.</h1>
+    <p>Cada tarjeta enlaza a la landing y al dashboard de un estilo independiente — mismo par de vistas, mismo contenido de referencia, estética completamente distinta. Úsalo para comparar dirección visual antes de comprometerte con una.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num mono">06</div>
+        <div class="label">Estilos disponibles</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num mono">04</div>
+        <div class="label">En construcción</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num mono">02</div>
+        <div class="label">Vistas por estilo</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Estilos disponibles</h2>
+      <span class="count mono">6</span>
+    </div>
+
+    <div class="grid">
+
+      <article class="card">
+        <div class="card-top">
+          <div class="swatch" style="background: linear-gradient(135deg,#0891b2,#f1f5f9);"></div>
+          <span class="badge badge-live">Disponible</span>
+        </div>
+        <div>
+          <h3>Bento Grid</h3>
+          <p>Composición modular en celdas densas de información, inspirada en paneles de control tipo bento box.</p>
+        </div>
+        <div class="card-actions">
+          <a href="bento/index.html" class="btn btn-secondary">Landing</a>
+          <a href="bento/dashboard.html" class="btn btn-primary">Dashboard</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="swatch" style="background: linear-gradient(135deg,#06b6d4,#000000);"></div>
+          <span class="badge badge-live">Disponible</span>
+        </div>
+        <div>
+          <h3>Brutalismo Táctil</h3>
+          <p>Bordes duros, sombras sólidas y contraste crudo. Interfaz honesta, sin suavizados innecesarios.</p>
+        </div>
+        <div class="card-actions">
+          <a href="brutalismo/index.html" class="btn btn-secondary">Landing</a>
+          <a href="brutalismo/dashboard.html" class="btn btn-primary">Dashboard</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="swatch" style="background: linear-gradient(135deg,#22d3ee,#030712);"></div>
+          <span class="badge badge-live">Disponible</span>
+        </div>
+        <div>
+          <h3>Glassmorphism</h3>
+          <p>Capas translúcidas, blur y profundidad sobre fondo oscuro. Sensación de vidrio esmerilado flotante.</p>
+        </div>
+        <div class="card-actions">
+          <a href="glassmorphism/index.html" class="btn btn-secondary">Landing</a>
+          <a href="glassmorphism/dashboard.html" class="btn btn-primary">Dashboard</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="swatch" style="background: linear-gradient(135deg,#0891b2,#050505);"></div>
+          <span class="badge badge-live">Disponible</span>
+        </div>
+        <div>
+          <h3>Industrial Dark</h3>
+          <p>Negro utilitario casi absoluto con acentos cian de precisión. Estética de sala de control.</p>
+        </div>
+        <div class="card-actions">
+          <a href="industrial/index.html" class="btn btn-secondary">Landing</a>
+          <a href="industrial/dashboard.html" class="btn btn-primary">Dashboard</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="swatch" style="background: linear-gradient(135deg,#22d3ee,#0a0c10);"></div>
+          <span class="badge badge-live">Disponible</span>
+        </div>
+        <div>
+          <h3>Minimalista Moderno</h3>
+          <p>Superficies oscuras limpias, jerarquía tipográfica estricta y elementos reducidos a lo esencial.</p>
+        </div>
+        <div class="card-actions">
+          <a href="minimalista/index.html" class="btn btn-secondary">Landing</a>
+          <a href="minimalista/dashboard.html" class="btn btn-primary">Dashboard</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="swatch" style="background: linear-gradient(135deg,#000000,#ffffff);"></div>
+          <span class="badge badge-live">Disponible</span>
+        </div>
+        <div>
+          <h3>Vercel Modernist</h3>
+          <p>Precisión monocroma, espacio negativo generoso y cero ruido visual. Claridad ante todo.</p>
+        </div>
+        <div class="card-actions">
+          <a href="vercel/index.html" class="btn btn-secondary">Landing</a>
+          <a href="vercel/dashboard.html" class="btn btn-primary">Dashboard</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>En construcción</h2>
+      <span class="count mono">4</span>
+    </div>
+
+    <div class="grid">
+
+      <article class="card card-pending">
+        <div class="card-top">
+          <div class="swatch mono" style="font-size:.65rem;">?</div>
+          <span class="badge badge-pending">Próximamente</span>
+        </div>
+        <div>
+          <h3>Linear</h3>
+          <p>Estética de producto tipo issue-tracker: densidad de datos, teclado-first, gris neutro con acentos sutiles.</p>
+        </div>
+        <div class="card-actions">
+          <span class="btn-disabled">Landing</span>
+          <span class="btn-disabled">Dashboard</span>
+        </div>
+      </article>
+
+      <article class="card card-pending">
+        <div class="card-top">
+          <div class="swatch mono" style="font-size:.65rem;">?</div>
+          <span class="badge badge-pending">Próximamente</span>
+        </div>
+        <div>
+          <h3>Apple Pro Studio</h3>
+          <p>Superficies suaves, profundidad sutil y tipografía editorial al estilo de las páginas de producto de Apple.</p>
+        </div>
+        <div class="card-actions">
+          <span class="btn-disabled">Landing</span>
+          <span class="btn-disabled">Dashboard</span>
+        </div>
+      </article>
+
+      <article class="card card-pending">
+        <div class="card-top">
+          <div class="swatch mono" style="font-size:.65rem;">?</div>
+          <span class="badge badge-pending">Próximamente</span>
+        </div>
+        <div>
+          <h3>Nordic Functional</h3>
+          <p>Funcionalismo escandinavo: paleta fría, mucho aire, ornamento cero y foco absoluto en la usabilidad.</p>
+        </div>
+        <div class="card-actions">
+          <span class="btn-disabled">Landing</span>
+          <span class="btn-disabled">Dashboard</span>
+        </div>
+      </article>
+
+      <article class="card card-pending">
+        <div class="card-top">
+          <div class="swatch mono" style="font-size:.65rem;">?</div>
+          <span class="badge badge-pending">Próximamente</span>
+        </div>
+        <div>
+          <h3>Stripe Enterprise</h3>
+          <p>Lenguaje visual de fintech B2B: gradientes de marca controlados, densidad de datos y confianza corporativa.</p>
+        </div>
+        <div class="card-actions">
+          <span class="btn-disabled">Landing</span>
+          <span class="btn-disabled">Dashboard</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Carlos Alberto Jiménez Hirashi. Design System Gallery.
+</footer>
+
+<script src="js/theme-manager.js"></script>
+</body>
+</html>

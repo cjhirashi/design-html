@@ -3,8 +3,6 @@
    Bordes sólidos, sombras duras y alto impacto
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap');
-
 :root {
   --bg-primary: #f3f4f6;
   --bg-secondary: #ffffff;
@@ -88,13 +86,13 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.5;
 }
 
-code, .mono { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-weight: 700; }
 
 /* Navbar Brutalista */
 .navbar {

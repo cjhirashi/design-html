@@ -3,8 +3,6 @@
    Inspirado en estándares Vercel / Linear / Stripe
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-
 :root {
   /* Superficies y Fondos con profundidad neutra */
   --bg-primary: #0a0c10;
@@ -98,7 +96,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
@@ -107,7 +105,7 @@ body {
   letter-spacing: -0.01em;
 }
 
-code, .mono { font-family: 'JetBrains Mono', monospace; }
+code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; }
 
 /* Navbar de Alta Gama con Efecto Glassmorphism */
 .navbar {
