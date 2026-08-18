@@ -536,3 +536,28 @@ code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, mono
   transition: var(--transition-smooth);
 }
 .chat-input:focus { border-color: var(--border-focus); }
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+.data-table-container { overflow-x: auto; }
+
+@media (max-width: 900px) {
+  .navbar { flex-wrap: wrap; row-gap: 0.75rem; }
+  .nav-links { flex-wrap: wrap; row-gap: 0.6rem; }
+
+  .hero-split { grid-template-columns: 1fr; }
+
+  .dash-wrapper { height: auto; min-height: 100vh; overflow: visible; }
+  .dash-body { display: flex; flex-direction: column; overflow: visible; }
+  .sidebar-left, .sidebar-right, .main-content { width: 100%; }
+  .main-content { overflow-y: visible; }
+  .chat-container { height: auto; }
+  .chat-messages { max-height: 320px; }
+  .dash-search span { display: none; }
+  .dash-user-info { display: none; }
+}
+
+@media (max-width: 560px) {
+  .carousel-image-card { min-width: 82vw; max-width: 82vw; }
+  .dashboard-header { flex-wrap: wrap; row-gap: 0.75rem; }
+}
