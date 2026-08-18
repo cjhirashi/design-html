@@ -51,10 +51,10 @@
 
 [data-theme="dark"] {
   /* Superficies y Fondos con profundidad neutra */
-  --bg-primary: #0a0c10;
-  --bg-secondary: #12161f;
-  --bg-tertiary: #19202e;
-  --bg-glass: rgba(18, 22, 31, 0.75);
+  --bg-primary: #07090e;
+  --bg-secondary: #161d2c;
+  --bg-tertiary: #232f48;
+  --bg-glass: rgba(22, 29, 44, 0.75);
 
   --text-primary: #f3f4f6;
   --text-secondary: #9ca3af;

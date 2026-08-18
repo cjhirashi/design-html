@@ -51,10 +51,10 @@
 }
 
 [data-theme="dark"] {
-  --bg-primary: #09090b;
-  --bg-secondary: #0c0c0e;
-  --bg-tertiary: #18181b;
-  --bg-glass: rgba(9, 9, 11, 0.85);
+  --bg-primary: #050505;
+  --bg-secondary: #18181b;
+  --bg-tertiary: #28282e;
+  --bg-glass: rgba(5, 5, 5, 0.85);
   
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
