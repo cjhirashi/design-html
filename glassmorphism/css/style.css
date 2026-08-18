@@ -4,7 +4,7 @@
    ========================================== */
 
 :root {
-  --bg-primary: #f0fafb; /* Blanco cian atmosférico, coherente con el acento institucional */
+  --bg-primary: #f5f3ff; /* Lavanda atmosférica, coherente con el acento violeta */
   --bg-secondary: rgba(255, 255, 255, 0.7);
   --bg-glass: rgba(255, 255, 255, 0.65);
   --bg-card: rgba(255, 255, 255, 0.5);
@@ -14,13 +14,13 @@
   --text-muted: #94a3b8;
 
   --border-glass: rgba(255, 255, 255, 0.6);
-  --border-glass-hover: rgba(8, 145, 178, 0.4);
+  --border-glass-hover: rgba(124, 58, 237, 0.4);
 
-  /* Acentos de Marca: aurora cian institucional + rosa */
-  --primary-color: #0891b2;
-  --primary-hover: #0e7490;
-  --primary-light: rgba(8, 145, 178, 0.1);
-  --primary-glow: rgba(8, 145, 178, 0.18);
+  /* Acentos de Marca: aurora violeta + rosa */
+  --primary-color: #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-light: rgba(124, 58, 237, 0.1);
+  --primary-glow: rgba(124, 58, 237, 0.18);
 
   --secondary-color: #db2777;
   --secondary-hover: #be185d;
@@ -58,12 +58,12 @@
   --text-muted: #6f6b8a;
 
   --border-glass: rgba(255, 255, 255, 0.09);
-  --border-glass-hover: rgba(34, 211, 238, 0.5);
+  --border-glass-hover: rgba(167, 139, 250, 0.5);
 
-  --primary-color: #06b6d4;
-  --primary-hover: #0891b2;
-  --primary-light: rgba(34, 211, 238, 0.16);
-  --primary-glow: rgba(34, 211, 238, 0.35);
+  --primary-color: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-light: rgba(139, 92, 246, 0.16);
+  --primary-glow: rgba(139, 92, 246, 0.35);
 
   --secondary-color: #f472b6;
   --secondary-hover: #ec4899;
@@ -91,7 +91,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(34, 211, 238, 0.20) 0%, transparent 45%),
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.20) 0%, transparent 45%),
     radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.18) 0%, transparent 45%);
   background-attachment: fixed;
 }
