@@ -52,7 +52,15 @@ Diseña (con la estética propia del estilo, no copies literalmente el marcado d
 
 - **Navbar** con logo, links de sección, link a `dashboard.html`, y el `theme-switch` de 3 botones (light/system/dark, ver `vercel/index.html` como referencia de marcado).
 - **Landing (`index.html`)**: hero, sección de features/estados (success/warning/error como badges), sección de galería (carrusel de imágenes, usar Unsplash con `?auto=format&fit=crop&w=800&q=80`), footer con crédito `© 2026 Carlos Alberto Jiménez Hirashi. <Nombre del Estilo>.`
-- **Dashboard (`dashboard.html`)**: layout de app real — sidebar izquierdo de navegación + volver al landing + theme switch, `main-content` con header de página, `stats-grid` de tarjetas métricas, una tabla de datos (`data-table`) con badges de estado, y un sidebar derecho tipo chat/asistente. No relleno decorativo: cada métrica y fila debe leerse como dato real de producto.
+- **Dashboard (`dashboard.html`)**: estructura de producto real de dos niveles, no un simple split de 3 columnas:
+  - `.dash-wrapper` (`display: flex; flex-direction: column; height: 100vh;`) contiene, en orden, `.dash-topbar` y `.dash-body`.
+  - `.dash-topbar`: franja superior de ancho completo con `.dash-breadcrumb` (marca / sección actual), `.dash-search` (buscador falso con ícono), y `.dash-topbar-right` con `.dash-bell` (notificaciones) + `.dash-user` (avatar + nombre + rol).
+  - `.dash-body` (`display: grid; grid-template-columns: <izq> 1fr <der>;`) es el split de 3 columnas: `sidebar-left`, `main-content`, `sidebar-right`.
+  - `sidebar-left`: `.sidebar-menu` con ítems agrupados bajo `.sidebar-section-label` (mínimo dos grupos, ej. "General" / "Sistema"), y al final un `.sidebar-profile` (avatar + nombre + rol) antes del link "Volver al Landing" y el theme switch.
+  - `main-content`: header de página, `stats-grid` de tarjetas métricas — al menos dos de ellas con `.stat-card-head` (label + `.stat-trend.up`/`.down` con flecha y %), una tabla de datos (`data-table`) con badges de estado.
+  - `sidebar-right`: chat/asistente como en los estilos existentes.
+  
+  No relleno decorativo: cada métrica, fila y mensaje debe leerse como dato real de producto.
 
 El copy va siempre en español, concreto y de dominio técnico (telemetría, despliegues, nodos, tokens), nunca lorem ipsum.
 
