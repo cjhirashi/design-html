@@ -1,0 +1,103 @@
+/* ==========================================
+   ESTILO INDUSTRIAL DARK (ELITE UI/UX)
+   Máxima densidad, telemetría pura, cero ruido
+   ========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --bg-primary: #050505;
+  --bg-secondary: #0c0c0c;
+  --bg-tertiary: #141414;
+  
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #4b5563;
+  
+  --border-color: #1f1f1f;
+  
+  /* Acentos de Marca (Desaturados para foco en datos) */
+  --primary-color: #0891b2;
+  --primary-hover: #06b6d4;
+  
+  --secondary-color: #7c3aed;
+  --secondary-hover: #8b5cf6;
+
+  /* Estados Semánticos (Brillantes sobre fondo oscuro) */
+  --error-text: #ef4444;
+  --warning-text: #f59e0b;
+  --success-text: #10b981;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-size: 13px; /* Densidad alta */
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Layout Industrial */
+.navbar {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 12px; color: var(--primary-color); }
+
+/* Botones funcionales */
+.btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.8rem;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+/* Badges Telemetría */
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  border: 1px solid var(--border-color);
+}
+.badge-success { color: var(--success-text); }
+.badge-warning { color: var(--warning-text); }
+.badge-error { color: var(--error-text); }
+
+/* Grid Industrial - Densidad Máxima */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+}
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+}
+.card h3 { font-size: 12px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+
+/* Dashboard - Tabular/Data Focus */
+.dash-wrapper { display: grid; grid-template-columns: 200px 1fr 280px; height: 100vh; }
+.sidebar-left { background: var(--bg-secondary); border-right: 1px solid var(--border-color); padding: 1rem; }
+.sidebar-item { padding: 0.5rem; font-size: 12px; display: block; color: var(--text-secondary); text-decoration: none; border-left: 2px solid transparent; }
+.sidebar-item.active { border-left-color: var(--primary-color); color: var(--text-primary); }
+
+.data-table { width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.data-table th { color: var(--text-muted); border-bottom: 1px solid var(--border-color); padding: 0.75rem; text-align: left; }
+.data-table td { border-bottom: 1px solid var(--border-color); padding: 0.75rem; }

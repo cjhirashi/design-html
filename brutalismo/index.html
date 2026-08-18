@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tactile Brutalism - Landing</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            CJH BRUTAL <span style="font-size: 0.75rem;" class="mono">[v2.0]</span>
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="active">Inicio</a>
+            <a href="#features">Sistema</a>
+            <a href="#galeria">Galería</a>
+            <a href="dashboard.html">Dashboard &rarr;</a>
+            
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+                <span class="badge badge-primary">Cyan Core</span>
+                <span class="badge badge-secondary">Purple Accent</span>
+            </div>
+            <h1 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.03em;">Brutalismo Táctil para Agentes IA</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem; font-weight: 500;">Bordes contundentes, sombras duras de alto impacto y separación estricta de acentos cromáticos y estados semánticos.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Dashboard</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Sistema</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.75rem;" class="mono">brutal-core.log</span>
+            </div>
+            <div class="mockup-screen" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; background: var(--success-bg); border: 2px solid var(--border-color); color: var(--success-text); font-size: 0.8rem;" class="mono">
+                    <span>[OK] System Node Active</span>
+                    <span class="badge badge-success">Success</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; background: var(--warning-bg); border: 2px solid var(--border-color); color: var(--warning-text); font-size: 0.8rem;" class="mono">
+                    <span>[WARN] High Memory Load</span>
+                    <span class="badge badge-warning">Warning</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; background: var(--error-bg); border: 2px solid var(--border-color); color: var(--error-text); font-size: 0.8rem;" class="mono">
+                    <span>[ERR] Pipeline Sync Failed</span>
+                    <span class="badge badge-error">Error</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 6rem 0;" id="features">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.5rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Validaciones</span>
+            <h2 style="font-size: 2.25rem; font-weight: 700;">Estados y Retroalimentación Táctil</h2>
+        </div>
+        
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.25rem;">Success State</span>
+                <h3>Operación Exitosa</h3>
+                <p>Indicadores verdes de alto contraste para confirmación de transacciones y estados óptimos del sistema.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.25rem;">Warning State</span>
+                <h3>Precaución Activa</h3>
+                <p>Alertas en amarillo intenso para advertir sobre límites de recursos y latencias elevadas en red.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.25rem;">Error State</span>
+                <h3>Fallo Crítico</h3>
+                <p>Notificaciones rojas inconfundibles reservadas para errores de sistema y excepciones de red.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 6rem 0;" id="galeria">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Galería Visual</span>
+            <h2 style="font-size: 2.25rem; font-weight: 700;">Carrusel de Módulos</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Mod 01</span>
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Brutal 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Geometría Contundente</h3>
+                        <p>Diseños estructurados con acentos Cyan de alto impacto visual.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Mod 02</span>
+                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Brutal 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Paneles Operativos</h3>
+                        <p>Estructuras modulares con contrastes secundarios en tonos violetas.</p>
+                    </div>
+                </div>
+
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Mod 03</span>
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Brutal 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Agentes en Directo</h3>
+                        <p>Monitoreo continuo de salud y rendimiento con códigos estrictos.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 700;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Tactile Brutalism Systems.
+    </footer>
+
+    <script src="../js/theme-manager.js"></script>
+</body>
+</html>
