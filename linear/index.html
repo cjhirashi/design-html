@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear - Product Tracking</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 4l16 16M4 20L20 4"/></svg></span>
+            Linear
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="active">Producto</a>
+            <a href="#features">Ciclos</a>
+            <a href="#galeria">Vistas</a>
+            <a href="dashboard.html">Dashboard &rarr;</a>
+
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.1rem;">
+                <span class="badge badge-primary">v2.1 Cycles</span>
+                <span class="badge badge-secondary">Keyboard-first</span>
+            </div>
+            <h1 style="font-size: 2.85rem; font-weight: 650; line-height: 1.12; margin-bottom: 1.1rem; letter-spacing: -0.03em;">Ejecuta con la velocidad de un equipo de ingeniería.</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 1.75rem; font-size: 0.98rem;">Seguimiento de issues, ciclos y roadmap en una sola herramienta rápida. Sin fricción, sin reuniones de estado — el progreso vive en el producto.</p>
+            <div style="display: flex; gap: 0.85rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Workspace</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Ciclos</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.7rem; color: var(--text-muted);" class="mono">ENG · Cycle 14</span>
+            </div>
+            <div class="mockup-screen">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.7rem; margin-bottom: 0.4rem;" class="mono">
+                    <span style="font-size: 0.78rem; color: var(--text-primary);">ENG-142 · Fix triage race condition</span>
+                    <span class="badge badge-success">Done</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.7rem; margin-bottom: 0.4rem;" class="mono">
+                    <span style="font-size: 0.78rem; color: var(--text-primary);">ENG-147 · Cycle velocity charts</span>
+                    <span class="badge badge-warning">In Progress</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0.7rem;" class="mono">
+                    <span style="font-size: 0.78rem; color: var(--text-primary);">ENG-151 · Offline sync edge case</span>
+                    <span class="badge badge-secondary">Backlog</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 5rem 0;" id="features">
+        <div style="max-width: 1240px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.25rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Flujo de trabajo</span>
+            <h2 style="font-size: 1.75rem; font-weight: 650; letter-spacing: -0.025em;">Un ciclo, tres estados que importan</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.1rem;">In Progress</span>
+                <h3>Triage sin ruido</h3>
+                <p>Cada issue entra con prioridad y responsable asignado antes de tocar el sprint activo.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.1rem;">Done</span>
+                <h3>Ciclos con fecha fija</h3>
+                <p>El scope se congela al iniciar el ciclo — lo nuevo espera al siguiente, sin excepciones.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.1rem;">Blocked</span>
+                <h3>Bloqueos visibles</h3>
+                <p>Las dependencias entre issues se marcan explícitamente para que nada se pierda en un hilo de Slack.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 5rem 0;" id="galeria">
+        <div style="max-width: 1240px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Vistas Guardadas</span>
+            <h2 style="font-size: 1.75rem; font-weight: 650; letter-spacing: -0.025em;">La misma data, distintos ángulos</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Vista 01</span>
+                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=800&q=80" alt="Linear 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Tablero por Ciclo</h3>
+                        <p>Agrupa issues por estado y visualiza el burndown en tiempo real.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Vista 02</span>
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" alt="Linear 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Roadmap Trimestral</h3>
+                        <p>Proyectos agrupados por iniciativa con fecha objetivo y responsable.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Vista 03</span>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Linear 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Mi Cola Personal</h3>
+                        <p>Solo lo asignado a ti, ordenado por prioridad y fecha límite del ciclo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 3.5rem 2rem; color: var(--text-secondary); font-size: 0.82rem;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Linear Architecture.
+    </footer>
+
+    <script src="../js/theme-manager.js"></script>
+</body>
+</html>

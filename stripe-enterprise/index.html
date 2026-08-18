@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stripe Enterprise - Infraestructura de Pagos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+            Enterprise Pay
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="active">Producto</a>
+            <a href="#features">Soluciones</a>
+            <a href="#galeria">Casos de Uso</a>
+            <a href="dashboard.html">Dashboard &rarr;</a>
+
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+                <span class="badge badge-primary">PCI DSS Nivel 1</span>
+                <span class="badge badge-secondary">99.999% Uptime</span>
+            </div>
+            <h1 style="font-size: 3.1rem; font-weight: 700; line-height: 1.1; margin-bottom: 1.25rem; letter-spacing: -0.03em;">Infraestructura de pagos para escala global.</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.02rem;">Procesa, concilia y reporta pagos en más de 135 divisas desde una sola plataforma diseñada para cumplimiento empresarial.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Dashboard</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Soluciones</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.75rem; color: var(--text-muted);" class="mono">payments-ledger.live</span>
+            </div>
+            <div class="mockup-screen">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.85rem; margin-bottom: 0.5rem; background: var(--bg-primary); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <span style="font-size: 0.82rem;" class="mono">$48,120.00 · Checkout Global</span>
+                    <span class="badge badge-success">Exitoso</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.85rem; margin-bottom: 0.5rem; background: var(--bg-primary); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <span style="font-size: 0.82rem;" class="mono">$1,240.00 · Suscripción</span>
+                    <span class="badge badge-warning">En revisión</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 0.85rem; background: var(--bg-primary); border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                    <span style="font-size: 0.82rem;" class="mono">$320.00 · Marketplace</span>
+                    <span class="badge badge-error">Rechazado</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 6rem 0;" id="features">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.5rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Confiabilidad</span>
+            <h2 style="font-size: 2rem; font-weight: 700; letter-spacing: -0.025em;">Estados de transacción en tiempo real</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.25rem;">Pago Exitoso</span>
+                <h3>Conciliación Automática</h3>
+                <p>Cada transacción se concilia contra tu contabilidad sin intervención manual.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.25rem;">Riesgo de Fraude</span>
+                <h3>Motor de Riesgo Adaptativo</h3>
+                <p>Machine learning entrenado con miles de millones de transacciones globales.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.25rem;">Pago Rechazado</span>
+                <h3>Reintentos Inteligentes</h3>
+                <p>Reintenta automáticamente con la red alterna antes de perder la venta.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 6rem 0;" id="galeria">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Casos de Uso</span>
+            <h2 style="font-size: 2rem; font-weight: 700; letter-spacing: -0.025em;">Construido para cada modelo de negocio</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Caso 01</span>
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80" alt="Stripe 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Checkout Embebido</h3>
+                        <p>Integra el flujo de pago completo sin salir de tu aplicación.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Caso 02</span>
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=800&q=80" alt="Stripe 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Facturación Recurrente</h3>
+                        <p>Suscripciones con prorrateo automático y dunning inteligente.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Caso 03</span>
+                        <img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80" alt="Stripe 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Marketplace Multi-Vendor</h3>
+                        <p>Divide pagos entre vendedores con comisiones configurables por transacción.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary); font-size: 0.85rem;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Stripe Enterprise Architecture.
+    </footer>
+
+    <script src="../js/theme-manager.js"></script>
+</body>
+</html>

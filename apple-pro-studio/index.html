@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Pro Studio - Herramientas Creativas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-2.02 1.58-3.02 1.58-.09-1.14.44-2.32 1.14-3.08.79-.9 2.18-1.58 3.06-1.58zM20.5 17.15c-.5 1.13-.74 1.63-1.38 2.63-.9 1.4-2.16 3.14-3.73 3.16-1.39.02-1.75-.9-3.63-.9-1.87 0-2.28.88-3.68.92-1.57.05-2.76-1.5-3.66-2.9-2.5-3.86-2.77-8.4-1.22-10.8 1.1-1.72 2.85-2.73 4.48-2.73 1.67 0 2.72.9 4.1.9 1.34 0 2.16-.9 4.1-.9 1.44 0 2.97.79 4.06 2.14-3.57 1.96-2.99 6.98.56 8.48z"/></svg></span>
+            Pro Studio
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="active">Producto</a>
+            <a href="#features">Rendimiento</a>
+            <a href="#galeria">Comunidad</a>
+            <a href="dashboard.html">Dashboard &rarr;</a>
+
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <span class="badge badge-primary">Silicon Pro</span>
+                <span class="badge badge-secondary">Render Engine 4</span>
+            </div>
+            <h1 style="font-size: 3.6rem; font-weight: 600; line-height: 1.05; margin-bottom: 1.5rem; letter-spacing: -0.03em;">Potencia sin límites para creadores profesionales.</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2.25rem; font-size: 1.1rem;">Renderizado en tiempo real, aceleración por hardware y un flujo de trabajo silencioso incluso bajo la carga más exigente.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Estudio</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Rendimiento</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.78rem; color: var(--text-muted);">Proyecto_Final_4K.timeline</span>
+            </div>
+            <div class="mockup-screen">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                    <span style="font-size: 0.85rem;">Render 4K ProRes</span>
+                    <span class="badge badge-success">Completado</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; margin-bottom: 0.5rem; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                    <span style="font-size: 0.85rem;">Corrección de Color</span>
+                    <span class="badge badge-warning">En proceso</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--bg-secondary); border-radius: var(--radius-sm);">
+                    <span style="font-size: 0.85rem;">Exportación Final</span>
+                    <span class="badge badge-secondary">En cola</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 6rem 0;" id="features">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 3rem; margin-bottom: 3rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.6rem;">Ingeniería</span>
+            <h2 style="font-size: 2.2rem; font-weight: 600; letter-spacing: -0.03em;">Diseñado para cargas de trabajo reales</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.5rem;">Estable</span>
+                <h3>Térmica Silenciosa</h3>
+                <p>Disipación optimizada que sostiene el rendimiento máximo sin sacrificar el silencio del estudio.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.5rem;">Alta demanda</span>
+                <h3>GPU Compartida</h3>
+                <p>Distribución inteligente entre renderizado, previsualización y efectos en vivo sin caídas de frame.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.5rem;">Crítico</span>
+                <h3>Protección de Proyecto</h3>
+                <p>Guardado incremental automático ante cortes de energía o cierres inesperados de la aplicación.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 6rem 0;" id="galeria">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 3rem; margin-bottom: 2rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.6rem;">Comunidad</span>
+            <h2 style="font-size: 2.2rem; font-weight: 600; letter-spacing: -0.03em;">Hecho con Pro Studio</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Estudio 01</span>
+                        <img src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=800&q=80" alt="Studio 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Postproducción de Cine</h3>
+                        <p>Edición 8K en tiempo real sin proxies, directo desde el material original.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Estudio 02</span>
+                        <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80" alt="Studio 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Producción Musical</h3>
+                        <p>Cientos de pistas y plugins corriendo con latencia imperceptible.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Estudio 03</span>
+                        <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=800&q=80" alt="Studio 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Diseño 3D</h3>
+                        <p>Render fotorrealista con aceleración de hardware dedicada.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary); font-size: 0.85rem;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Apple Pro Studio Architecture.
+    </footer>
+
+    <script src="../js/theme-manager.js"></script>
+</body>
+</html>

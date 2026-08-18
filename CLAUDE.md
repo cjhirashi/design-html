@@ -8,7 +8,7 @@ No implementes funcionalidad de backend, framework JS ni build tools aquí: este
 
 ## Qué es este proyecto
 
-Una galería de **sistemas de diseño UI/UX independientes**, cada uno explorando una estética distinta (Bento, Brutalismo, Glassmorphism, Industrial, Linear, Minimalista, Vercel Modernist, y estilos pendientes). Cada estilo demuestra el mismo par de vistas —una landing y un dashboard— resueltas con un lenguaje visual propio, para que se puedan comparar lado a lado.
+Una galería de **sistemas de diseño UI/UX independientes**, cada uno explorando una estética distinta: Apple Pro Studio, Bento, Brutalismo, Glassmorphism, Industrial, Linear, Minimalista, Nordic Functional, Stripe Enterprise y Vercel Modernist. Cada estilo demuestra el mismo par de vistas —una landing y un dashboard— resueltas con un lenguaje visual propio, para que se puedan comparar lado a lado.
 
 ## Estructura de un estilo
 
@@ -66,6 +66,6 @@ El copy va siempre en español, concreto y de dominio técnico (telemetría, des
 
 El `index.html` de la raíz del proyecto **no es parte de ningún estilo**: es un menú neutral que enlaza a la landing y dashboard de cada estilo disponible. Al agregar o completar un estilo, actualiza ahí su tarjeta (y quítale el estado "pendiente" si ya tiene contenido real).
 
-## Carpetas pendientes
+## Estado actual
 
-`linear/`, `Apple pro studio/`, `Nordic Functional/` y `Stripe Enterpise/` existen como huecos reservados para futuros estilos y están vacías o con archivos stub — no las trates como bugs, son trabajo por hacer siguiendo el flujo de arriba.
+Los 10 estilos listados arriba están completos (landing + dashboard + luz/oscuro funcionales). No hay carpetas pendientes en este momento. Si se agrega un estilo nuevo, sigue el flujo de la sección anterior y usa nombre de carpeta en kebab-case minúsculas (ej. `nueva-estetica/`), consistente con el resto.

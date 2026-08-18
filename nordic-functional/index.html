@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nordic Functional - Taller de Diseño</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+            Nordic
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="active">Filosofía</a>
+            <a href="#features">Proceso</a>
+            <a href="#galeria">Catálogo</a>
+            <a href="dashboard.html">Dashboard &rarr;</a>
+
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem;">
+                <span class="badge badge-primary">Hecho a Mano</span>
+                <span class="badge badge-secondary">Madera Certificada</span>
+            </div>
+            <h1 style="font-size: 3rem; font-weight: 650; line-height: 1.15; margin-bottom: 1.25rem; letter-spacing: -0.02em;">Menos ruido. Más función.</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.02rem;">Objetos honestos, pensados para durar generaciones. Cada pieza sale del taller solo cuando cumple su propósito sin adornos de sobra.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Taller</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Proceso</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.75rem; color: var(--text-muted);" class="mono">orden-0842.taller</span>
+            </div>
+            <div class="mockup-screen">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; margin-bottom: 0.4rem;">
+                    <span style="font-size: 0.82rem;">Corte de roble macizo</span>
+                    <span class="badge badge-success">Listo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem; margin-bottom: 0.4rem;">
+                    <span style="font-size: 0.82rem;">Ensamblaje de junta</span>
+                    <span class="badge badge-warning">En taller</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.8rem;">
+                    <span style="font-size: 0.82rem;">Acabado con aceite natural</span>
+                    <span class="badge badge-secondary">En espera</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 5.5rem 0;" id="features">
+        <div style="max-width: 1240px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.25rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Materiales</span>
+            <h2 style="font-size: 1.9rem; font-weight: 650; letter-spacing: -0.02em;">Tres decisiones detrás de cada pieza</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.15rem;">Aprobado</span>
+                <h3>Madera de Origen Trazable</h3>
+                <p>Cada tabla proviene de bosques certificados a menos de 200 km del taller.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.15rem;">En revisión</span>
+                <h3>Uniones sin Tornillos</h3>
+                <p>Juntas de madera tradicionales que envejecen mejor que cualquier herraje metálico.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.15rem;">Descartado</span>
+                <h3>Barnices Sintéticos</h3>
+                <p>Solo aceites naturales — si una pieza los necesita para verse bien, no sale del taller.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 5.5rem 0;" id="galeria">
+        <div style="max-width: 1240px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Catálogo</span>
+            <h2 style="font-size: 1.9rem; font-weight: 650; letter-spacing: -0.02em;">Piezas del taller</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Pieza 01</span>
+                        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=800&q=80" alt="Nordic 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Banco de Roble</h3>
+                        <p>Línea recta, junta cola de milano, sin un solo tornillo visible.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Pieza 02</span>
+                        <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80" alt="Nordic 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Lámpara de Lino</h3>
+                        <p>Pantalla tejida a mano sobre estructura de fresno curvado al vapor.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag mono">Pieza 03</span>
+                        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80" alt="Nordic 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Mesa de Trabajo</h3>
+                        <p>Superficie de abedul con patas desmontables para taller o estudio.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 3.75rem 2rem; color: var(--text-secondary); font-size: 0.85rem;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Nordic Functional Architecture.
+    </footer>
+
+    <script src="../js/theme-manager.js"></script>
+</body>
+</html>

@@ -23,10 +23,6 @@
   --success-text: #16a34a;
   --success-border: #86efac;
 
-  --muted-bg: #f4f4f5;
-  --muted-text: #71717a;
-  --muted-border: #d4d4d8;
-
   --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
   --shadow-md: 0 8px 24px rgba(0,0,0,.06);
   --shadow-lg: 0 20px 48px rgba(0,0,0,.10);
@@ -55,10 +51,6 @@
   --success-bg: rgba(22,163,74,.12);
   --success-text: #4ade80;
   --success-border: rgba(74,222,128,.25);
-
-  --muted-bg: #16181c;
-  --muted-text: #7c7d84;
-  --muted-border: #26282e;
 
   --shadow-sm: 0 1px 2px rgba(0,0,0,.3);
   --shadow-md: 0 8px 24px rgba(0,0,0,.35);
@@ -261,7 +253,7 @@ a { color: inherit; }
   transition: var(--transition-smooth);
 }
 
-.card:not(.card-pending):hover {
+.card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
   border-color: color-mix(in srgb, var(--accent) 35%, var(--border-color));
@@ -296,12 +288,6 @@ a { color: inherit; }
   background: var(--success-bg);
   color: var(--success-text);
   border: 1px solid var(--success-border);
-}
-
-.badge-pending {
-  background: var(--muted-bg);
-  color: var(--muted-text);
-  border: 1px solid var(--muted-border);
 }
 
 .card h3 {
@@ -352,30 +338,6 @@ a { color: inherit; }
 
 .btn-secondary:hover { border-color: var(--text-muted); }
 
-.btn-disabled {
-  flex: 1;
-  text-align: center;
-  font-size: .8rem;
-  font-weight: 600;
-  padding: .55rem .8rem;
-  border-radius: var(--radius-sm);
-  background: var(--bg-tertiary);
-  color: var(--text-muted);
-  cursor: not-allowed;
-}
-
-.card-pending {
-  border-style: dashed;
-}
-
-.card-pending .swatch {
-  background: var(--bg-tertiary) !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-}
-
 footer {
   border-top: 1px solid var(--border-color);
   padding: 2.5rem 0;
@@ -415,16 +377,16 @@ footer {
     <p>Cada tarjeta enlaza a la landing y al dashboard de un estilo independiente — mismo par de vistas, mismo contenido de referencia, estética completamente distinta. Úsalo para comparar dirección visual antes de comprometerte con una.</p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="num mono">06</div>
+        <div class="num mono">10</div>
         <div class="label">Estilos disponibles</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num mono">04</div>
-        <div class="label">En construcción</div>
       </div>
       <div class="hero-stat">
         <div class="num mono">02</div>
         <div class="label">Vistas por estilo</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num mono">03</div>
+        <div class="label">Modos de tema</div>
       </div>
     </div>
   </div>
@@ -434,7 +396,7 @@ footer {
   <div class="wrap">
     <div class="section-head">
       <h2>Estilos disponibles</h2>
-      <span class="count mono">6</span>
+      <span class="count mono">10</span>
     </div>
 
     <div class="grid">
@@ -529,76 +491,63 @@ footer {
         </div>
       </article>
 
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0;">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>En construcción</h2>
-      <span class="count mono">4</span>
-    </div>
-
-    <div class="grid">
-
-      <article class="card card-pending">
+      <article class="card">
         <div class="card-top">
-          <div class="swatch mono" style="font-size:.65rem;">?</div>
-          <span class="badge badge-pending">Próximamente</span>
+          <div class="swatch" style="background: linear-gradient(135deg,#5e6ad2,#fbfbfc);"></div>
+          <span class="badge badge-live">Disponible</span>
         </div>
         <div>
           <h3>Linear</h3>
-          <p>Estética de producto tipo issue-tracker: densidad de datos, teclado-first, gris neutro con acentos sutiles.</p>
+          <p>Estética de producto tipo issue-tracker: densidad de datos, teclado-first, púrpura de precisión.</p>
         </div>
         <div class="card-actions">
-          <span class="btn-disabled">Landing</span>
-          <span class="btn-disabled">Dashboard</span>
+          <a href="linear/index.html" class="btn btn-secondary">Landing</a>
+          <a href="linear/dashboard.html" class="btn btn-primary">Dashboard</a>
         </div>
       </article>
 
-      <article class="card card-pending">
+      <article class="card">
         <div class="card-top">
-          <div class="swatch mono" style="font-size:.65rem;">?</div>
-          <span class="badge badge-pending">Próximamente</span>
+          <div class="swatch" style="background: linear-gradient(135deg,#0071e3,#f5f5f7);"></div>
+          <span class="badge badge-live">Disponible</span>
         </div>
         <div>
           <h3>Apple Pro Studio</h3>
-          <p>Superficies suaves, profundidad sutil y tipografía editorial al estilo de las páginas de producto de Apple.</p>
+          <p>Editorial premium, tipografía a gran escala y aire generoso al estilo de las páginas de producto de Apple.</p>
         </div>
         <div class="card-actions">
-          <span class="btn-disabled">Landing</span>
-          <span class="btn-disabled">Dashboard</span>
+          <a href="apple-pro-studio/index.html" class="btn btn-secondary">Landing</a>
+          <a href="apple-pro-studio/dashboard.html" class="btn btn-primary">Dashboard</a>
         </div>
       </article>
 
-      <article class="card card-pending">
+      <article class="card">
         <div class="card-top">
-          <div class="swatch mono" style="font-size:.65rem;">?</div>
-          <span class="badge badge-pending">Próximamente</span>
+          <div class="swatch" style="background: linear-gradient(135deg,#c1502e,#faf9f6);"></div>
+          <span class="badge badge-live">Disponible</span>
         </div>
         <div>
           <h3>Nordic Functional</h3>
-          <p>Funcionalismo escandinavo: paleta fría, mucho aire, ornamento cero y foco absoluto en la usabilidad.</p>
+          <p>Funcionalismo escandinavo: blanco cálido, terracota y azul pizarra, cero ornamento.</p>
         </div>
         <div class="card-actions">
-          <span class="btn-disabled">Landing</span>
-          <span class="btn-disabled">Dashboard</span>
+          <a href="nordic-functional/index.html" class="btn btn-secondary">Landing</a>
+          <a href="nordic-functional/dashboard.html" class="btn btn-primary">Dashboard</a>
         </div>
       </article>
 
-      <article class="card card-pending">
+      <article class="card">
         <div class="card-top">
-          <div class="swatch mono" style="font-size:.65rem;">?</div>
-          <span class="badge badge-pending">Próximamente</span>
+          <div class="swatch" style="background: linear-gradient(135deg,#635bff,#00a389);"></div>
+          <span class="badge badge-live">Disponible</span>
         </div>
         <div>
           <h3>Stripe Enterprise</h3>
           <p>Lenguaje visual de fintech B2B: gradientes de marca controlados, densidad de datos y confianza corporativa.</p>
         </div>
         <div class="card-actions">
-          <span class="btn-disabled">Landing</span>
-          <span class="btn-disabled">Dashboard</span>
+          <a href="stripe-enterprise/index.html" class="btn btn-secondary">Landing</a>
+          <a href="stripe-enterprise/dashboard.html" class="btn btn-primary">Dashboard</a>
         </div>
       </article>
 
