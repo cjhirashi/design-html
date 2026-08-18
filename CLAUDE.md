@@ -103,3 +103,13 @@ El `index.html` de la raíz del proyecto **no es parte de ningún estilo**: es u
 ## Estado actual
 
 Los 21 estilos listados arriba están completos (landing + dashboard + luz/oscuro + responsive funcionales): 15 Estilos Generales (incluye Glassmorphism y sus 5 variantes de color) + 6 Estilos de Dashboard. No hay carpetas pendientes en este momento. Si se agrega un estilo nuevo, sigue el flujo de la sección anterior y usa nombre de carpeta en kebab-case minúsculas (ej. `nueva-estetica/`), consistente con el resto.
+
+## Pendiente: variedad estructural real en Estilos de Dashboard
+
+Los 6 Estilos de Dashboard actuales (`material-flow/`, `pulse-analytics/`, `ledger-dark/`, `enterprise-grid/`, `canvas-workspace/`, `storefront/`) son variantes de **color y tono** sobre el mismo esqueleto: `.dash-wrapper` → `.dash-topbar` + `.dash-body` (`sidebar-left` / `main-content` / `sidebar-right`). Lo que falta — y es el encargo explícito del usuario para una sesión futura — es variedad de **estructura**, no de paleta:
+
+- Sidebars distintos: riel de solo íconos colapsable, árbol de navegación anidado (expandir/colapsar carpetas, más fiel a Notion real), mega-sidebar con secciones múltiples, layout sin sidebar izquierdo (nav superior + tabs), sidebar-only sin panel derecho.
+- Navs/topbars distintos: barra con tabs en vez de breadcrumb, selector de workspace tipo dropdown, paleta de comandos (⌘K) como navegación principal en vez de sidebar persistente.
+- Footers/status bars: ninguno de los 6 dashboards actuales tiene una barra inferior — evaluar un patrón tipo status-bar persistente (a la VS Code) para alguno.
+
+Antes de construir, define 4-6 arquetipos de estructura real (no solo nombres de producto) y verifica que cada uno sea genuinamente distinto en su composición de layout, no solo en su acento de color.
