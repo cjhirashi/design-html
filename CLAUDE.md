@@ -24,7 +24,7 @@ Cada carpeta de estilo (nombre en minúsculas, ej. `bento/`, `glassmorphism/`) s
     └── style.css     # Único stylesheet del estilo, self-contained
 ```
 
-Ambos HTML cargan `../js/theme-manager.js` (compartido, en la raíz `js/`) para el switch de tema claro/oscuro/sistema. No dupliques ese script dentro de cada carpeta de estilo.
+Ambos HTML cargan `../js/theme-manager.js` (compartido, en la raíz `js/`) para el switch de tema claro/oscuro/sistema, y `../js/nav-toggle.js` para el menú hamburguesa y los sidebars off-canvas en móvil. No dupliques esos scripts dentro de cada carpeta de estilo.
 
 ## Convenciones de CSS (obligatorias para todo estilo nuevo)
 
@@ -66,10 +66,21 @@ Diseña (con la estética propia del estilo, no copies literalmente el marcado d
 
 El copy va siempre en español, concreto y de dominio técnico (telemetría, despliegues, nodos, tokens), nunca lorem ipsum.
 
+## Responsive (obligatorio en todo estilo)
+
+Cada `style.css` termina con dos bloques `@media` compartidos entre los 14 estilos — mismos nombres de clase, mismo comportamiento, solo cambian los tokens de color/tipografía de cada estilo:
+
+- **Navbar → menú hamburguesa**: en el HTML, `.nav-links` (solo los `<a>`) y `.theme-switch` van dentro de un wrapper `.nav-right`, seguido de un `<button class="nav-toggle" onclick="toggleNav()">` con ícono de 3 líneas, y un `<div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>` justo después de `</nav>`. En CSS, bajo `max-width: 900px`, `.nav-links` se convierte en un drawer fijo (`position:fixed`, deslizado con `transform: translateX(100%)` → `.nav-open` lo trae a `translateX(0)`).
+- **Dashboard → sidebars off-canvas**: dos `<button class="sidebar-toggle" onclick="toggleSidebar('left'|'right')">` — uno al inicio de `.dash-topbar` (antes de `.dash-breadcrumb`, controla `sidebar-left`) y otro al inicio de `.dash-topbar-right` (antes de `.dash-bell`, controla `sidebar-right`) — más un `<div class="sidebar-scrim" id="sidebarScrim" onclick="closeSidebars()"></div>` como primer hijo de `.dash-wrapper`. Bajo `max-width: 900px`, ambos sidebars pasan a `position:fixed` fuera de pantalla (`translateX(-100%)`/`translateX(100%)`) y `.sidebar-open` los trae a `translateX(0)`.
+- Las funciones `toggleNav`, `closeNav`, `toggleSidebar`, `closeSidebars` viven en `js/nav-toggle.js` (compartido, igual que `theme-manager.js`) — no las reimplementes por estilo.
+- `.hero-split` colapsa a una columna y `.data-table-container` scrollea horizontal en cualquier ancho.
+
+Si agregas un componente nuevo a un estilo, revisa que siga viéndose bien bajo 900px y 560px antes de darlo por terminado.
+
 ## Flujo para agregar un estilo nuevo
 
 1. Crear `<estilo>/css/style.css` con el bloque `:root` + `[data-theme="dark"]` completo, siguiendo el naming de variables de arriba.
-2. Construir `<estilo>/index.html` y `<estilo>/dashboard.html` con los componentes esperados, cargando `css/style.css` y `../js/theme-manager.js`.
+2. Construir `<estilo>/index.html` y `<estilo>/dashboard.html` con los componentes esperados, cargando `css/style.css`, `../js/theme-manager.js` y `../js/nav-toggle.js`, y siguiendo el patrón responsive de la sección anterior (navbar con `.nav-toggle`, dashboard con `.sidebar-toggle` × 2).
 3. Registrar el estilo en la tarjeta correspondiente de `index.html` (raíz del proyecto) — ver siguiente sección.
 
 ## Índice raíz (`index.html`)

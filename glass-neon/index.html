@@ -14,12 +14,14 @@
             </div>
             CJH NEON <span style="color: var(--text-muted); font-weight: 400; font-size: 0.75rem;" class="mono">[v3.0]</span>
         </div>
-        <div class="nav-links">
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
             <a href="#hero" class="active">Inicio</a>
             <a href="#features">Sistema</a>
             <a href="#galeria">Galería</a>
             <a href="dashboard.html">Dashboard &rarr;</a>
             
+            </div>
             <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
                 <div class="theme-switch-indicator"></div>
                 <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
@@ -32,8 +34,12 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
                 </button>
             </div>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="Abrir menu" aria-expanded="false" id="navToggleBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </button>
         </div>
     </nav>
+    <div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>
 
     <header class="hero-split" id="hero">
         <div>
@@ -148,5 +154,6 @@
     </footer>
 
     <script src="../js/theme-manager.js"></script>
+    <script src="../js/nav-toggle.js"></script>
 </body>
 </html>
