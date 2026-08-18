@@ -10,6 +10,8 @@ No implementes funcionalidad de backend, framework JS ni build tools aquí: este
 
 Una galería de **sistemas de diseño UI/UX independientes**, cada uno explorando una estética distinta: Apple Pro Studio, Bento, Brutalismo, Glassmorphism, Industrial, Linear, Minimalista, Nordic Functional, Stripe Enterprise y Vercel Modernist. Cada estilo demuestra el mismo par de vistas —una landing y un dashboard— resueltas con un lenguaje visual propio, para que se puedan comparar lado a lado.
 
+El índice raíz separa dos categorías: **"Estilos Generales"** (los 15 anteriores) y **"Estilos de Dashboard"** — seis arquetipos de panel reales del mercado, cada uno replicando el lenguaje visual de un producto real conocido: `material-flow/` (Material Design 3 / Google — elevación en capas, FAB), `pulse-analytics/` (Mixpanel/Amplitude — KPIs con sparkline, gráfica de comparación de periodos), `ledger-dark/` (Robinhood/Coinbase — precio hero, verde/rojo, gráfica de mercado), `enterprise-grid/` (Ant Design/Salesforce — azul corporativo, tablas densas, acciones en lote), `canvas-workspace/` (Notion — bloques suaves, tags de propiedad multicolor en vez de gráficas) y `storefront/` (Shopify — verde de marca, pedidos/catálogo). Al agregar un estilo de dashboard nuevo, identifica primero qué producto real representa y de qué se distingue estructuralmente (no solo de color) antes de construirlo.
+
 Además, `glassmorphism/` tiene cinco variantes de color hermanas que comparten exactamente su mismo mecanismo (blur, aurora translúcida, layout) pero con acento cian institucional + un secundario distinto cada una: `glass-aurum/` (+ oro), `glass-ember/` (+ coral), `glass-borealis/` (+ lima), `glass-neon/` (+ fucsia) y `glass-steel/` (+ gris acero). Todas las variantes reutilizan la misma escala de fondo neutro teal-navy (`#071018` / `rgba(16,30,42,.6)` / `rgba(12,24,34,.7)` / `rgba(26,48,64,.5)`) y el mismo texto secundario cian-gris (`#a3b6c0` / `#6b808a`) — nunca el fondo/texto violeta original de `glassmorphism/`, que solo tiene sentido con su propio acento violeta. Si tocas la estructura o los componentes de `glassmorphism/`, valora si el mismo ajuste aplica a las cinco variantes para no desincronizarlas.
 
 ## Estructura de un estilo
@@ -68,7 +70,7 @@ El copy va siempre en español, concreto y de dominio técnico (telemetría, des
 
 ## Responsive (obligatorio en todo estilo)
 
-Cada `style.css` termina con dos bloques `@media` compartidos entre los 14 estilos — mismos nombres de clase, mismo comportamiento, solo cambian los tokens de color/tipografía de cada estilo:
+Cada `style.css` termina con dos bloques `@media` compartidos entre los 21 estilos — mismos nombres de clase, mismo comportamiento, solo cambian los tokens de color/tipografía de cada estilo:
 
 - **Navbar → menú hamburguesa**: en el HTML, `.nav-links` (solo los `<a>`) y `.theme-switch` van dentro de un wrapper `.nav-right`, seguido de un `<button class="nav-toggle" onclick="toggleNav()">` con ícono de 3 líneas, y un `<div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>` justo después de `</nav>`. En CSS, bajo `max-width: 900px`, `.nav-links` se convierte en un drawer fijo (`position:fixed`, deslizado con `transform: translateX(100%)` → `.nav-open` lo trae a `translateX(0)`).
 - **Dashboard → sidebars off-canvas**: dos `<button class="sidebar-toggle" onclick="toggleSidebar('left'|'right')">` — uno al inicio de `.dash-topbar` (antes de `.dash-breadcrumb`, controla `sidebar-left`) y otro al inicio de `.dash-topbar-right` (antes de `.dash-bell`, controla `sidebar-right`) — más un `<div class="sidebar-scrim" id="sidebarScrim" onclick="closeSidebars()"></div>` como primer hijo de `.dash-wrapper`. Bajo `max-width: 900px`, ambos sidebars pasan a `position:fixed` fuera de pantalla (`translateX(-100%)`/`translateX(100%)`) y `.sidebar-open` los trae a `translateX(0)`.
@@ -76,6 +78,17 @@ Cada `style.css` termina con dos bloques `@media` compartidos entre los 14 estil
 - `.hero-split` colapsa a una columna y `.data-table-container` scrollea horizontal en cualquier ancho.
 
 Si agregas un componente nuevo a un estilo, revisa que siga viéndose bien bajo 900px y 560px antes de darlo por terminado.
+
+## Gráficas (donde el estilo lo pida)
+
+Los seis estilos de Dashboard (y cualquier estilo general que lo necesite) usan un set de componentes de gráfica compartido, SVG puro sin librerías, pintado con los tokens de cada estilo (`var(--primary-color)`, `var(--success-text)`, etc.) para que funcione en ambos temas automáticamente:
+
+- **`.sparkline`**: mini-línea de 12 puntos dentro de un `.stat-card`, junto al valor — nunca un número aislado sin su forma de tendencia al lado.
+- **`.chart-card`** + **`.line-chart`**: gráfica de línea/área grande (el widget central del dashboard), con `.chart-grid` (líneas guía recesivas), `.chart-area` (relleno al ~10% de opacidad) y `.chart-end-dot` (marcador en el último punto). Un solo eje siempre — nunca doble eje Y.
+- **`.bar-chart`**: barras verticales simples (`.bar-chart-col` + `.bar-chart-bar`, radio solo arriba) para series categóricas cortas (día de la semana, departamento).
+- **`.price-hero`** (`ledger-dark/`): la cifra que lidera el dashboard, ≥40px, con `.delta.up`/`.down` — exactamente una por vista.
+- Antes de construir una gráfica nueva, consulta la skill `dataviz` (forma → color → marca → interacción → accesibilidad) en vez de improvisar; no reutilices el color de la marca como color de texto/etiqueta.
+- `canvas-workspace/` (Notion) es la excepción deliberada: sin gráficas, usa `.tag`/`.tag-{gray,red,orange,yellow,green,blue,purple,pink}` — el archetipo real no las necesita.
 
 ## Flujo para agregar un estilo nuevo
 
@@ -89,4 +102,4 @@ El `index.html` de la raíz del proyecto **no es parte de ningún estilo**: es u
 
 ## Estado actual
 
-Los 10 estilos listados arriba están completos (landing + dashboard + luz/oscuro funcionales). No hay carpetas pendientes en este momento. Si se agrega un estilo nuevo, sigue el flujo de la sección anterior y usa nombre de carpeta en kebab-case minúsculas (ej. `nueva-estetica/`), consistente con el resto.
+Los 21 estilos listados arriba están completos (landing + dashboard + luz/oscuro + responsive funcionales): 15 Estilos Generales (incluye Glassmorphism y sus 5 variantes de color) + 6 Estilos de Dashboard. No hay carpetas pendientes en este momento. Si se agrega un estilo nuevo, sigue el flujo de la sección anterior y usa nombre de carpeta en kebab-case minúsculas (ej. `nueva-estetica/`), consistente con el resto.

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storefront - Design System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+            Storefront
+        </div>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="#hero" class="active">Inicio</a>
+                <a href="#features">Tienda</a>
+                <a href="#galeria">Galería</a>
+                <a href="dashboard.html">Dashboard &rarr;</a>
+            </div>
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="Abrir menu" aria-expanded="false" id="navToggleBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </button>
+        </div>
+    </nav>
+    <div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <span class="badge badge-primary">Multi-canal</span>
+                <span class="badge badge-secondary">Inventario en vivo</span>
+            </div>
+            <h1 style="font-size: 3.1rem; font-weight: 600; line-height: 1.12; margin-bottom: 1.5rem; letter-spacing: -0.02em;">Tu tienda, administrada sin fricción.</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2.25rem; font-size: 1.05rem;">Pedidos, inventario y clientes en un solo panel, pensado para quien administra el negocio, no para quien lo programó.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Dashboard</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Tienda</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.78rem; color: var(--text-muted);">tienda.storefront</span>
+            </div>
+            <div class="mockup-screen" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--success-bg); border-radius: var(--radius-sm); color: var(--success-text); font-size: 0.8rem;">
+                    <span>Pedido #4821 pagado</span>
+                    <span class="badge badge-success">Success</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--warning-bg); border-radius: var(--radius-sm); color: var(--warning-text); font-size: 0.8rem;">
+                    <span>Stock bajo: 3 productos</span>
+                    <span class="badge badge-warning">Warning</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--error-bg); border-radius: var(--radius-sm); color: var(--error-text); font-size: 0.8rem;">
+                    <span>Pago rechazado</span>
+                    <span class="badge badge-error">Error</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 6rem 0;" id="features">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.5rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Operación diaria</span>
+            <h2 style="font-size: 2rem; font-weight: 600; letter-spacing: -0.02em;">Todo lo que revisas cada mañana</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.25rem;">Success State</span>
+                <h3>Pagos Confirmados</h3>
+                <p>Cada pedido pagado se marca listo para preparar sin pasos adicionales.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.25rem;">Warning State</span>
+                <h3>Alertas de Inventario</h3>
+                <p>Productos por agotarse aparecen antes de que generen una venta perdida.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.25rem;">Error State</span>
+                <h3>Pagos Rechazados</h3>
+                <p>El cliente recibe el motivo exacto — nunca un error genérico de checkout.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 6rem 0;" id="galeria">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Galería</span>
+            <h2 style="font-size: 2rem; font-weight: 600; letter-spacing: -0.02em;">La tienda en operación</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Store 01</span>
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80" alt="Ecommerce 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Gestión de Pedidos</h3>
+                        <p>Desde pago hasta entrega, en una sola línea de tiempo por pedido.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Store 02</span>
+                        <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80" alt="Ecommerce 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Catálogo de Productos</h3>
+                        <p>Variantes, precios e inventario editables desde la misma fila.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Store 03</span>
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=800&q=80" alt="Ecommerce 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Clientes Frecuentes</h3>
+                        <p>Historial de compra completo, un clic antes de responder un ticket.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary); font-size: 0.85rem;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Storefront Architecture.
+    </footer>
+
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/nav-toggle.js"></script>
+</body>
+</html>

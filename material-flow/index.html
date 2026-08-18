@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Flow - Design System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="9"/></svg></span>
+            Material Flow
+        </div>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a href="#hero" class="active">Inicio</a>
+                <a href="#features">Sistema</a>
+                <a href="#galeria">Galería</a>
+                <a href="dashboard.html">Dashboard &rarr;</a>
+            </div>
+            <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
+                <div class="theme-switch-indicator"></div>
+                <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                </button>
+                <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+            </div>
+            <button class="nav-toggle" onclick="toggleNav()" aria-label="Abrir menu" aria-expanded="false" id="navToggleBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </button>
+        </div>
+    </nav>
+    <div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>
+
+    <header class="hero-split" id="hero">
+        <div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <span class="badge badge-primary">Material 3</span>
+                <span class="badge badge-secondary">Dynamic Color</span>
+            </div>
+            <h1 style="font-size: 3.1rem; font-weight: 600; line-height: 1.12; margin-bottom: 1.5rem; letter-spacing: -0.02em;">Interfaces que respiran con capas y color.</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 2.25rem; font-size: 1.05rem;">Elevación expresiva, radios generosos y un sistema de color tonal que se adapta al contexto — el lenguaje visual detrás de Android y Google Workspace.</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="dashboard.html" class="btn" style="text-decoration: none;">Abrir Dashboard</a>
+                <a href="#features" class="btn btn-secondary" style="text-decoration: none;">Ver Sistema</a>
+            </div>
+        </div>
+        <div class="hero-mockup">
+            <div class="mockup-header">
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <div class="mockup-dot"></div>
+                <span style="font-size: 0.78rem; color: var(--text-muted);">material.flow</span>
+            </div>
+            <div class="mockup-screen" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--success-bg); border-radius: var(--radius-sm); color: var(--success-text); font-size: 0.8rem;">
+                    <span>Sincronización completa</span>
+                    <span class="badge badge-success">Success</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--warning-bg); border-radius: var(--radius-sm); color: var(--warning-text); font-size: 0.8rem;">
+                    <span>Cuota de API al 80%</span>
+                    <span class="badge badge-warning">Warning</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0.9rem; background: var(--error-bg); border-radius: var(--radius-sm); color: var(--error-text); font-size: 0.8rem;">
+                    <span>Token de acceso expirado</span>
+                    <span class="badge badge-error">Error</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section-alt" style="padding: 6rem 0;" id="features">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.5rem;">
+            <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Roles Tonales</span>
+            <h2 style="font-size: 2rem; font-weight: 600; letter-spacing: -0.02em;">Color con propósito, no decoración</h2>
+        </div>
+
+        <div class="grid">
+            <article class="card">
+                <span class="badge badge-success" style="margin-bottom: 1.25rem;">Success State</span>
+                <h3>Contenedor Tonal</h3>
+                <p>Cada superficie usa un tono derivado del color semilla, manteniendo contraste consistente en ambos temas.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-warning" style="margin-bottom: 1.25rem;">Warning State</span>
+                <h3>Elevación Expresiva</h3>
+                <p>Sombras suaves y capas en vez de bordes duros — la jerarquía se siente, no se dibuja.</p>
+            </article>
+            <article class="card">
+                <span class="badge badge-error" style="margin-bottom: 1.25rem;">Error State</span>
+                <h3>Acción Flotante</h3>
+                <p>El FAB mantiene la acción principal siempre alcanzable, sin competir con el contenido.</p>
+            </article>
+        </div>
+    </section>
+
+    <section style="padding: 6rem 0;" id="galeria">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
+            <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Galería</span>
+            <h2 style="font-size: 2rem; font-weight: 600; letter-spacing: -0.02em;">Superficies en capas</h2>
+        </div>
+
+        <div class="image-carousel-wrapper">
+            <div class="image-carousel-track">
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Flow 01</span>
+                        <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=800&q=80" alt="Material 1">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Contenedores Tonales</h3>
+                        <p>Superficies con profundidad derivadas de un único color semilla.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Flow 02</span>
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Material 2">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Componentes Expresivos</h3>
+                        <p>Chips, FAB y tarjetas con radios generosos y elevación en capas.</p>
+                    </div>
+                </div>
+                <div class="carousel-image-card">
+                    <div class="carousel-img-container">
+                        <span class="carousel-img-tag">Flow 03</span>
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Material 3">
+                    </div>
+                    <div class="carousel-content-body">
+                        <h3>Adaptativo por Contexto</h3>
+                        <p>El mismo sistema de color responde a modo claro y oscuro sin perder identidad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-alt" style="text-align: center; padding: 4rem 2rem; color: var(--text-secondary); font-size: 0.85rem;">
+        © 2026 Carlos Alberto Jiménez Hirashi. Material Flow Architecture.
+    </footer>
+
+    <button class="fab" aria-label="Nueva acción">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/nav-toggle.js"></script>
+</body>
+</html>

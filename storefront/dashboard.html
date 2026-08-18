@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storefront - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dash-wrapper">
+        <div class="sidebar-scrim" id="sidebarScrim" onclick="closeSidebars()"></div>
+        <div class="dash-topbar">
+            <button class="sidebar-toggle" onclick="toggleSidebar('left')" aria-label="Abrir menu lateral">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+            </button>
+            <div class="dash-breadcrumb">
+                <span>Storefront</span>
+                <span>/</span>
+                <strong>Pedidos</strong>
+            </div>
+            <div class="dash-search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                <span>Buscar pedido, cliente, SKU...</span>
+            </div>
+            <div class="dash-topbar-right">
+                <button class="sidebar-toggle" onclick="toggleSidebar('right')" aria-label="Abrir asistente">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </button>
+                <div class="dash-bell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 5 2 7 2 7H4s2-2 2-7"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>
+                </div>
+                <div class="dash-user">
+                    <div class="dash-user-avatar">CH</div>
+                    <div class="dash-user-info">
+                        <span class="dash-user-name">Charlie H.</span>
+                        <span class="dash-user-role">Store Owner</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-body">
+        <aside class="sidebar-left">
+            <div class="sidebar-menu">
+                <span class="sidebar-section-label">General</span>
+                <a href="#" class="sidebar-item active">Pedidos</a>
+                <a href="#" class="sidebar-item">Productos</a>
+                <a href="#" class="sidebar-item">Clientes</a>
+                <span class="sidebar-section-label">Tienda</span>
+                <a href="#" class="sidebar-item">Descuentos</a>
+                <a href="#" class="sidebar-item">Configuración</a>
+            </div>
+
+            <div style="margin-top: auto; display: flex; flex-direction: column; gap: 1rem;">
+                <div class="sidebar-profile">
+                    <div class="sidebar-profile-avatar">CH</div>
+                    <div class="sidebar-profile-info">
+                        <span class="sidebar-profile-name">Charlie H.</span>
+                        <span class="sidebar-profile-role">Store Owner</span>
+                    </div>
+                </div>
+                <a href="index.html" class="sidebar-item" style="color: var(--primary-color); font-weight: 600;">
+                    &larr; Volver al Landing
+                </a>
+
+                <div class="theme-switch" id="themeSwitcher" data-theme-mode="system" style="align-self: center;">
+                    <div class="theme-switch-indicator"></div>
+                    <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    </button>
+                    <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                    </button>
+                    <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div>
+                    <h2>Resumen de la Tienda</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem;">Hoy · 18 de agosto</p>
+                </div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button class="btn btn-secondary">Exportar</button>
+                    <button class="btn">+ Crear Pedido</button>
+                </div>
+            </header>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-head">
+                        <span>Ventas de Hoy</span>
+                        <span class="stat-trend up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 10 10 14 14 20 6"/><path d="M15 6h5v5"/></svg>14.8%</span>
+                    </div>
+                    <h4>$4,286.00</h4>
+                    <svg class="sparkline" viewBox="0 0 100 30" preserveAspectRatio="none">
+                        <polyline points="0,24 10,20 20,22 30,16 40,18 50,12 60,14 70,8 80,10 90,5 100,4" style="stroke: var(--success-text);"/>
+                    </svg>
+                </div>
+                <div class="stat-card">
+                    <span>Pedidos Pendientes</span>
+                    <h4>12</h4>
+                    <span class="badge badge-warning" style="width: fit-content;">Por preparar</span>
+                </div>
+                <div class="stat-card">
+                    <span>Stock Bajo</span>
+                    <h4>3 Productos</h4>
+                    <span class="badge badge-error" style="width: fit-content;">Reabastecer</span>
+                </div>
+            </section>
+
+            <div class="chart-card">
+                <div class="chart-card-head">
+                    <div>
+                        <h3>Ventas de la Semana</h3>
+                        <p class="chart-sub">Total facturado por día</p>
+                    </div>
+                </div>
+                <div class="bar-chart">
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 55%; background: var(--primary-color);"></div><span>Lun</span></div>
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 68%; background: var(--primary-color);"></div><span>Mar</span></div>
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 48%; background: var(--primary-color);"></div><span>Mié</span></div>
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 76%; background: var(--primary-color);"></div><span>Jue</span></div>
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 62%; background: var(--primary-color);"></div><span>Vie</span></div>
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 90%; background: var(--primary-color);"></div><span>Sáb</span></div>
+                    <div class="bar-chart-col"><div class="bar-chart-bar" style="height: 100%; background: var(--primary-color);"></div><span>Dom</span></div>
+                </div>
+            </div>
+
+            <section class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong class="mono">#4821</strong></td>
+                            <td>Andrea Solís</td>
+                            <td><span class="badge badge-success">Pagado</span></td>
+                            <td class="mono">$128.40</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="mono">#4820</strong></td>
+                            <td>Renata Vidal</td>
+                            <td><span class="badge badge-warning">Preparando</span></td>
+                            <td class="mono">$64.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong class="mono">#4819</strong></td>
+                            <td>Héctor Nava</td>
+                            <td><span class="badge badge-error">Pago rechazado</span></td>
+                            <td class="mono">$212.90</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="chat-container">
+                <div class="chat-header">Asistente de Tienda</div>
+                <div class="chat-messages">
+                    <div class="message agent">
+                        Quedan 3 productos con stock bajo, incluyendo tu más vendido. ¿Genero la orden de reabastecimiento?
+                    </div>
+                    <div class="message user">
+                        Sí, y avísame cuando el proveedor confirme.
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" placeholder="Escribir mensaje...">
+                    <button class="btn" style="padding: 0.6rem 1rem;">Enviar</button>
+                </div>
+            </div>
+        </aside>
+        </div>
+    </div>
+
+    <script src="../js/theme-manager.js"></script>
+    <script src="../js/nav-toggle.js"></script>
+</body>
+</html>
