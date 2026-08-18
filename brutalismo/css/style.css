@@ -15,14 +15,14 @@
   --border-color: #000000;
   --border-width: 2px;
   
-  /* Acentos de Marca Estilizados */
-  --primary-color: #06b6d4;
-  --primary-hover: #0891b2;
-  --primary-light: #cffafe;
+  /* Acentos crudos, sin diluir: amarillo eléctrico + rosa fucsia */
+  --primary-color: #ffd600;
+  --primary-hover: #e6c200;
+  --primary-light: #fffbd6;
 
-  --secondary-color: #c084fc;
-  --secondary-hover: #a855f7;
-  --secondary-light: #f3e8ff;
+  --secondary-color: #ff3ea5;
+  --secondary-hover: #e0219b;
+  --secondary-light: #ffe3f2;
 
   /* Estados Semánticos Estrictos */
   --error-bg: #fee2e2;
@@ -59,13 +59,13 @@
   
   --border-color: #ffffff;
 
-  --primary-color: #22d3ee;
-  --primary-hover: #06b6d4;
-  --primary-light: rgba(34, 211, 238, 0.2);
+  --primary-color: #ffe14d;
+  --primary-hover: #ffd600;
+  --primary-light: rgba(255, 214, 0, 0.2);
 
-  --secondary-color: #c084fc;
-  --secondary-hover: #a855f7;
-  --secondary-light: rgba(192, 132, 252, 0.2);
+  --secondary-color: #ff6ac1;
+  --secondary-hover: #ff3ea5;
+  --secondary-light: rgba(255, 106, 193, 0.2);
 
   --error-bg: rgba(185, 28, 28, 0.3);
   --error-text: #fca5a5;

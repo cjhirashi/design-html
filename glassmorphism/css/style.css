@@ -4,27 +4,27 @@
    ========================================== */
 
 :root {
-  --bg-primary: #030712;
-  --bg-secondary: rgba(17, 24, 39, 0.6);
-  --bg-glass: rgba(15, 23, 42, 0.65);
-  --bg-card: rgba(30, 41, 59, 0.4);
-  
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-hover: rgba(34, 211, 238, 0.4);
-  
-  /* Acentos de Marca */
-  --primary-color: #22d3ee;
-  --primary-hover: #06b6d4;
-  --primary-light: rgba(34, 211, 238, 0.15);
-  --primary-glow: rgba(34, 211, 238, 0.25);
+  --bg-primary: #0b1020;
+  --bg-secondary: rgba(23, 20, 45, 0.6);
+  --bg-glass: rgba(20, 18, 40, 0.65);
+  --bg-card: rgba(40, 33, 66, 0.4);
 
-  --secondary-color: #c084fc;
-  --secondary-hover: #a855f7;
-  --secondary-light: rgba(192, 132, 252, 0.15);
+  --text-primary: #f8fafc;
+  --text-secondary: #a8a3c0;
+  --text-muted: #6f6b8a;
+
+  --border-glass: rgba(255, 255, 255, 0.09);
+  --border-glass-hover: rgba(167, 139, 250, 0.5);
+
+  /* Acentos de Marca: aurora violeta + rosa */
+  --primary-color: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-light: rgba(139, 92, 246, 0.16);
+  --primary-glow: rgba(139, 92, 246, 0.35);
+
+  --secondary-color: #f472b6;
+  --secondary-hover: #ec4899;
+  --secondary-light: rgba(244, 114, 182, 0.16);
 
   /* Estados Semánticos Glass */
   --error-bg: rgba(239, 68, 68, 0.15);
@@ -50,26 +50,26 @@
 }
 
 [data-theme="light"] {
-  --bg-primary: #f0fdf4; /* Tono atmosférico claro sutil */
+  --bg-primary: #f5f3ff; /* Lavanda atmosférica, coherente con el acento violeta */
   --bg-secondary: rgba(255, 255, 255, 0.7);
   --bg-glass: rgba(255, 255, 255, 0.65);
   --bg-card: rgba(255, 255, 255, 0.5);
-  
+
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
-  
+
   --border-glass: rgba(255, 255, 255, 0.6);
-  --border-glass-hover: rgba(8, 145, 178, 0.4);
+  --border-glass-hover: rgba(124, 58, 237, 0.4);
 
-  --primary-color: #0891b2;
-  --primary-hover: #0e7490;
-  --primary-light: rgba(8, 145, 178, 0.1);
-  --primary-glow: rgba(8, 145, 178, 0.15);
+  --primary-color: #7c3aed;
+  --primary-hover: #6d28d9;
+  --primary-light: rgba(124, 58, 237, 0.1);
+  --primary-glow: rgba(124, 58, 237, 0.18);
 
-  --secondary-color: #7c3aed;
-  --secondary-hover: #6d28d9;
-  --secondary-light: rgba(124, 58, 237, 0.1);
+  --secondary-color: #db2777;
+  --secondary-hover: #be185d;
+  --secondary-light: rgba(219, 39, 119, 0.1);
 
   --error-bg: rgba(220, 38, 38, 0.1);
   --error-text: #dc2626;
@@ -92,9 +92,9 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(34, 211, 238, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.12) 0%, transparent 40%);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.20) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.18) 0%, transparent 45%);
   background-attachment: fixed;
 }
 
@@ -202,7 +202,7 @@ code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, mono
 /* Botones Glassmorphism */
 .btn {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-  color: #030712;
+  color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0.7rem 1.4rem;
   border-radius: var(--radius-sm);
@@ -464,7 +464,7 @@ code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, mono
 .chat-messages { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; padding-right: 0.3rem; }
 .message { padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; max-width: 88%; backdrop-filter: blur(8px); }
 .message.agent { background-color: var(--bg-card); color: var(--text-primary); align-self: flex-start; border: 1px solid var(--border-glass); }
-.message.user { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: #030712; font-weight: 600; align-self: flex-end; }
+.message.user { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: #ffffff; font-weight: 600; align-self: flex-end; }
 .chat-input-area { display: flex; gap: 0.5rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-glass); }
 .chat-input {
   flex-grow: 1;

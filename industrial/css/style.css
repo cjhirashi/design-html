@@ -14,12 +14,12 @@
   
   --border-color: #1f1f1f;
   
-  /* Acentos de Marca (Desaturados para foco en datos) */
-  --primary-color: #0891b2;
-  --primary-hover: #06b6d4;
-  
-  --secondary-color: #7c3aed;
-  --secondary-hover: #8b5cf6;
+  /* Acentos de Marca: ámbar de panel de control, distinto del amarillo de warning */
+  --primary-color: #eab308;
+  --primary-hover: #ca8a04;
+
+  --secondary-color: #64748b;
+  --secondary-hover: #475569;
 
   /* Estados Semánticos (Brillantes sobre fondo oscuro) */
   --error-text: #ef4444;
