@@ -1,0 +1,57 @@
+{
+  "readFiles": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".harness/constitution.md",
+    ".harness/method.md",
+    ".harness/memory/state.md",
+    ".harness/specs/",
+    "index.html",
+    "dashboard.html"
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    ".git/",
+    ".venv/",
+    "dist/",
+    "build/",
+    "*.pyc",
+    "__pycache__/",
+    ".env",
+    "*.min.css",
+    "*.min.js"
+  ],
+  "tools": {
+    "allowed": ["Bash", "Read", "Edit", "Write", "Agent"],
+    "restrictions": {
+      "Bash": "Sin --no-verify ni --force-push. Gate check.sh debe pasar (P1). Validar contraste AA (P4)."
+    }
+  },
+  "skills": {
+    "ui-ux-pro-max": {
+      "enabled": true,
+      "use_cases": [
+        "Generar 21 variantes de componentes (navbar, footer, card, button, sidebar, carrusel, etc.)",
+        "Producir paletas de 192 colores adaptadas a cada estilo",
+        "Crear design tokens (JSON) exportables para otros proyectos",
+        "Generar CSS modular con variables estándar (P3)",
+        "Validar contraste WCAG AA (P4) en light + dark mode"
+      ],
+      "output_path": "design-tokens/",
+      "format": "json"
+    }
+  },
+  "context_gates": {
+    "before_touching_code": [
+      "Ejecuta bash .harness/gate/check.sh — si cierra en rojo, DETENTE",
+      "Lee .harness/memory/state.md (correcciones de Carlos)",
+      "Aplica rúbrica de method.md §2",
+      "¿Hay spec.md que lo cubra? Si no → carril SDD Specify"
+    ],
+    "after_each_session": [
+      "Actualiza .harness/memory/history.md con Session-End",
+      "Gate: bash .harness/gate/check.sh debe pasar",
+      "Registra rebotes, decisiones, próximo paso"
+    ]
+  }
+}
