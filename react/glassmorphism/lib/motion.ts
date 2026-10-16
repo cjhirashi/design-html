@@ -11,12 +11,10 @@ export const DURATION = {
 export const microTransition = { duration: DURATION.micro, ease: EASE_OUT };
 export const baseTransition = { duration: DURATION.base, ease: EASE_OUT };
 
-// Aparición de secciones. Con reduced-motion, MotionConfig (reducedMotion="user")
-// anula el desplazamiento y sólo queda el fundido.
-export const fadeUp = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: DURATION.section, ease: EASE_OUT } },
-};
+// Aparición de secciones (RNF-004): sólo desplazamiento, nunca opacidad, para que el
+// contenido sea visible sin JS y sin scroll. Con reduced-motion no se anima (RF-005).
+export const REVEAL_SHIFT = 16;
+export const revealTransition = { duration: DURATION.section, ease: EASE_OUT };
 
 // Elevación de hover (se omite con reduced-motion en cada componente).
 export const hoverLift = { y: -4, transition: microTransition };

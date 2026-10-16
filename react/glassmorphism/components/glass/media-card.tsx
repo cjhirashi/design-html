@@ -1,9 +1,12 @@
 import Image from "next/image";
 
+import { cn } from "@/lib/utils";
+
 import { GlassCard } from "./glass-card";
 import { glass } from "./surface";
 
-/** Tarjeta de galería: imagen con etiqueta de vidrio + texto. */
+/** Tarjeta de galería: imagen con etiqueta de vidrio + texto. La etiqueta usa el vidrio
+ *  más opaco (`bg-glass`) porque va sobre fotos de cualquier luminosidad (spec §6.1). */
 export function MediaCard({
   src,
   width,
@@ -33,7 +36,10 @@ export function MediaCard({
           className="size-full object-cover"
         />
         <span
-          className={`${glass.control} absolute top-3 left-3 rounded-full px-3 py-1 font-mono text-[0.6875rem] font-semibold text-fg`}
+          className={cn(
+            glass.control,
+            "absolute top-3 left-3 rounded-full bg-glass px-3 py-1 font-mono text-[0.6875rem] font-semibold text-fg",
+          )}
         >
           {tag}
         </span>

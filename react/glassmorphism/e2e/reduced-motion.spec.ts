@@ -25,8 +25,17 @@ for (const reduce of [true, false]) {
     });
 
     test(reduce ? "las secciones aparecen sin desplazamiento" : "las secciones se desplazan al aparecer", async ({ page }) => {
-      await page.evaluate(() => document.querySelector("#sistema")!.scrollIntoView());
-      const transforms = await sampleTransforms(page, "#sistema [data-reveal]");
+      // La galería hidrata bajo el pliegue: es la sección que se anima al entrar.
+      // Sin reduce, se espera a la hidratación (sección armada en +16 px) antes del scroll.
+      if (!reduce) {
+        await page.waitForFunction(
+          () => getComputedStyle(document.querySelector("#galeria [data-reveal]")!).transform !== "none",
+        );
+      } else {
+        await page.waitForTimeout(800);
+      }
+      await page.evaluate(() => document.querySelector("#galeria")!.scrollIntoView());
+      const transforms = await sampleTransforms(page, "#galeria [data-reveal]");
       const moved = transforms.some((t) => t !== "none" && t !== "matrix(1, 0, 0, 1, 0, 0)");
       expect(moved).toBe(!reduce);
     });

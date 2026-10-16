@@ -43,8 +43,8 @@ actualizado: 2026-10-16
 - [x] T-026 — Tokens: `--aurora-ray` más intenso (claro/oscuro); `--bg-card` y `--border-glass` en claro (cubre RF-003, RNF-001) [zona: tokens]
 
 ## Evidencia (2026-10-16, commit de cierre de la rama)
-- `npm test` (Vitest): 6 archivos · **204 passed**. `npm run test:e2e` (Playwright, Chromium):
-  **31 passed**. `type-check`, `lint` y `build` limpios. Gate: verde.
+- `npm test` (Vitest): 5 archivos · **204 passed**. `npm run test:e2e` (Playwright, Chromium, tras §6.1):
+  **33 passed**. `type-check`, `lint` y `build` limpios. Gate: verde.
 - Revisión adversarial (agente `revisor`): **1 rebote**. Hallazgos atendidos: tabla de
   cobertura cerrada; test de reuso exige uso real en JSX; RNF-003 amplía el regex y
   escanea CSS; RF-005 añade hover de botón del dashboard con control; drift del plan corregido.
@@ -70,7 +70,7 @@ de git no lo acredita. No se reescribió la historia. En futuras features: un co
 | RNF-001 | T-002, T-003 | tests/unit/tokens.test.ts | Pass |
 | RNF-002 | T-018 | e2e/network.spec.ts | Pass |
 | RNF-003 | T-004 | tests/unit/literals.test.ts | Pass |
-| RNF-004 | T-024, T-025 | e2e/reveal.spec.ts | Pendiente |
+| RNF-004 | T-024, T-025 | e2e/reveal.spec.ts | Pass |
 | doc: README pista React | T-020 | — | Pass |
 | doc: AGENTS.md | T-021 | — | Pass |
 | doc: services.txt | T-022 | — | Pass |

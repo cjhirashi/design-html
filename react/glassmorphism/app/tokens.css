@@ -12,14 +12,14 @@
   --bg-secondary: rgba(255, 255, 255, 0.7);
   --bg-tertiary: rgba(255, 255, 255, 0.4);
   --bg-glass: rgba(255, 255, 255, 0.65);
-  --bg-card: rgba(255, 255, 255, 0.5);
+  --bg-card: rgba(255, 255, 255, 0.35);
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #5f6b80;
 
-  --border-color: rgba(255, 255, 255, 0.6);
-  --border-glass: rgba(255, 255, 255, 0.6);
+  --border-color: rgba(124, 58, 237, 0.16);
+  --border-glass: rgba(124, 58, 237, 0.16);
   --border-glass-hover: rgba(124, 58, 237, 0.4);
   --border-focus: #7c3aed;
 
@@ -66,7 +66,7 @@
   /* Aurora (degradados radiales del body original + rayos MagicUI) */
   --aurora-a: rgba(139, 92, 246, 0.2);
   --aurora-b: rgba(244, 114, 182, 0.18);
-  --aurora-ray: rgba(139, 92, 246, 0.28);
+  --aurora-ray: rgba(124, 58, 237, 0.5);
   --aurora-blend: multiply;
 }
 
@@ -127,6 +127,6 @@
 
   --aurora-a: rgba(139, 92, 246, 0.2);
   --aurora-b: rgba(244, 114, 182, 0.18);
-  --aurora-ray: rgba(167, 139, 250, 0.32);
+  --aurora-ray: rgba(167, 139, 250, 0.6);
   --aurora-blend: screen;
 }

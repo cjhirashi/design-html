@@ -26,7 +26,7 @@ test.describe("RF-003 aurora tras el vidrio", () => {
         probe.remove();
         return color;
       });
-    expect(rayColor).toBe("rgba(167, 139, 250, 0.32)");
+    expect(rayColor).toBe("rgba(167, 139, 250, 0.6)");
   });
 
   test("los paneles sobre la aurora son vidrio translúcido con blur", async ({ page }) => {

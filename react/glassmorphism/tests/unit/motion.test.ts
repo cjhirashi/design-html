@@ -1,6 +1,6 @@
 // RF-004 · micro-interacciones con Motion, easing de salida suave, nunca bounce/elastic.
 import { describe, expect, it } from "vitest";
-import { DURATION, EASE_OUT, fadeUp } from "@/lib/motion";
+import { DURATION, EASE_OUT, revealTransition } from "@/lib/motion";
 import { ownSources } from "./source";
 
 describe("RF-004 easing compartido", () => {
@@ -15,8 +15,8 @@ describe("RF-004 easing compartido", () => {
     }
   });
 
-  it("la variante de aparición usa EASE_OUT", () => {
-    expect(fadeUp.visible.transition.ease).toBe(EASE_OUT);
+  it("la aparición de secciones usa EASE_OUT", () => {
+    expect(revealTransition.ease).toBe(EASE_OUT);
   });
 });
 

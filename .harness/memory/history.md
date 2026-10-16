@@ -1,5 +1,16 @@
 # History — design-html
 
+## [2026-10-16] 0001-glassmorphism-react — ajustes tras revisión visual (spec §6.1)
+- **Fase alcanzada:** implement
+- **Rebotes del verificador:** 0 (sin nueva ronda del revisor; se recomienda una antes de aprobar)
+- **Directiva de Pausa:** no (cambio pedido por Carlos; valores registrados en spec §6.1 antes de tocar código; RNF-004 nuevo)
+- **Drift / re-anchor:** no
+- **Anclas movidas:** 0001-glassmorphism-react → commit de cierre de estos ajustes
+- **Gate:** verde
+- **Docs actualizadas:** spec §6.1 + RNF-004, plan (Implementación de RNF-004), tasks T-024..T-026
+- **Decisiones de diseño / límites de integración:** Reveal ya no oculta: visible en SSR/sin JS; sólo desplaza y 16→0 si hidrata bajo el pliegue (nunca opacidad). --aurora-ray 0.6 oscuro / violeta 0.5 claro. Claro: --bg-card 0.35, --border-glass violeta 0.16. Etiquetas de galería en bg-glass (regresión de contraste detectada en captura y corregida).
+- **Próximo paso:** Carlos revisa visualmente en el dev server; si la aurora en oscuro sigue siendo sutil, el siguiente ajuste es de componente (menos blur/más rayos), no de tokens.
+
 ## [2026-10-16] 0001-glassmorphism-react (piloto pista React) — implementado en rama, pendiente de aprobación humana
 - **Fase alcanzada:** implement
 - **Rebotes del verificador:** 1 (revisor: tabla de cobertura sin cerrar + test-first no demostrable por git; menores en tests de RF-007/RNF-003/RF-005 y drift del plan — todo atendido; test-first queda como excepción declarada en tasks.md)
