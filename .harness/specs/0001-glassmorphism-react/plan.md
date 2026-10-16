@@ -100,6 +100,8 @@ sesión y en `history.md`.
 ## 7. Seguimiento de complejidad
 | Excepción a la simplicidad | Justificación |
 |---|---|
+| Regla `react-hooks/set-state-in-effect` desactivada sólo en `components/magicui/**` | El código vendorizado se mantiene tal cual; `light-rays` genera los rayos aleatorios en un efecto a propósito (sólo cliente, sin desajuste de hidratación) |
+| `overflow-x-clip` en la raíz del landing | El cajón móvil cerrado (`fixed`, desplazado a la derecha) agrandaba el área desplazable. `clip` no rompe el navbar `sticky`. El test e2e verifica aparte que nada en flujo se sale del viewport, para que el recorte no oculte desbordes reales |
 | Dos runners de test (Vitest + Playwright) | RF-001/002/005/006 dependen del navegador real (script de next-themes, media queries, layout); jsdom no los puede demostrar. |
 
 ## 8. Impacto en documentación
@@ -129,9 +131,11 @@ sesión y en `history.md`.
 - `lib/motion.ts`, `reveal.tsx`, `button.tsx`, `glass-card.tsx`, `theme-switch.tsx`.
 - Test: `tests/unit/motion.test.ts` (easing exacto, cero `spring|bounce|elastic|backOut|anticipate` en el código propio).
 ### Implementación de RF-005
-- `MotionConfig reducedMotion="user"` (desactiva transform/layout), `useReducedMotion`
-  en `aurora-background.tsx` (no monta rayos) y en `reveal.tsx` (sin desplazamiento), y
-  `motion-reduce:` en las transiciones CSS de hover.
+- `MotionConfig reducedMotion="user"`; `useReducedMotion` en `aurora-background.tsx` (no
+  monta rayos), `glass-card.tsx` y `button.tsx` (sin `whileHover`); `reveal.tsx` con
+  `motion-reduce:transform-none!`. Se comprobó en Fase 4 que `MotionConfig` por sí solo
+  **no** anula el `y` de las variantes, así que el CSS ligado a la media query evita
+  además desajustes de hidratación. `motion-reduce:transition-none` en las transiciones CSS.
 - Tests: `tests/unit/aurora.test.tsx`, `e2e/reduced-motion.spec.ts`.
 ### Implementación de RF-006
 - Breakpoints Tailwind estándar (`sm/md/lg/xl`). `navbar.tsx` + `sidebar.tsx` off-canvas

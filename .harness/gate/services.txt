@@ -7,3 +7,4 @@
 # web/admin:node
 # web/portfolio:node
 # mcp-server:mcp
+react/glassmorphism:node

@@ -73,7 +73,9 @@ actualizado: 2026-10-16
 - **RF-004** — Las transiciones de micro-interacción (hover, aparición de secciones)
   DEBEN usar `Motion` con easing de salida suave, nunca bounce/elastic.
   - *Verificable:* existe un único easing `cubic-bezier(0.16, 1, 0.3, 1)` compartido, y
-    ninguna transición usa `spring`, `bounce` ni `elastic`.
+    ninguna transición usa `spring`, `bounce` ni `elastic`. El movimiento (elevación en
+    hover, aparición de secciones, indicador del switch) lo hace Motion. Los cambios de
+    color de borde o texto en hover usan transición CSS con la misma curva (`ease-glass`).
 - **RF-005** — DONDE el usuario tenga `prefers-reduced-motion` activado, el sistema DEBE
   desactivar animaciones no esenciales.
   - *Verificable:* con `reduce`, los rayos del fondo no se animan, las secciones aparecen
@@ -101,6 +103,8 @@ actualizado: 2026-10-16
 | Paleta = tokens reales de `glassmorphism/` (`#0b1020` oscuro, `#f5f3ff` claro, violeta `#7c3aed`/`#8b5cf6`, rosa) | El brief menciona "violeta/`#071018`", pero `#071018` es la base de las variantes `glass-*`, no del original, y la doc previa del repo prohíbe mezclarlos. Se aplica "divergencia → a favor del vanilla" (ADR-001 §1). | Usar `#071018` | ADR-001 |
 | Fondo MagicUI = `light-rays` teñido violeta/rosa sobre los degradados radiales del original | MagicUI no tiene "Aurora background" (sólo `aurora-text`); `warp-background` es una rejilla en perspectiva dentro de una tarjeta y no evoca una aurora | `warp-background`, `particles` | — |
 | `--text-muted` ajustado para AA (claro `#5f6b80`, oscuro `#8f8aab`) | El original (`#94a3b8` / `#6f6b8a`) no llega a 4.5:1; P4 prevalece sobre la fidelidad (ADR-001 §1). El vanilla conserva el defecto (fuera de alcance). | Copiar valores tal cual | ADR-001 |
+| Textos semánticos en claro oscurecidos (`--success-text #047857`, `--warning-text #9a4a08`, `--error-text #b91c1c`) y botones sobre `--primary-solid #7c3aed` en ambos temas | En el vanilla (`#059669`/`#d97706`/`#dc2626`, y blanco sobre `#8b5cf6` en oscuro) no llegan a 4.5:1 como badge. P4 prevalece (ADR-001 §1) | Copiar valores tal cual | ADR-001 |
+| Familia P3 completada (`--bg-tertiary`, `--border-color/focus`, `--primary/secondary-text`, `--shadow-sm/md/lg`) | El `style.css` vanilla de glassmorphism no define estas variables (usa `--border-glass`, `--shadow-glass`); el contrato React exige la familia completa | Contrato parcial | ADR-001 |
 | Etiquetas en inglés del original ("Success State", "Cyan Core") traducidas al español | P7. Además, "Cyan Core" era un resto de otra variante, porque el acento es violeta. | Copiar tal cual | — |
 | Tipografía Geist Sans + Geist Mono (paquete `geist`, `next/font/local`) | Brief: "tipografía con personalidad"; se auto-hospeda en el build, sin red ni en build ni en runtime (equivalente P5) | `system-ui` (vanilla), `next/font/google` (descarga en build) | ADR-001 |
 | Imágenes del carrusel vendorizadas en `public/` (las mismas 3 de Unsplash, licencia Unsplash) | El equivalente P5 prohíbe recursos de hosts externos en runtime | `next/image` remoto | ADR-001 |

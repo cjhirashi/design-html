@@ -141,6 +141,14 @@ design-html/
 
 ---
 
+## ⚛️ Pista React/Next.js (ADR-001, piloto)
+
+`react/<estilo>/` es una app Next.js paralela a la carpeta vanilla del estilo, que **no
+la reemplaza**: la vanilla sigue siendo la fuente de verdad visual. Hoy sólo existe
+`react/glassmorphism/` (spec `0001-glassmorphism-react`). Allí P5/P6 se cumplen por su
+equivalente (fuentes vía `next/font`, colores sólo vía `app/tokens.css`). Comandos y
+cómo portar otro estilo: `react/glassmorphism/README.md`.
+
 ## 🧩 Skill Disponible: ui-ux-pro-max
 
 Instalado en `.claude/skills/` (2026-10-16, vía `npx ui-ux-pro-max-cli@latest init --ai claude`). Claude Code lo auto-activa cuando la tarea es de diseño/UI; no requiere configuración adicional. Trae consigo skills complementarios del mismo paquete (`design-system`, `ui-styling`, `design`, `brand`, `banner-design`, `slides`) — ver detalle y alcance real de cada uno en `.claude/settings.json` → `skills`.

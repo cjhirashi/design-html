@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* Tema por data-theme en <html> (mismo selector que la pista vanilla). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Expone cada token como utilidad Tailwind. Aquí no hay valores de color:
+   sólo referencias a app/tokens.css. */
+@theme inline {
+  --color-base: var(--bg-primary);
+  --color-surface: var(--bg-secondary);
+  --color-surface-2: var(--bg-tertiary);
+  --color-glass: var(--bg-glass);
+  --color-card: var(--bg-card);
+
+  --color-fg: var(--text-primary);
+  --color-fg-2: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  --color-line: var(--border-color);
+  --color-glass-line: var(--border-glass);
+  --color-glass-line-hover: var(--border-glass-hover);
+  --color-focus: var(--border-focus);
+
+  --color-primary: var(--primary-color);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-light);
+  --color-primary-ink: var(--primary-text);
+  --color-primary-solid: var(--primary-solid);
+  --color-on-primary: var(--on-primary);
+
+  --color-secondary: var(--secondary-color);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-soft: var(--secondary-light);
+  --color-secondary-ink: var(--secondary-text);
+
+  --color-error-soft: var(--error-bg);
+  --color-error: var(--error-text);
+  --color-error-line: var(--error-border);
+  --color-warning-soft: var(--warning-bg);
+  --color-warning: var(--warning-text);
+  --color-warning-line: var(--warning-border);
+  --color-success-soft: var(--success-bg);
+  --color-success: var(--success-text);
+  --color-success-line: var(--success-border);
+
+  --color-logo-ink: var(--logo-ink);
+  --color-switch-ink: var(--switch-ink);
+  --color-scrim: var(--scrim);
+
+  --shadow-glass-sm: var(--shadow-sm);
+  --shadow-glass: var(--shadow-md);
+  --shadow-glass-lg: var(--shadow-lg);
+  --shadow-glow: var(--shadow-glow);
+
+  --radius-glass-sm: var(--radius-sm);
+  --radius-glass-md: var(--radius-md);
+  --radius-glass-lg: var(--radius-lg);
+
+  --ease-glass: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-geist-sans), ui-sans-serif, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--border-focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background-color: var(--primary-light);
+  }
+}
+
+/* Aurora: el modo de fusión de los rayos de MagicUI depende del tema
+   (screen sólo ilumina sobre oscuro; sobre claro se usa multiply). */
+.aurora-rays [class*="mix-blend-"] {
+  mix-blend-mode: var(--aurora-blend);
+}
