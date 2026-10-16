@@ -28,18 +28,14 @@
     }
   },
   "skills": {
-    "ui-ux-pro-max": {
-      "enabled": true,
-      "use_cases": [
-        "Generar 21 variantes de componentes (navbar, footer, card, button, sidebar, carrusel, etc.)",
-        "Producir paletas de 192 colores adaptadas a cada estilo",
-        "Crear design tokens (JSON) exportables para otros proyectos",
-        "Generar CSS modular con variables estándar (P3)",
-        "Validar contraste WCAG AA (P4) en light + dark mode"
-      ],
-      "output_path": "design-tokens/",
-      "format": "json"
-    }
+    "_nota": "Instalados en .claude/skills/ vía `npx ui-ux-pro-max-cli@latest init --ai claude` (2026-10-16). Claude Code los auto-detecta por SKILL.md; esta lista es solo referencia para el equipo, no la lee ningún script del harness.",
+    "ui-ux-pro-max": "Design intelligence: 79 estilos UI, 192 paletas, 74 pares tipográficos, 119 guías UX, validación WCAG AA — el motor principal para P3/P4 de este proyecto.",
+    "design-system": "Tokens de 3 capas (primitivo→semántico→componente), specs de componentes, generación de slides con tokens de marca.",
+    "ui-styling": "Implementación con shadcn/ui + Tailwind; no aplica directo aquí (P5/P6 prohíben dependencias de red y frameworks de componentes), referencia solo si cambia la arquitectura.",
+    "design": "Paquete agregador: branding, logo/ícono con IA generativa, banners, presentaciones HTML.",
+    "brand": "Voz de marca, identidad visual, checklist de consistencia — útil si design-html define una identidad propia más allá del catálogo de estilos.",
+    "banner-design": "Banners para redes/ads/web/impresión — fuera de alcance de design-html (sin marketing assets), queda instalado por venir empaquetado con el resto.",
+    "slides": "Presentaciones HTML estratégicas con Chart.js — fuera de alcance directo, mismo caso que banner-design."
   },
   "context_gates": {
     "before_touching_code": [
