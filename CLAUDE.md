@@ -1,115 +1,25 @@
 # CLAUDE.md
 
-## Rol
+Contexto de proyecto: **lee `AGENTS.md`** (mapa del repo).
+Cómo trabajamos: el arnés vive en **`.harness/`** — empieza por `.harness/method.md §0`
+y respeta `.harness/constitution.md`.
 
-Actúas como **especialista UX/UI de nivel elite senior**, responsable de diseñar y mantener este sistema de diseño multi-estilo. Tu criterio debe ser el de un diseñador de producto senior en una firma top: composición tipográfica precisa, jerarquía visual clara, espaciado consistente, microinteracciones cuidadas y cero relleno genérico tipo "plantilla gratuita". Cada estilo que entregues debe sostenerse como un sistema de diseño creíble, no como una única página bonita.
+Protocolo de arranque:
+1. `.harness/gate/check.sh` — si cierra la compuerta, PARA y reporta.
+2. Lee `.harness/memory/state.md` (correcciones del usuario arriba).
+3. Ojea `.harness/specs/`.
 
-No implementes funcionalidad de backend, framework JS ni build tools aquí: este proyecto es HTML + CSS + un JS mínimo compartido, y así debe permanecer.
+## Reglas duras (no negociables, aplican SIEMPRE — también a "arregla esto"/"corrige X")
 
-## Qué es este proyecto
+- **Aplica la rúbrica de `method.md §2` antes de tocar un archivo.** Una petición que
+  suena urgente o pequeña no te exime de clasificarla.
+- **En caso de duda, o si "arreglar" implica revisar una decisión ya tomada en un spec
+  o ADR (rediseño), entra al carril SDD.** Nunca "prompt directo porque es rápido".
+- **No saltes la Fase 1 (Specify)** para nada que no sea trivial por la rúbrica. Un
+  `spec.md` de una línea sigue siendo un spec — no una excusa para saltárselo.
+- **Área sin `spec.md` que la cubra ≠ vía libre.** Es brownfield sin ancla todavía, no
+  luz verde para tocarla sin spec.
+- **No te autoapruebas** y no marcas nada `verified`.
 
-Una galería de **sistemas de diseño UI/UX independientes**, cada uno explorando una estética distinta: Apple Pro Studio, Bento, Brutalismo, Glassmorphism, Industrial, Linear, Minimalista, Nordic Functional, Stripe Enterprise y Vercel Modernist. Cada estilo demuestra el mismo par de vistas —una landing y un dashboard— resueltas con un lenguaje visual propio, para que se puedan comparar lado a lado.
-
-El índice raíz separa dos categorías: **"Estilos Generales"** (los 15 anteriores) y **"Estilos de Dashboard"** — seis arquetipos de panel reales del mercado, cada uno replicando el lenguaje visual de un producto real conocido: `material-flow/` (Material Design 3 / Google — elevación en capas, FAB), `pulse-analytics/` (Mixpanel/Amplitude — KPIs con sparkline, gráfica de comparación de periodos), `ledger-dark/` (Robinhood/Coinbase — precio hero, verde/rojo, gráfica de mercado), `enterprise-grid/` (Ant Design/Salesforce — azul corporativo, tablas densas, acciones en lote), `canvas-workspace/` (Notion — bloques suaves, tags de propiedad multicolor en vez de gráficas) y `storefront/` (Shopify — verde de marca, pedidos/catálogo). Al agregar un estilo de dashboard nuevo, identifica primero qué producto real representa y de qué se distingue estructuralmente (no solo de color) antes de construirlo.
-
-Además, `glassmorphism/` tiene cinco variantes de color hermanas que comparten exactamente su mismo mecanismo (blur, aurora translúcida, layout) pero con acento cian institucional + un secundario distinto cada una: `glass-aurum/` (+ oro), `glass-ember/` (+ coral), `glass-borealis/` (+ lima), `glass-neon/` (+ fucsia) y `glass-steel/` (+ gris acero). Todas las variantes reutilizan la misma escala de fondo neutro teal-navy (`#071018` / `rgba(16,30,42,.6)` / `rgba(12,24,34,.7)` / `rgba(26,48,64,.5)`) y el mismo texto secundario cian-gris (`#a3b6c0` / `#6b808a`) — nunca el fondo/texto violeta original de `glassmorphism/`, que solo tiene sentido con su propio acento violeta. Si tocas la estructura o los componentes de `glassmorphism/`, valora si el mismo ajuste aplica a las cinco variantes para no desincronizarlas.
-
-## Estructura de un estilo
-
-Cada carpeta de estilo (nombre en minúsculas, ej. `bento/`, `glassmorphism/`) sigue esta forma exacta:
-
-```
-<estilo>/
-├── index.html       # Landing pública del estilo
-├── dashboard.html    # Vista de aplicación/panel interno
-└── css/
-    └── style.css     # Único stylesheet del estilo, self-contained
-```
-
-Ambos HTML cargan `../js/theme-manager.js` (compartido, en la raíz `js/`) para el switch de tema claro/oscuro/sistema, y `../js/nav-toggle.js` para el menú hamburguesa y los sidebars off-canvas en móvil. No dupliques esos scripts dentro de cada carpeta de estilo.
-
-## Convenciones de CSS (obligatorias para todo estilo nuevo)
-
-Cada `style.css` define su propio `:root` con esta misma familia de variables (los valores cambian por estilo, los nombres no):
-
-```css
---bg-primary / --bg-secondary / --bg-tertiary / --bg-glass
---text-primary / --text-secondary / --text-muted
---border-color / --border-focus
---primary-color / --primary-hover / --primary-light / --primary-text
---secondary-color / --secondary-hover / --secondary-light / --secondary-text
---error-bg / --error-text / --error-border
---warning-bg / --warning-text / --warning-border
---success-bg / --success-text / --success-border
---shadow-sm / --shadow-md / --shadow-lg
---radius-sm / --radius-md / --radius-lg
---transition-smooth
-```
-
-El modo oscuro se activa con `[data-theme="dark"]` en `<html>` (lo gestiona `theme-manager.js`, nunca lo hardcodees en el HTML). Todo estilo **debe** definir un bloque `[data-theme="dark"]` completo que reescriba estas mismas variables — nunca lances un estilo que solo funcione en un modo. Verifica contraste AA en ambos modos, especialmente en `--text-secondary`/`--text-muted` sobre `--bg-secondary`.
-
-Tipografía por pila de fuentes del sistema, sin depender de red: `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` para UI y `ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace` para datos/mono. No uses `@import` ni `<link>` a Google Fonts ni a ningún host externo — ya se probó que bloquea el render cuando la red no está disponible en el entorno de vista previa. La clase `.mono` se usa para timestamps, tokens, badges técnicos y microcopy de sistema.
-
-## Componentes esperados en cada estilo
-
-Diseña (con la estética propia del estilo, no copies literalmente el marcado de otro) al menos:
-
-- **Navbar** con logo, links de sección, link a `dashboard.html`, y el `theme-switch` de 3 botones (light/system/dark, ver `vercel/index.html` como referencia de marcado).
-- **Landing (`index.html`)**: hero, sección de features/estados (success/warning/error como badges), sección de galería (carrusel de imágenes, usar Unsplash con `?auto=format&fit=crop&w=800&q=80`), footer con crédito `© 2026 Carlos Alberto Jiménez Hirashi. <Nombre del Estilo>.`
-- **Dashboard (`dashboard.html`)**: estructura de producto real de dos niveles, no un simple split de 3 columnas:
-  - `.dash-wrapper` (`display: flex; flex-direction: column; height: 100vh;`) contiene, en orden, `.dash-topbar` y `.dash-body`.
-  - `.dash-topbar`: franja superior de ancho completo con `.dash-breadcrumb` (marca / sección actual), `.dash-search` (buscador falso con ícono), y `.dash-topbar-right` con `.dash-bell` (notificaciones) + `.dash-user` (avatar + nombre + rol).
-  - `.dash-body` (`display: grid; grid-template-columns: <izq> 1fr <der>;`) es el split de 3 columnas: `sidebar-left`, `main-content`, `sidebar-right`.
-  - `sidebar-left`: `.sidebar-menu` con ítems agrupados bajo `.sidebar-section-label` (mínimo dos grupos, ej. "General" / "Sistema"), y al final un `.sidebar-profile` (avatar + nombre + rol) antes del link "Volver al Landing" y el theme switch.
-  - `main-content`: header de página, `stats-grid` de tarjetas métricas — al menos dos de ellas con `.stat-card-head` (label + `.stat-trend.up`/`.down` con flecha y %), una tabla de datos (`data-table`) con badges de estado.
-  - `sidebar-right`: chat/asistente como en los estilos existentes.
-  
-  No relleno decorativo: cada métrica, fila y mensaje debe leerse como dato real de producto.
-
-El copy va siempre en español, concreto y de dominio técnico (telemetría, despliegues, nodos, tokens), nunca lorem ipsum.
-
-## Responsive (obligatorio en todo estilo)
-
-Cada `style.css` termina con dos bloques `@media` compartidos entre los 21 estilos — mismos nombres de clase, mismo comportamiento, solo cambian los tokens de color/tipografía de cada estilo:
-
-- **Navbar → menú hamburguesa**: en el HTML, `.nav-links` (solo los `<a>`) y `.theme-switch` van dentro de un wrapper `.nav-right`, seguido de un `<button class="nav-toggle" onclick="toggleNav()">` con ícono de 3 líneas, y un `<div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>` justo después de `</nav>`. En CSS, bajo `max-width: 900px`, `.nav-links` se convierte en un drawer fijo (`position:fixed`, deslizado con `transform: translateX(100%)` → `.nav-open` lo trae a `translateX(0)`).
-- **Dashboard → sidebars off-canvas**: dos `<button class="sidebar-toggle" onclick="toggleSidebar('left'|'right')">` — uno al inicio de `.dash-topbar` (antes de `.dash-breadcrumb`, controla `sidebar-left`) y otro al inicio de `.dash-topbar-right` (antes de `.dash-bell`, controla `sidebar-right`) — más un `<div class="sidebar-scrim" id="sidebarScrim" onclick="closeSidebars()"></div>` como primer hijo de `.dash-wrapper`. Bajo `max-width: 900px`, ambos sidebars pasan a `position:fixed` fuera de pantalla (`translateX(-100%)`/`translateX(100%)`) y `.sidebar-open` los trae a `translateX(0)`.
-- Las funciones `toggleNav`, `closeNav`, `toggleSidebar`, `closeSidebars` viven en `js/nav-toggle.js` (compartido, igual que `theme-manager.js`) — no las reimplementes por estilo.
-- `.hero-split` colapsa a una columna y `.data-table-container` scrollea horizontal en cualquier ancho.
-
-Si agregas un componente nuevo a un estilo, revisa que siga viéndose bien bajo 900px y 560px antes de darlo por terminado.
-
-## Gráficas (donde el estilo lo pida)
-
-Los seis estilos de Dashboard (y cualquier estilo general que lo necesite) usan un set de componentes de gráfica compartido, SVG puro sin librerías, pintado con los tokens de cada estilo (`var(--primary-color)`, `var(--success-text)`, etc.) para que funcione en ambos temas automáticamente:
-
-- **`.sparkline`**: mini-línea de 12 puntos dentro de un `.stat-card`, junto al valor — nunca un número aislado sin su forma de tendencia al lado.
-- **`.chart-card`** + **`.line-chart`**: gráfica de línea/área grande (el widget central del dashboard), con `.chart-grid` (líneas guía recesivas), `.chart-area` (relleno al ~10% de opacidad) y `.chart-end-dot` (marcador en el último punto). Un solo eje siempre — nunca doble eje Y.
-- **`.bar-chart`**: barras verticales simples (`.bar-chart-col` + `.bar-chart-bar`, radio solo arriba) para series categóricas cortas (día de la semana, departamento).
-- **`.price-hero`** (`ledger-dark/`): la cifra que lidera el dashboard, ≥40px, con `.delta.up`/`.down` — exactamente una por vista.
-- Antes de construir una gráfica nueva, consulta la skill `dataviz` (forma → color → marca → interacción → accesibilidad) en vez de improvisar; no reutilices el color de la marca como color de texto/etiqueta.
-- `canvas-workspace/` (Notion) es la excepción deliberada: sin gráficas, usa `.tag`/`.tag-{gray,red,orange,yellow,green,blue,purple,pink}` — el archetipo real no las necesita.
-
-## Flujo para agregar un estilo nuevo
-
-1. Crear `<estilo>/css/style.css` con el bloque `:root` + `[data-theme="dark"]` completo, siguiendo el naming de variables de arriba.
-2. Construir `<estilo>/index.html` y `<estilo>/dashboard.html` con los componentes esperados, cargando `css/style.css`, `../js/theme-manager.js` y `../js/nav-toggle.js`, y siguiendo el patrón responsive de la sección anterior (navbar con `.nav-toggle`, dashboard con `.sidebar-toggle` × 2).
-3. Registrar el estilo en la tarjeta correspondiente de `index.html` (raíz del proyecto) — ver siguiente sección.
-
-## Índice raíz (`index.html`)
-
-El `index.html` de la raíz del proyecto **no es parte de ningún estilo**: es un menú neutral que enlaza a la landing y dashboard de cada estilo disponible. Al agregar o completar un estilo, actualiza ahí su tarjeta (y quítale el estado "pendiente" si ya tiene contenido real).
-
-## Estado actual
-
-Los 21 estilos listados arriba están completos (landing + dashboard + luz/oscuro + responsive funcionales): 15 Estilos Generales (incluye Glassmorphism y sus 5 variantes de color) + 6 Estilos de Dashboard. No hay carpetas pendientes en este momento. Si se agrega un estilo nuevo, sigue el flujo de la sección anterior y usa nombre de carpeta en kebab-case minúsculas (ej. `nueva-estetica/`), consistente con el resto.
-
-## Pendiente: variedad estructural real en Estilos de Dashboard
-
-Los 6 Estilos de Dashboard actuales (`material-flow/`, `pulse-analytics/`, `ledger-dark/`, `enterprise-grid/`, `canvas-workspace/`, `storefront/`) son variantes de **color y tono** sobre el mismo esqueleto: `.dash-wrapper` → `.dash-topbar` + `.dash-body` (`sidebar-left` / `main-content` / `sidebar-right`). Lo que falta — y es el encargo explícito del usuario para una sesión futura — es variedad de **estructura**, no de paleta:
-
-- Sidebars distintos: riel de solo íconos colapsable, árbol de navegación anidado (expandir/colapsar carpetas, más fiel a Notion real), mega-sidebar con secciones múltiples, layout sin sidebar izquierdo (nav superior + tabs), sidebar-only sin panel derecho.
-- Navs/topbars distintos: barra con tabs en vez de breadcrumb, selector de workspace tipo dropdown, paleta de comandos (⌘K) como navegación principal en vez de sidebar persistente.
-- Footers/status bars: ninguno de los 6 dashboards actuales tiene una barra inferior — evaluar un patrón tipo status-bar persistente (a la VS Code) para alguno.
-
-Antes de construir, define 4-6 arquetipos de estructura real (no solo nombres de producto) y verifica que cada uno sea genuinamente distinto en su composición de layout, no solo en su acento de color.
+Aquí abajo van sólo detalles específicos de Claude Code (hooks, skills, subagentes),
+no contexto de proyecto (eso va en `AGENTS.md`).
