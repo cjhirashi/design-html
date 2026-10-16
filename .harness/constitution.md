@@ -58,6 +58,15 @@ design-html/
 - ✅ No hay divergencia accidental
 - ✅ Mantenimiento centralizado
 
+### Extensión: pista React/Next.js paralela (ADR-001, propuesto 2026-10-16)
+
+Además de la pista vanilla de arriba, que sigue siendo la **fuente de verdad visual**,
+se autoriza una pista React/Next.js por estilo en `react/<estilo>/`, en paralelo y sin
+reemplazarla. El principio se traduce como "mismos componentes, distintos tokens de
+tema" (tokens con los nombres de la familia P3). Las reglas completas, incluido el
+equivalente de P5/P6 para React, están en `decisions/ADR-001-track-react-paralelo.md`.
+Piloto: `react/glassmorphism/` (spec `0001-glassmorphism-react`).
+
 ---
 
 ## Art. 3 — Servicios & Contenido
@@ -256,6 +265,9 @@ Antes de cualquier cambio.
 - NO hardcodear colores en HTML (data-theme en <html>)
 - NO inline styles
 - Todos los estilos via CSS variables
+
+> P5 y P6 aplican tal cual a la pista vanilla (21 estilos). Su equivalente para la
+> pista React (fuentes vía `next/font`, tokens vía CSS variables/Tailwind) está en ADR-001.
 
 **P7: Copy siempre en español**
 - Datos reales, dominio técnico
