@@ -2,10 +2,10 @@
 id: SPEC-0001
 tipo: spec
 feature: 0001-glassmorphism-react
-estado: approved
+estado: implemented
 # --- anclaje (fusionado; ver method.md §9) ---
 anchor_commit: c99b7ed
-anchor_mode: advisory
+anchor_mode: strict
 covers:
   - react/glassmorphism/**
   - .harness/decisions/ADR-001-track-react-paralelo.md

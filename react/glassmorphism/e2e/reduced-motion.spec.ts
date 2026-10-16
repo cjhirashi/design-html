@@ -41,5 +41,16 @@ for (const reduce of [true, false]) {
       if (reduce) expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(transform);
       else expect(transform).toBe("matrix(1, 0, 0, 1, 0, -4)");
     });
+
+    test(reduce ? "el hover de botón del dashboard no lo traslada" : "el hover de botón del dashboard lo eleva", async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.goto("/dashboard");
+      const button = page.getByRole("button", { name: "Nuevo nodo" });
+      await button.hover();
+      await page.waitForTimeout(400);
+      const transform = await button.evaluate((el) => getComputedStyle(el).transform);
+      if (reduce) expect(["none", "matrix(1, 0, 0, 1, 0, 0)"]).toContain(transform);
+      else expect(transform).toBe("matrix(1, 0, 0, 1, 0, -2)");
+    });
   });
 }

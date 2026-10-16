@@ -43,8 +43,10 @@ estilo". En React, sus zonas son:
 `components/glass/`:
 - `surface.ts` — **receta única** de superficie de vidrio (clases `backdrop-blur`, borde,
   sombra) por nivel: `panel`, `card`, `chrome`, `pill` (RF-007).
-- `button.tsx`, `badge.tsx`, `glass-card.tsx`, `stat-card.tsx`, `data-table.tsx`,
-  `status-row.tsx`, `chat-panel.tsx`, `logo.tsx`, `avatar.tsx`, `icons.tsx`.
+- `button.tsx`, `badge.tsx`, `glass-card.tsx`, `metric.tsx`, `data-table.tsx`,
+  `status-row.tsx`, `chat-panel.tsx`, `alert.tsx`, `app-bar.tsx` (breadcrumb, búsqueda,
+  campana, perfil), `band.tsx`, `media-card.tsx`, `terminal-window.tsx`,
+  `section-heading.tsx`, `logo.tsx`, `avatar.tsx`, `icons.tsx`.
 - `navbar.tsx` — barra superior de vidrio con slots (`start`, `center`, `end`). El
   landing la compone con logo + links; el dashboard, con breadcrumb + búsqueda + usuario.
 - `sidebar.tsx` — panel lateral de vidrio que en `lg+` va fijo en la rejilla y bajo `lg`
@@ -53,7 +55,16 @@ estilo". En React, sus zonas son:
 - `theme-switch.tsx` — 3 botones (claro/sistema/oscuro) con indicador animado (Motion).
 - `reveal.tsx` — aparición de secciones (Motion `whileInView`).
 
+### Composición por ruta
+- Landing: `app/page.tsx` (servidor) + `app/_landing/site-header.tsx` (cliente: estado
+  del cajón móvil).
+- Dashboard: `app/dashboard/page.tsx` (servidor, metadata) +
+  `app/dashboard/_components/dashboard-shell.tsx` (cliente: estado de los dos sidebars).
+- Una "ruta" a efectos de RF-007 = su `page.tsx` + sus componentes privados (`_landing/`,
+  `_components/`).
+
 ### Coordinación
+- `lib/use-media-query.ts` — `useMediaQuery` (sidebars anclados vs. cajón) y `useHydrated`.
 - `components/providers.tsx` — `ThemeProvider` (next-themes, `attribute="data-theme"`,
   `defaultTheme="system"`, `enableSystem`, `disableTransitionOnChange`) +
   `MotionConfig reducedMotion="user"`.
@@ -142,7 +153,10 @@ sesión y en `history.md`.
   bajo `lg`. Tabla con scroll horizontal propio.
 - Test: `e2e/responsive.spec.ts`.
 ### Implementación de RF-007
-- `components/glass/*` usados por `app/page.tsx` y `app/dashboard/page.tsx`.
-- Test: `tests/unit/reuse.test.ts` (imports compartidos + `backdrop-blur` sólo en `surface.ts`).
+- `components/glass/*` renderizados por la ruta landing (`app/page.tsx` + `app/_landing/`)
+  y la ruta dashboard (`app/dashboard/**`).
+- Test: `tests/unit/reuse.test.ts`: módulos compartidos, uso real en JSX (`<Navbar`,
+  `<Sidebar`, `<GlassCard`, `<ThemeSwitch`, `<Badge`), ninguna ruta declara su propio
+  `<aside>`, y `backdrop-*` sólo en `surface.ts` (escaneo `.ts/.tsx/.css`).
 ### Implementación de RNF-001 / RNF-002 / RNF-003
 - `tests/unit/tokens.test.ts` · `e2e/network.spec.ts` · `tests/unit/literals.test.ts`.

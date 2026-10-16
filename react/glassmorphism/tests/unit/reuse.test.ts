@@ -31,8 +31,29 @@ describe("RF-007 mismos componentes, distinta composición", () => {
     },
   );
 
+  const stripComments = (code: string) => code.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
+  const rendered = (route: keyof typeof ROUTES) =>
+    routeFiles(route)
+      .map((s) => stripComments(s.code))
+      .join("\n");
+
+  it.each(["Navbar", "Sidebar", "GlassCard", "ThemeSwitch", "Badge"])(
+    "landing y dashboard renderizan <%s> (uso real, no sólo import)",
+    (name) => {
+      const tag = new RegExp(`<${name}[\\s>]`);
+      expect(rendered("landing")).toMatch(tag);
+      expect(rendered("dashboard")).toMatch(tag);
+    },
+  );
+
+  it("ninguna ruta declara su propio header/aside: los obtiene de Navbar/Sidebar", () => {
+    for (const route of ["landing", "dashboard"] as const) {
+      expect(rendered(route)).not.toMatch(/<(header|aside)\b[^>]*\bsticky\b|<aside\b/);
+    }
+  });
+
   it("la receta de vidrio (backdrop-blur) vive en un solo módulo", () => {
-    const owners = ownSources()
+    const owners = ownSources(/\.(ts|tsx|css)$/)
       .filter((s) => /backdrop-(blur|filter|saturate)/.test(s.code))
       .map((s) => s.file);
     expect(owners).toEqual(["components/glass/surface.ts"]);

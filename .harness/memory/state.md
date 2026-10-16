@@ -1,6 +1,6 @@
 ---
 ultima_actualizacion: 2026-10-16
-fase: Génesis completada
+fase: Piloto React 0001 implementado en rama (pendiente aprobación humana)
 arquitectura_verificada: True
 ---
 
@@ -8,78 +8,61 @@ arquitectura_verificada: True
 
 ## Correcciones & Contexto Actual
 
+### Piloto pista React — 0001-glassmorphism-react (2026-10-16)
+
+- Rama local **`feature/glassmorphism-react-pilot`**, sin push ni merge (main está
+  desplegado en GitHub; un push a main puede disparar deploy). Nada se publica hasta que
+  Carlos lo apruebe explícitamente.
+- **ADR-001** (`decisions/ADR-001-track-react-paralelo.md`, estado *proposed*): pista
+  React/Next.js paralela en `react/<estilo>/`, la vanilla sigue siendo fuente de verdad
+  visual; P5/P6 vanilla intactos; equivalente React = `next/font` local + tokens P3 en
+  `app/tokens.css`. Constitución Art. 2 enlaza el ADR.
+- App `react/glassmorphism/` (spec `implemented`): landing + dashboard, Vitest 204 +
+  Playwright 31 en verde. Cómo correr/portar: `react/glassmorphism/README.md`.
+- **Pendiente humano:** Gate 2 (plan) no ratificado; aceptar/rechazar ADR-001; revisión
+  visual; decidir si se replica a `glass-aurum/ember/borealis/neon/steel`.
+- **Hallazgos colaterales (fuera de alcance, no tocados):** el `style.css` vanilla de
+  glassmorphism no cumple AA en `--text-muted` (2.3:1 claro, 3.7:1 oscuro) ni en textos
+  semánticos claros, y no define la familia P3 completa; su HTML tiene etiquetas en inglés
+  ("Success State", "Cyan Core") contra P7.
+- Entorno: Playwright 1.64 necesita libs del sistema que no están; se extrajeron sin root en
+  `~/.cache/pw-libs` (ver README). Con sudo: `npx playwright install-deps chromium`.
+
 ### Skill ui-ux-pro-max Integrado de Verdad (2026-10-16)
 
-`.claude/settings.json` ya referenciaba `ui-ux-pro-max` desde génesis, pero era un stub: el paquete real nunca se instaló (verificado con `find`, sin resultados). AIRA instaló la integración real a solicitud directa de Carlos:
+Instalado vía `npx ui-ux-pro-max-cli@latest init --ai claude` → `.claude/skills/` (7
+skills). `.claude/settings.json` lista el alcance real de cada uno. Commit propio
+(`chore: install ui-ux-pro-max…`). Pendiente corregir la wiki de AIRA: `--ai openclaw` no
+es valor válido del CLI v2.15.0.
 
-- Comando: `npx ui-ux-pro-max-cli@latest init --ai claude` (ejecutado una vez, sin instalación global — decisión de Carlos)
-- Resultado: `.claude/skills/` con 7 skills del paquete (`ui-ux-pro-max`, `design-system`, `ui-styling`, `design`, `brand`, `banner-design`, `slides`) — Claude Code los auto-detecta, no requieren config
-- `.claude/settings.json` corregido: el stub (`use_cases`/`output_path`/`format`, que no correspondía a ningún contrato real) reemplazado por el listado real de skills con alcance honesto por cada uno
-- `AGENTS.md` documenta el skill y su uso para P3/P4
-- Verificado funcional: `python3 .claude/skills/ui-ux-pro-max/scripts/search.py "dashboard"` devuelve resultados reales de la base de datos (styles.csv)
-- Nota: `--ai openclaw` (documentado en `source.ui-ux-pro-max-skill` de la wiki de AIRA) no es un valor válido del CLI actual (v2.15.0) — los valores reales son `claude, cursor, windsurf, ...`. Se usó `claude` porque este repo usa `.claude/`. Pendiente corregir esa página de la wiki.
+### Génesis (2026-10-10)
 
-### Génesis Completada (2026-10-10)
+Harness instalado; commiteado recién el 2026-10-16 (commit `chore(harness): …`).
 
-✅ Harness instalado  
-✅ Constitution redactada (especializada para componentes compartidos)  
-✅ AGENTS.md con roles base + especialista-diseño  
-✅ Gate configurado (validaciones de symlinks, variables, contraste AA)
+### Decisión Arquitectónica: Symlinks — NO aplicada aún
 
-### Decisión Arquitectónica: Symlinks
-
-**Aplicada:** Todas las plantillas (21 estilos) usan symlinks a `index.html` y `dashboard.html` compartidos.
-
-**Implicación:** Cambio en HTML = automáticamente en 21 estilos (vía symlinks)
-
-**Verificación:** Gate valida que NO son copias (son symlinks reales)
+El Art. 2 describe symlinks a `index.html`/`dashboard.html` de raíz, pero cada carpeta de
+estilo tiene **copias** y no existe `dashboard.html` en raíz (verificado 2026-10-16).
+Convertir a symlinks exige unificar primero los HTML (hoy difieren por estilo) → feature
+propia con spec.
 
 ### Reglas Vigentes (P1-P9)
 
-- **P1:** Gate siempre primero
-- **P2:** Sincronización via symlinks (NO copias manuales)
-- **P3:** Familia de variables `:root` estándar (39 variables, no negociable)
-- **P4:** Contraste AA obligatorio (light + dark)
-- **P5:** Sin dependencias de red (tipografía del sistema)
-- **P6:** HTML agnóstico de estilo (datos via CSS variables)
-- **P7:** Copy en español, datos reales
-- **P8:** Conventional Commits + (RF-NNN)
-- **P9:** No auto-aprobarse (revisor + Carlos firman)
+P1 gate primero · P2 sincronización vía symlinks · P3 familia `:root` estándar · P4 AA
+light+dark · P5 sin red (pista React: equivalente en ADR-001) · P6 HTML agnóstico (pista
+React: equivalente en ADR-001) · P7 español · P8 Conventional Commits + (RF-NNN) · P9 no
+auto-aprobarse.
 
-### Próximo Paso Inmediato
+### Backlog
 
-**Crear symlinks en los 21 estilos (si no existen):**
-
-```bash
-cd design-html/
-for estilo in apple-pro-studio bento brutalismo canvas-workspace enterprise-grid \
-              glass-aurum glass-borealis glass-ember glass-neon glass-steel \
-              glassmorphism industrial linear minimalista nordic-functional \
-              material-flow pulse-analytics ledger-dark storefront stripe-enterprise vercel; do
-  cd $estilo
-  [ -L index.html ] || ln -s ../index.html index.html
-  [ -L dashboard.html ] || ln -s ../dashboard.html dashboard.html
-  cd ..
-done
-```
-
-Luego: `bash .harness/gate/check.sh` debe pasar ✅
-
-### Hazards Conocidos
-
-1. **Si alguien edita symlink manualmente:** Gate detecta y falla
-2. **Si un estilo falta variable CSS:** Gate detecta y falla
-3. **Si contraste AA en dark mode falla:** Gate detecta y falla
+1. Aprobación humana del piloto React (Gate 2 + ADR-001 + revisión visual).
+2. Si se aprueba: portar las 5 variantes `glass-*` (sólo `app/tokens.css`).
+3. Corregir AA y P3 en `glassmorphism/css/style.css` vanilla (feature 1001-*).
+4. Variedad estructural en los 6 Estilos de Dashboard (pendiente previo).
+5. AGENTS.md > 200 líneas (aviso del gate) — consolidar.
 
 ### Notas para Carlos
 
-- Design-HTML NO se expone via cjhirashi-srv (es infraestructura local)
-- Los 21 estilos son referenciales, proyectos los copian si quieren
-- La gobernanza SDD asegura evolución coherente de componentes visuales
-
----
-
-**Proyecto:** design-html  
-**Fecha Génesis:** 2026-10-10  
-**Estado:** Listo para Specify  
-**Siguiente:** Crear primera feature (ej. agregar componente, cambiar estilo)
+- Design-HTML NO se expone vía cjhirashi-srv (infraestructura local).
+- `frontend-design-pro` vive en `workspace-aira/skills/`, no en `.claude/skills/` de este
+  repo; si se quiere como skill de Claude Code aquí, hay que instalarla.
