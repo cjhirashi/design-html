@@ -80,6 +80,11 @@ actualizado: 2026-10-16
   desactivar animaciones no esenciales.
   - *Verificable:* con `reduce`, los rayos del fondo no se animan, las secciones aparecen
     sin desplazamiento y los hovers no trasladan elementos.
+- **RNF-005** — MIENTRAS no haya `prefers-reduced-motion`, el fondo del landing DEBE
+  mostrar movimiento perceptible: entre dos capturas del viewport (1440×900) tomadas con
+  ≥ 2 s de diferencia, sin interacción, la diferencia media DEBE ser ≥ 4/255 y ≥ 20 % de
+  los píxeles DEBE cambiar ≥ 8/255, en claro y en oscuro (§6.2). Con `reduce`, la
+  diferencia media DEBE ser < 0.5/255.
 - **RNF-004** — Toda sección del landing DEBE ser visible (opacidad 1) sin hacer scroll y
   sin JavaScript; la animación de aparición NO DEBE ocultar contenido (§6.1).
 - **RF-006** — El layout DEBE ser responsive en mobile/tablet/desktop (breakpoints
@@ -126,6 +131,23 @@ tarjetas blancas sólidas (borde blanco sobre fondo casi blanco).
 | Fondo de tarjeta de vidrio, claro | `--bg-card: rgba(255,255,255,0.5)` → `rgba(255,255,255,0.35)` | Más translucidez, para que se lea vidrio y no blanco sólido |
 | Borde de vidrio, claro | `--border-glass` / `--border-color: rgba(255,255,255,0.6)` → `rgba(124,58,237,0.16)` (violeta tenue) | Borde visible sobre fondo claro; el hover sigue en `rgba(124,58,237,0.4)` |
 | Contraste | Revalidado con `tests/unit/tokens.test.ts` (AA ≥ 4.5:1) | P4 |
+
+### 6.2 Aurora con movimiento perceptible (2026-10-16)
+Reporte: dos capturas a 3 s de diferencia no muestran movimiento (diff máx. 2/255); Carlos
+no ve animación. Diagnóstico medido (build de producción y dev, 1440×900):
+- Diff real antes del cambio: media 1.2–3.1/255; 2.7–16 % de píxeles cambian ≥ 8/255.
+- `light-rays` (MagicUI) sólo "respira" opacidad 0→pico→0 en ciclos de 12–20 s, con retraso
+  aleatorio de hasta un ciclo: a los 1,5–5 s de cargar, 6 de 7 rayos tienen opacidad 0.
+  Balanceo de ±1–3°: casi no hay desplazamiento espacial.
+- Alfa efectivo ≤ 0.35 (token × 70 %), desvanecido a lo largo de 85vh y con blur de 44 px.
+- `multiply` no lo cancelaba: el contenedor de MagicUI tiene `isolation: isolate`; con
+  `normal`, la media sólo sube de 3.4 a 4.1. Subir tokens de opacidad no podía bastar.
+
+| Decisión | Detalle | Alternativa descartada |
+|---|---|---|
+| Capa de **manchas de gradiente en movimiento** (3 manchas de 70vmax, blur 60 px) bajo los rayos | Se desplazan ~22vw/13vh con escala 1→1.15, ciclos de 16/21/26 s escalonados (nunca se detienen todas a la vez), con Motion. Colores por token `--aurora-blob-1..3` (claro α 0.45, oscuro α 0.45); prototipo medido: media ≈ 6/255 y ≈ 40 % de píxeles con Δ ≥ 8 en 1,5 s | Sólo subir `--aurora-ray`; rayos más gruesos (siguen siendo destellos de opacidad); variante α 0.55/28vw (media 12/255, demasiado protagonista) |
+| `light-rays` se conserva (RF-003 exige MagicUI) con ciclo más corto (`speed` 9), blur 28 px y 9 rayos | Así los destellos aparecen pronto y con más frecuencia | Quitar MagicUI |
+| Con reduced-motion, las manchas quedan estáticas y no se montan rayos (RF-005) | — | — |
 
 ## 7. Requisitos no funcionales (RNF)
 - **RNF-001** — Todo par texto/fondo de los tokens (`--text-primary/secondary/muted`

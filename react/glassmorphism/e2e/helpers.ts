@@ -28,3 +28,41 @@ export function sampleTransforms(page: Page, selector: string, ms = 350) {
     { selector, ms },
   );
 }
+
+export type PixelDiff = { mean: number; pctChanged: number; max: number };
+
+/**
+ * Compara dos PNG píxel a píxel en un canvas del propio navegador (sin dependencias).
+ * `pctChanged`: % de píxeles cuyo canal más distinto cambia ≥ `threshold`/255.
+ */
+export async function pixelDiff(page: Page, a: Buffer, b: Buffer, threshold = 8): Promise<PixelDiff> {
+  return page.evaluate(
+    async ([a, b, threshold]) => {
+      const load = (src: string) =>
+        new Promise<HTMLImageElement>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.src = src;
+        });
+      const [ia, ib] = await Promise.all([load(a as string), load(b as string)]);
+      const canvas = new OffscreenCanvas(ia.width, ia.height);
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(ia, 0, 0);
+      const da = ctx.getImageData(0, 0, ia.width, ia.height).data;
+      ctx.drawImage(ib, 0, 0);
+      const db = ctx.getImageData(0, 0, ia.width, ia.height).data;
+      let sum = 0;
+      let changed = 0;
+      let max = 0;
+      for (let i = 0; i < da.length; i += 4) {
+        const d = Math.max(Math.abs(da[i] - db[i]), Math.abs(da[i + 1] - db[i + 1]), Math.abs(da[i + 2] - db[i + 2]));
+        sum += d;
+        max = Math.max(max, d);
+        if (d >= (threshold as number)) changed++;
+      }
+      const n = da.length / 4;
+      return { mean: sum / n, pctChanged: (100 * changed) / n, max };
+    },
+    [`data:image/png;base64,${a.toString("base64")}`, `data:image/png;base64,${b.toString("base64")}`, threshold] as const,
+  );
+}

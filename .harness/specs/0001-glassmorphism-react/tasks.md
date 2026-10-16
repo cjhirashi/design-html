@@ -42,6 +42,10 @@ actualizado: 2026-10-16
 - [x] T-025 — `reveal.tsx` sin ocultar contenido (cubre RNF-004, RF-004, RF-005) [zona: componentes]
 - [x] T-026 — Tokens: `--aurora-ray` más intenso (claro/oscuro); `--bg-card` y `--border-glass` en claro (cubre RF-003, RNF-001) [zona: tokens]
 
+## Aurora perceptible (2026-10-16, spec §6.2)
+- [ ] T-027 — E2E de movimiento por diff de píxeles (2 capturas ≥ 2 s), claro/oscuro + control reduce (cubre RNF-005) [zona: test]
+- [ ] T-028 — Manchas de gradiente con Motion + tokens `--aurora-blob-*` + ajuste de `light-rays` (cubre RF-003, RNF-005, RF-005) [zona: frontera]
+
 ## Evidencia (2026-10-16, commit de cierre de la rama)
 - `npm test` (Vitest): 5 archivos · **204 passed**. `npm run test:e2e` (Playwright, Chromium, tras §6.1):
   **33 passed**. `type-check`, `lint` y `build` limpios. Gate: verde.
@@ -71,6 +75,7 @@ de git no lo acredita. No se reescribió la historia. En futuras features: un co
 | RNF-002 | T-018 | e2e/network.spec.ts | Pass |
 | RNF-003 | T-004 | tests/unit/literals.test.ts | Pass |
 | RNF-004 | T-024, T-025 | e2e/reveal.spec.ts | Pass |
+| RNF-005 | T-027, T-028 | e2e/aurora-motion.spec.ts, tests/unit/aurora.test.tsx | Pendiente |
 | doc: README pista React | T-020 | — | Pass |
 | doc: AGENTS.md | T-021 | — | Pass |
 | doc: services.txt | T-022 | — | Pass |
