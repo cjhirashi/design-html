@@ -4,7 +4,7 @@ tipo: spec
 feature: 0001-glassmorphism-react
 estado: implemented
 # --- anclaje (fusionado; ver method.md §9) ---
-anchor_commit: c99b7ed
+anchor_commit: e56b20b
 anchor_mode: strict
 covers:
   - react/glassmorphism/**
