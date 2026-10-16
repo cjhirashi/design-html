@@ -37,6 +37,11 @@ actualizado: 2026-10-16
 - [x] T-022 — `.harness/gate/services.txt` declara `react/glassmorphism:node` [doc]
 - [x] T-023 — Session-End en `memory/history.md` + reescritura de `memory/state.md` [doc]
 
+## Ajustes tras revisión visual (2026-10-16, spec §6.1)
+- [x] T-024 — E2E: galería visible sin scroll, con y sin JS (cubre RNF-004) [zona: test]
+- [x] T-025 — `reveal.tsx` sin ocultar contenido (cubre RNF-004, RF-004, RF-005) [zona: componentes]
+- [x] T-026 — Tokens: `--aurora-ray` más intenso (claro/oscuro); `--bg-card` y `--border-glass` en claro (cubre RF-003, RNF-001) [zona: tokens]
+
 ## Evidencia (2026-10-16, commit de cierre de la rama)
 - `npm test` (Vitest): 6 archivos · **204 passed**. `npm run test:e2e` (Playwright, Chromium):
   **31 passed**. `type-check`, `lint` y `build` limpios. Gate: verde.
@@ -65,6 +70,7 @@ de git no lo acredita. No se reescribió la historia. En futuras features: un co
 | RNF-001 | T-002, T-003 | tests/unit/tokens.test.ts | Pass |
 | RNF-002 | T-018 | e2e/network.spec.ts | Pass |
 | RNF-003 | T-004 | tests/unit/literals.test.ts | Pass |
+| RNF-004 | T-024, T-025 | e2e/reveal.spec.ts | Pendiente |
 | doc: README pista React | T-020 | — | Pass |
 | doc: AGENTS.md | T-021 | — | Pass |
 | doc: services.txt | T-022 | — | Pass |

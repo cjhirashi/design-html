@@ -158,5 +158,12 @@ sesión y en `history.md`.
 - Test: `tests/unit/reuse.test.ts`: módulos compartidos, uso real en JSX (`<Navbar`,
   `<Sidebar`, `<GlassCard`, `<ThemeSwitch`, `<Badge`), ninguna ruta declara su propio
   `<aside>`, y `backdrop-*` sólo en `surface.ts` (escaneo `.ts/.tsx/.css`).
+### Implementación de RNF-004 (§6.1 del spec)
+- `reveal.tsx`: div normal, visible en SSR; en `useEffect`, si no hay reduced-motion y la
+  sección está bajo el pliegue, `animate(el, { y: 16 }, { duration: 0 })` + `inView` →
+  `animate(el, { y: 0 }, revealTransition)`. Nunca toca la opacidad.
+- Test: `e2e/reveal.spec.ts` (galería e imágenes con opacidad efectiva 1 sin scroll, con y
+  sin JS).
+
 ### Implementación de RNF-001 / RNF-002 / RNF-003
 - `tests/unit/tokens.test.ts` · `e2e/network.spec.ts` · `tests/unit/literals.test.ts`.

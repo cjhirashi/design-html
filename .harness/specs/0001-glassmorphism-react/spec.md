@@ -80,6 +80,8 @@ actualizado: 2026-10-16
   desactivar animaciones no esenciales.
   - *Verificable:* con `reduce`, los rayos del fondo no se animan, las secciones aparecen
     sin desplazamiento y los hovers no trasladan elementos.
+- **RNF-004** — Toda sección del landing DEBE ser visible (opacidad 1) sin hacer scroll y
+  sin JavaScript; la animación de aparición NO DEBE ocultar contenido (§6.1).
 - **RF-006** — El layout DEBE ser responsive en mobile/tablet/desktop (breakpoints
   Tailwind estándar).
   - *Verificable:* a 375, 768 y 1280 px no hay scroll horizontal del documento; bajo
@@ -109,6 +111,21 @@ actualizado: 2026-10-16
 | Tipografía Geist Sans + Geist Mono (paquete `geist`, `next/font/local`) | Brief: "tipografía con personalidad"; se auto-hospeda en el build, sin red ni en build ni en runtime (equivalente P5) | `system-ui` (vanilla), `next/font/google` (descarga en build) | ADR-001 |
 | Imágenes del carrusel vendorizadas en `public/` (las mismas 3 de Unsplash, licencia Unsplash) | El equivalente P5 prohíbe recursos de hosts externos en runtime | `next/image` remoto | ADR-001 |
 | Tema por `data-theme` en `<html>` (next-themes `attribute="data-theme"`) | Mismo selector que la pista vanilla, así los tokens se comparten 1:1 | clase `.dark` | ADR-001 |
+
+### 6.1 Ajustes tras revisión visual de Carlos (2026-10-16)
+Reporte: "no se ve diferencia con la versión vieja; parece que se quitaron tarjetas". Se
+verificó con capturas: la galería quedaba con `opacity: 0` hasta hacer scroll (`Reveal`), los
+rayos de la aurora casi no se percibían y en claro las tarjetas de vidrio se leían como
+tarjetas blancas sólidas (borde blanco sobre fondo casi blanco).
+
+| Decisión | Valor anterior → nuevo | Justificación |
+|---|---|---|
+| `Reveal` nunca oculta contenido | `initial: opacity 0, y 16` (SSR) → contenido visible en SSR y sin JS; si al hidratar la sección está fuera de pantalla, al entrar se desplaza `y: 16 → 0` con `EASE_OUT`, **sin tocar la opacidad**; con reduced-motion no hay animación | La aparición no puede depender de JS ni de scroll (capturas, impresión, enlaces de ancla) |
+| Rayos de la aurora, oscuro | `--aurora-ray: rgba(167,139,250,0.32)` → `rgba(167,139,250,0.6)` | Los rayos (MagicUI) deben notarse (RF-003) |
+| Rayos de la aurora, claro | `--aurora-ray: rgba(139,92,246,0.28)` → `rgba(124,58,237,0.5)` (fusión `multiply`) | Ídem en tema claro |
+| Fondo de tarjeta de vidrio, claro | `--bg-card: rgba(255,255,255,0.5)` → `rgba(255,255,255,0.35)` | Más translucidez, para que se lea vidrio y no blanco sólido |
+| Borde de vidrio, claro | `--border-glass` / `--border-color: rgba(255,255,255,0.6)` → `rgba(124,58,237,0.16)` (violeta tenue) | Borde visible sobre fondo claro; el hover sigue en `rgba(124,58,237,0.4)` |
+| Contraste | Revalidado con `tests/unit/tokens.test.ts` (AA ≥ 4.5:1) | P4 |
 
 ## 7. Requisitos no funcionales (RNF)
 - **RNF-001** — Todo par texto/fondo de los tokens (`--text-primary/secondary/muted`
