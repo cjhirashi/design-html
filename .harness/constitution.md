@@ -9,11 +9,13 @@ especialista-ux-ui: True
 
 ## Art. 1 — Propósito
 
-**Galería de 21 sistemas de diseño UI/UX con gobernanza de componentes compartidos.**
+**Catálogo de sistemas de diseño UI/UX — referencia visual de frontend completa para los proyectos que Carlos gestiona, con gobernanza de componentes compartidos.**
 
-Objetivo: Proporcionar referencia visual + plantillas reutilizables para que todos los proyectos (Hira, Synapse, IA Engine, etc.) elijan estética visual coherente y consistente.
+Objetivo: no es solo una landing y un dashboard simples por estilo. Es la referencia de **todo** lo que un frontend real necesita (landing, blog, productos, panel admin con sus formularios/tablas/gráficos), para que cualquier proyecto (Hira, Synapse, IA Engine, etc.) pueda tomar un estilo completo — estructura + componentes + animación — en vez de reinterpretar HTML a mano. Inventario de referencia validado contra `cjhirashi-career` (2026-10-16). Detalle de alcance y estrategia de construcción: `ADR-002`.
 
-Restricción crítica: **Todas las plantillas (21 estilos) comparten LA MISMA estructura HTML. Solo el CSS cambia.**
+Restricción crítica: **Todas las plantillas comparten LA MISMA estructura HTML (y la misma lógica de motion). Solo el CSS — y los tokens de tema — cambian.**
+
+**Estrategia de construcción (ADR-002, 2026-10-16):** el catálogo ampliado se construye una sola vez en `glassmorphism` (vanilla + `react/glassmorphism`, en paridad por ADR-001) y se replica a los demás estilos solo cuando esa estructura esté cerrada. Hasta entonces, los otros 20 estilos siguen con la landing/dashboard simples de Génesis — ver `state.md` para el estado real de cada uno.
 
 ---
 
@@ -77,18 +79,38 @@ Piloto: `react/glassmorphism/` (spec `0001-glassmorphism-react`).
 
 ### Vistas Principales
 
+> **Objetivo del catálogo (ADR-002, 2026-10-16) — hoy solo construido así en
+> `glassmorphism`.** El resto de estilos todavía tiene solo la versión simple original
+> (Landing/Dashboard de Génesis, sin las variantes de abajo). Ver `state.md` para qué
+> estilo tiene qué.
+
 1. **Landing** (`index.html`)
-   - Navbar (logo, nav-links, theme-switch, menu toggle)
-   - Hero (título, subtítulo, CTA)
-   - Sección features (badges de estado)
-   - Galería/carrusel
-   - Footer (crédito obligatorio)
+   - Navbar — variantes (simple, mega-menú, con buscador)
+   - Hero — variantes (centrado, imagen lateral, demo/video)
+   - Cards — feature, pricing, testimonio, equipo
+   - Carrusel/galería
+   - Footer — variantes (simple, con columnas de links)
+   - Blog — listado + detalle de post
+   - Productos — listado + detalle de producto
+   - Formulario de contacto
 
 2. **Dashboard** (`dashboard.html`)
    - Topbar (breadcrumb, search, notificaciones, user)
    - Sidebar-left (menu, profile, links, theme-switch)
-   - Main-content (header, stats-grid, data-table)
-   - Sidebar-right (chat/asistente)
+   - Main-content: gráficos (varios tipos), alertas (variantes/modos), vista de tabla,
+     vista de registro/detalle, formularios con tipos de campo reales (texto, número,
+     boolean/switch, select, creatable select, FK select/multi-select, fecha, archivo,
+     lista JSON — inventario validado contra `cjhirashi-career`)
+   - Sidebar-right (chat/asistente) — **fuera de alcance del catálogo por ahora** (ADR-002)
+
+### Familia de Tokens de Motion (objetivo, ADR-002 — aún no existe como familia formal)
+
+Análoga a la familia de variables CSS de abajo, pero para animación: duración, easing,
+patrones de entrada/salida, y comportamiento bajo `prefers-reduced-motion`. Cada
+componente de las vistas de arriba necesita su motion, no solo su estructura/estilo
+estático. Precedente funcionando: `react/glassmorphism` (Reveal/aurora, RNF-004/005 de
+`0001-glassmorphism-react`). Referencia de presets: skill `ui-ux-pro-max` →
+`data/motion.csv` (17 presets).
 
 ### Componentes Base
 

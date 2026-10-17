@@ -1,7 +1,7 @@
 ---
 id: ADR-001
 tipo: adr
-estado: proposed          # pasa a accepted cuando Carlos apruebe la rama del piloto
+estado: accepted          # aceptado por Carlos 2026-10-16 (chat con AIRA): "este se vuelve la base de todo lo que sigue"
 fecha: 2026-10-16
 ---
 
@@ -89,3 +89,11 @@ reemplazarla**:
 - Afecta a: Constitución Art. 2 (extensión) y Art. 8 (P5/P6 por pista);
   `specs/0001-glassmorphism-react` (RF-001…RF-007).
 - Relacionado: brief `DESIGN-HTML-BRIEF-REACT-PORT-PILOTO.md` (workspace AIRA).
+
+## Actualización (2026-10-16, tras aceptación)
+
+Carlos aceptó este ADR y, en la misma conversación, amplió su alcance: `glassmorphism`
+(ambas pistas) deja de ser "solo el piloto React" y pasa a ser **la base de todo el
+catálogo de componentes** — landing y admin se construyen primero ahí, completos, y
+recién después se replican a los otros 20 estilos. El detalle de esa decisión (más
+amplia que el alcance original de este ADR) vive en `ADR-002-glassmorphism-laboratorio-canonico.md`.

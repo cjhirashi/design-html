@@ -12,7 +12,7 @@ covers:
 # --- aprobaciones humanas ---
 aprobaciones:
   fase_1: { por: "Carlos (alcance del brief, 'así es')", fecha: 2026-10-16 }
-  fase_2: pendiente
+  fase_2: { por: "Carlos (chat con AIRA, no sesión de Claude Code)", fecha: 2026-10-16 }
 actualizado: 2026-10-16
 ---
 

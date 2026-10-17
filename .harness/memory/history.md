@@ -1,5 +1,16 @@
 # History — design-html
 
+## [2026-10-16] Ratificación Gate 2 + ADR-001 — ADR-002 (catálogo ampliado) accepted
+- **Fase alcanzada:** (prompt-directo — decisión humana + doc; no código de producto)
+- **Rebotes del verificador:** 0 (decisión humana directa de Carlos, sin revisor adversarial)
+- **Directiva de Pausa:** no
+- **Drift / re-anchor:** no
+- **Anclas movidas:** ninguna
+- **Gate:** verde (17 ok · 0 warn · 0 error, sin cambio respecto a la entrada anterior)
+- **Docs actualizadas:** `specs/0001-glassmorphism-react/{spec.md,plan.md}` (`aprobaciones.fase_2` ratificado), `decisions/ADR-001-...md` (proposed→accepted + nota de actualización), `decisions/ADR-002-glassmorphism-laboratorio-canonico.md` (nuevo, accepted), `constitution.md` Art. 1/3, `state.md`
+- **Decisiones de diseño / límites de integración:** Carlos ratificó Gate 2 y aceptó ADR-001 en chat con AIRA (no en sesión de Claude Code dentro del repo — queda anotado así en los frontmatter correspondientes para trazabilidad). En la misma conversación amplió el alcance del catálogo (validado contra `cjhirashi-career`: navbar/hero/cards/carrusel/footer/blog/productos/contacto en landing; gráficos/alertas/tabla/registro/formularios con tipos de campo reales en admin) y pidió que la animación sea alcance explícito, no un añadido posterior → `ADR-002`. Estrategia elegida: construir una sola vez en `glassmorphism` (vanilla + react, en paridad) y replicar a los otros 20 estilos solo cuando esa estructura cierre.
+- **Próximo paso:** Carlos decide el orden de las ~14 specs candidatas del roadmap (`state.md` → Backlog #1); la primera que se abra entra por `autor-de-spec` (Fase 1, elicitación interactiva), empezando probablemente por el sistema de tokens de motion si se sigue el orden fundacional sugerido.
+
 ## [2026-10-16] Reparación de harness (deuda de Génesis) — gate en verde
 - **Fase alcanzada:** (prompt-directo — mantenimiento de harness, no feature de producto)
 - **Rebotes del verificador:** 0 (sin revisor adversarial; es doc/config, no código de producto)

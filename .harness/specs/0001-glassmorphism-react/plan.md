@@ -2,9 +2,9 @@
 id: PLAN-0001
 tipo: plan
 feature: 0001-glassmorphism-react
-estado: draft
+estado: ratified
 aprobaciones:
-  fase_2: pendiente   # implementación ejecutada bajo instrucción explícita de sesión (2026-10-16); falta ratificación humana del plan
+  fase_2: { por: "Carlos (chat con AIRA, no sesión de Claude Code)", fecha: 2026-10-16 }
 actualizado: 2026-10-16
 ---
 
