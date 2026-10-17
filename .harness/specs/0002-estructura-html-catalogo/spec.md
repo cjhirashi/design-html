@@ -4,7 +4,7 @@ tipo: spec
 feature: 0002-estructura-html-catalogo
 estado: approved
 # --- anclaje (fusionado; ver method.md §9) ---
-anchor_commit: ‹se fija en Fase 4›
+anchor_commit: 8731efb
 anchor_mode: advisory
 covers:
   - glassmorphism/**

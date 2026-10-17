@@ -1,5 +1,16 @@
 # History — design-html
 
+## [2026-10-16] SPEC-0002 (estructura HTML del catálogo) — Fase 1 cerrada, Gate 1 aprobado
+- **Fase alcanzada:** specify
+- **Rebotes del verificador:** 0 (elicitación directa con Carlos, sin revisor adversarial en esta fase)
+- **Directiva de Pausa:** no
+- **Drift / re-anchor:** no (spec nueva)
+- **Anclas movidas:** 0002-estructura-html-catalogo → ancla inicial en `8731efb`
+- **Gate:** verde (19 ok · 0 warn · 0 error)
+- **Docs actualizadas:** `specs/0002-estructura-html-catalogo/spec.md` (nuevo), `state.md`
+- **Decisiones de diseño / límites de integración:** Fase 1 completa por elicitación interactiva (method.md §3) en chat con Carlos, no en sesión de Claude Code. 7 vistas de ADR-002, una instancia de cada componente, ambas pistas en paralelo (decisión de Carlos). Markdown reutilizable con resaltado de sintaxis + Mermaid self-hosted (P5), único consumidor Blog Detalle; Producto Detalle en texto plano. Control de tema claro/sistema/oscuro: replicar el mecanismo ya existente (vanilla `theme-manager.js`, react `next-themes`), no reinventar. [NEEDS CLARIFICATION] = 0, confirmado "así es".
+- **Próximo paso:** Fase 2 (Plan) — `arquitecto` redacta `plan.md`: cómo se construyen ambas pistas en paralelo sin diverger, fronteras del componente Markdown, y secuenciación test-first por RF.
+
 ## [2026-10-16] Ratificación Gate 2 + ADR-001 — ADR-002 (catálogo ampliado) accepted
 - **Fase alcanzada:** (prompt-directo — decisión humana + doc; no código de producto)
 - **Rebotes del verificador:** 0 (decisión humana directa de Carlos, sin revisor adversarial)

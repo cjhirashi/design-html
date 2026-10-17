@@ -1,12 +1,35 @@
 ---
 ultima_actualizacion: 2026-10-16
-fase: Catálogo ampliado (ADR-002) — construcción pendiente, en glassmorphism primero
+fase: SPEC-0002 (estructura HTML del catálogo) aprobada Fase 1 — entra a Fase 2 (Plan)
 arquitectura_verificada: True
 ---
 
 # State — design-html
 
 ## Correcciones & Contexto Actual
+
+### SPEC-0002 · Estructura HTML del catálogo — Fase 1 aprobada (2026-10-16, chat Carlos↔AIRA)
+
+- Rama **`feature/catalogo-estructura-html`** (nueva, separada de la del piloto React —
+  limpia para revisión independiente), anclada en `8731efb`.
+- Primera spec del roadmap de `ADR-002`: estructura de las 7 vistas (Landing, Dashboard,
+  Blog listado/detalle, Productos listado/detalle, Contacto) en **glassmorphism, ambas
+  pistas, una sola instancia de cada componente** — sin variantes todavía. Detalle
+  completo: `specs/0002-estructura-html-catalogo/spec.md`.
+- Decisiones nuevas de esta elicitación (no estaban en `ADR-002` original):
+  - Ambas pistas **en paralelo** (Carlos, no la recomendación inicial de AIRA de ir
+    vanilla-primero).
+  - Componente **Markdown reutilizable** (no solo de blog) para texto enriquecido —
+    único consumidor en esta spec: Blog Detalle. Producto Detalle queda en **texto
+    plano** (decisión explícita).
+  - Markdown requiere **resaltado de sintaxis real** y **renderizado de diagramas
+    Mermaid** — ambos self-hosted, nunca CDN (P5).
+  - Control de tema claro/sistema/oscuro: **ya existe** en ambas pistas (vanilla:
+    `theme-manager.js` + switcher de 3 botones; react: `next-themes`) — esta spec solo
+    exige replicarlo en las vistas nuevas, no inventar nada.
+- **Próximo paso:** Fase 2 (Plan) — el `arquitecto` redacta `plan.md` conforme al patrón,
+  fija `covers`, y detalla cómo se implementan ambas pistas en paralelo sin que diverjan.
+- Gate: 19 ok · 0 warn · 0 error.
 
 ### Catálogo ampliado + ratificación del piloto React (2026-10-16, chat Carlos↔AIRA)
 
