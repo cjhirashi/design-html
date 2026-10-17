@@ -1,6 +1,5 @@
 ---
 proyecto: design-html
-fase_actual: Génesis
 arquitectura: componentes-visuales-compartidos
 estado: greenfield-gobernado
 especialista-ux-ui: True
@@ -48,6 +47,11 @@ design-html/
     ├── index.html → ../index.html (symlink)
     └── dashboard.html → ../dashboard.html (symlink)
 ```
+
+> **Estado real (2026-10-16):** esto es el objetivo elegido, no el estado actual. Hoy cada
+> estilo tiene **copias**, no symlinks, y `dashboard.html` no existe todavía en la raíz.
+> Convertir exige unificar primero el HTML entre estilos (hoy difiere) → feature propia
+> con spec, no un ajuste suelto. Detalle y backlog en `.harness/memory/state.md`.
 
 ### Decisión: Symlinks vs. Copias
 
@@ -126,7 +130,15 @@ Familia de variables CSS `:root` (idéntica en todos los 21 estilos, valores var
 
 ## Art. 4 — Testing & Validación
 
-### Gate de Design-HTML (Especializado)
+### Gate de Design-HTML (Especializado) — ⚠️ OBJETIVO, NO IMPLEMENTADO
+
+Lo de abajo es el diseño de validación que este proyecto necesita. **`gate/check.sh`
+hoy es el genérico de SDD Anchored** (integridad, trazabilidad, anclaje, presupuesto de
+contexto) — ninguno de estos 5 checks específicos está implementado todavía (no hay
+`package.json`, ni `contrast-check`, ni `stylelint`/`html-validate` en el repo,
+verificado 2026-10-16). Implementarlo es trabajo propio, no trivial (el check #3 ya
+sabemos que falla hoy en `glassmorphism` — ver `state.md` Backlog) y requiere su propia
+spec antes de tocar nada, igual que cualquier otro cambio no trivial de este proyecto.
 
 ```bash
 # 1. Sincronización HTML (symlinks correctos en 21 estilos)
@@ -279,8 +291,9 @@ Antes de cualquier cambio.
 - Tags claros: feat/fix/style/docs/chore
 
 **P9: No auto-aprobarse**
-- Revisor valida gates antes de merge
-- especialista-diseño + revisor-contraste firman cada feature
+- `autor-de-spec` redacta, `arquitecto` planea, `experto-ux-ui` revisa la UI implementada
+- `revisor` valida gates adversarialmente antes de merge
+- Carlos firma Gate 4 (verified)
 
 ---
 
@@ -339,7 +352,7 @@ Antes de cualquier cambio.
 ### Sincronización
 
 - CLAUDE.md ← especificaciones de componentes
-- AGENTS.md ← roles cuando se agregan nuevos (revisor-contraste, especialista-diseño)
+- AGENTS.md ← roles cuando se agregan nuevos (ver `.claude/agents/`)
 - constitution.md ← cambios en decisiones P1-P9
 - `.harness/specs/` ← cada cambio importante
 
@@ -407,22 +420,20 @@ T-025: Documentar en CLAUDE.md
 
 ---
 
-## ✅ Estado Inicial (Génesis)
+## ✅ Rasgos Estructurales (fijos desde Génesis, no cambian con la fase)
 
-- **Fase:** Génesis completada
-- **Arquitectura:** Componentes visuales compartidos con symlinks
+- **Arquitectura:** Componentes visuales compartidos, symlinks como objetivo (ver Art. 2)
 - **Estilos:** 21 (15 generales + 6 dashboard especializados + 5 glassmorphism variants)
 - **HTML:** Compartido (landing + dashboard)
 - **CSS:** Parametrizado (21 × `:root` + `[data-theme="dark"]`)
 - **Variables:** Familia estándar (39 variables)
 - **Componentes Base:** Navbar, hero, stats, table, footer
 - **Responsive:** 900px (hamburguesa + off-canvas)
-- **Gate:** Listo, requiere `npm install` + scripts de validación
 
 ---
 
-**Documento:** constitution.md — Design-HTML  
-**Proyecto:** design-html  
-**Fecha:** 2026-10-10  
-**Responsable:** AIRA (especialista de diseño visual)  
-**Estado:** Génesis completada, listo para Specify
+**Documento:** constitution.md — Design-HTML
+**Proyecto:** design-html
+**Fecha de Génesis:** 2026-10-10
+**Responsable:** AIRA (especialista de diseño visual)
+**Fase vigente:** ver `.harness/memory/state.md` (no se repite aquí para evitar que quede obsoleto)

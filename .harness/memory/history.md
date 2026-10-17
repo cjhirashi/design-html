@@ -1,5 +1,16 @@
 # History — design-html
 
+## [2026-10-16] Reparación de harness (deuda de Génesis) — gate en verde
+- **Fase alcanzada:** (prompt-directo — mantenimiento de harness, no feature de producto)
+- **Rebotes del verificador:** 0 (sin revisor adversarial; es doc/config, no código de producto)
+- **Directiva de Pausa:** no
+- **Drift / re-anchor:** no
+- **Anclas movidas:** ninguna
+- **Gate:** verde (17 ok · 0 warn · 0 error, antes 16 ok · 1 warn)
+- **Docs actualizadas:** AGENTS.md (311→111 líneas), constitution.md (frontmatter, Art. 2/4/8/10, footer), state.md, `.claude/agents/{autor-de-spec,arquitecto}.md`
+- **Decisiones de diseño / límites de integración:** `model: opus` fijado en `autor-de-spec`/`arquitecto` (method.md §7, faltaba). Eliminada duplicación P1-P9 y tabla de roles obsoleta (`especialista-diseño`/`revisor-contraste`, nunca existieron como agentes) de AGENTS.md — canon único en constitution.md Art. 8 y method.md §8. Documentado como hallazgo (no corregido, requiere spec propia): el gate especializado del Art. 4 (symlinks/P3/AA/stylelint/html-validate) nunca se implementó, es solo aspiración. `frontend-design-pro` ya estaba copiado completo en `.claude/skills/`, solo sin commitear — commiteado.
+- **Próximo paso:** pendientes humanos sin tocar (Gate 2 + ADR-001 del piloto React, revisión visual, AA/P3 de glassmorphism vanilla, variedad de dashboards, implementar gate especializado Art. 4) — todos quedaron listados en `state.md` Backlog para que Carlos decida.
+
 ## [2026-10-16] 0001-glassmorphism-react — ajustes tras revisión visual (spec §6.1)
 - **Fase alcanzada:** implement
 - **Rebotes del verificador:** 0 (sin nueva ronda del revisor; se recomienda una antes de aprobar)
