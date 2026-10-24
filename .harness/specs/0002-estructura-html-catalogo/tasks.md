@@ -80,10 +80,24 @@ actualizado: 2026-10-24
     único error restante es `markdown.test.ts` por el módulo `@/components/markdown/
     markdown` ausente, preexistente de T-002, se resuelve en T-022). Vitest sigue en
     18 failed/33 passed; `-t blog`/`-t productos` sin regresión.
-- [ ] T-007 — `tests/unit/empty-state.test.tsx` (rojo): Blog y Productos con lista vacía
+- [x] T-007 — `tests/unit/empty-state.test.tsx` (rojo): Blog y Productos con lista vacía
   renderizan `empty-state` (RF-012) (cubre RF-012) [zona: test]
   - CHECK: `npx vitest run tests/unit/empty-state.test.tsx`
   - EXPECT: FALLA (rojo) — `empty-state.tsx` aún no existe.
+  - ROJO confirmado: la suite falla entera al resolver `@/components/glass/empty-state`
+    (`Failed to resolve import ... Does the file exist?`, vite:import-analysis) — módulo
+    ausente, como T-002. Asertos definidos: (1) `EmptyState` muestra mensaje visible en
+    español (prop `message` y texto por defecto) con `role="status"`; (2) Blog/Productos
+    listado: patrón laxo igual a `reuse.test.ts` — vía `ownSources()`/`source.ts` se
+    asevera que ALGÚN archivo bajo `app/blog/`/`app/productos/` importa
+    `@/components/glass/empty-state` y renderiza `<EmptyState`, sin fijar nombre/ruta de
+    componente contenedor (T-009/T-010 pueden inlinear el grid en `page.tsx` o extraerlo
+    con el nombre que prefieran). Amendment #1 (revisor): se quitó el import directo de
+    `BlogListing`/`ProductListing` con ruta/nombre inventados (sobre-acoplamiento) y se
+    sustituyó por el patrón de código fuente. Doble causa de rojo verificada: `app/blog/`
+    y `app/productos/` tampoco existen todavía (confirmado por listado de `app/`), así
+    que esos dos `describe` fallarían por ausencia real de archivos aun si el import de
+    `EmptyState` se resolviera.
 
 ### Bloque B — Frontend / maquetación primero (ambas pistas, datos simulados, sin lógica)
 - [ ] T-008 — React, presentacionales nuevos (datos simulados): `components/glass/
