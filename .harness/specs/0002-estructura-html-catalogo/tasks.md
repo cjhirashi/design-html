@@ -28,7 +28,7 @@ actualizado: 2026-10-24
   tabla, enlace, imagen **con `alt`** (RF-014), regla horizontal) (cubre RF-004, RF-014, RF-015) [zona: frontera]
   - CHECK: `node -e "const s=require('fs').readFileSync('content/blog/estructura-catalogo.md','utf8'); process.exit(/```mermaid/.test(s)&&/!\[[^\]]+\]\(/.test(s)?0:1)"`
   - EXPECT: exit 0 (el `.md` existe y contiene ≥1 mermaid y ≥1 imagen con alt).
-- [ ] T-002 — `tests/unit/markdown.test.ts` (rojo): contrato de salida del renderer —
+- [x] T-002 — `tests/unit/markdown.test.ts` (rojo): contrato de salida del renderer —
   cada construcción produce su HTML; bloque sin lenguaje → `<pre><code>` sin spans de
   color (RF-015); ninguna `<img>` sin `alt` (RF-014); Mermaid como SVG inline, sin
   `<script>`/URL externa (RF-011) (cubre RF-004, RF-011, RF-014, RF-015) [zona: test]
