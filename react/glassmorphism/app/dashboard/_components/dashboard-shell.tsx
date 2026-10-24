@@ -23,23 +23,28 @@ import {
   TokensIcon,
 } from "@/components/glass/icons";
 import { LogoMark } from "@/components/glass/logo";
-import { Metric } from "@/components/glass/metric";
 import { BarButton, Navbar } from "@/components/glass/navbar";
 import { Sidebar, SidebarItem, SidebarLabel } from "@/components/glass/sidebar";
 import { ThemeSwitch } from "@/components/glass/theme-switch";
 import {
   alert,
   breadcrumb,
+  chartSeries,
   chat,
   header,
   menu,
+  placeholderForm,
+  record,
   searchPlaceholder,
   services,
-  stats,
   tableCaption,
   user,
   type ServiceRow,
 } from "@/content/dashboard";
+
+import { LineChart } from "./line-chart";
+import { PlaceholderForm } from "./placeholder-form";
+import { RecordView } from "./record-view";
 
 const ICONS = {
   dashboard: <DashboardIcon />,
@@ -149,17 +154,48 @@ export function DashboardShell() {
               </div>
             </header>
 
-            <section aria-label="Métricas" className="grid grid-cols-[repeat(auto-fit,minmax(13.5rem,1fr))] gap-4">
-              {stats.map((s) => (
-                <GlassCard key={s.label} as="div" className="p-6">
-                  <Metric {...s} />
-                </GlassCard>
-              ))}
+            {/* RF-002: exactamente 5 bloques en el main-content, cada uno marcado con
+                data-block para que e2e/vistas.spec.ts (T-028) los pueda targetear. */}
+            <section data-block="grafico" aria-labelledby="bloque-grafico">
+              <h2 id="bloque-grafico" className="sr-only">
+                Gráfico de líneas
+              </h2>
+              <GlassCard as="div" className="p-6">
+                <LineChart title={chartSeries.title} unit={chartSeries.unit} points={chartSeries.points} />
+              </GlassCard>
             </section>
 
-            <Alert label={alert.label} message={alert.message} action={<Button size="sm">{alert.action}</Button>} />
+            <section data-block="alerta" aria-labelledby="bloque-alerta">
+              <h2 id="bloque-alerta" className="sr-only">
+                Alerta
+              </h2>
+              <Alert label={alert.label} message={alert.message} action={<Button size="sm">{alert.action}</Button>} />
+            </section>
 
-            <DataTable caption={tableCaption} columns={columns} rows={services} rowKey={(r) => r.id} />
+            <section data-block="tabla" aria-labelledby="bloque-tabla">
+              <h2 id="bloque-tabla" className="sr-only">
+                Tabla
+              </h2>
+              <DataTable caption={tableCaption} columns={columns} rows={services} rowKey={(r) => r.id} />
+            </section>
+
+            <section data-block="registro" aria-labelledby="bloque-registro">
+              <h2 id="bloque-registro" className="sr-only">
+                Vista de registro
+              </h2>
+              <GlassCard as="div" className="p-6">
+                <RecordView caption={record.caption} fields={record.fields} />
+              </GlassCard>
+            </section>
+
+            <section data-block="formulario" aria-labelledby="bloque-formulario">
+              <h2 id="bloque-formulario" className="sr-only">
+                Formulario
+              </h2>
+              <GlassCard as="div" className="p-6">
+                <PlaceholderForm {...placeholderForm} />
+              </GlassCard>
+            </section>
           </div>
         </main>
 

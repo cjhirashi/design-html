@@ -96,6 +96,41 @@ export const services: ServiceRow[] = [
   },
 ];
 
+/** Dataset fijo del gráfico de líneas (RF-002): placeholder, sin librería de charts. */
+export const chartSeries = {
+  title: "Latencia de capa (últimas 7 muestras)",
+  unit: "ms",
+  points: [14, 18, 16, 22, 19, 15, 12],
+} as const;
+
+/** Vista de registro/detalle (RF-002): pares clave-valor de un único registro. */
+export const record = {
+  caption: "Detalle del nodo seleccionado",
+  fields: [
+    { label: "Identificador", value: "nodo-07" },
+    { label: "Nombre", value: "Motor Glassmorphism" },
+    { label: "Estado", value: "Operativo" },
+    { label: "Región", value: "mx-central-1" },
+    { label: "Responsable", value: "Charlie H." },
+    { label: "Última verificación", value: "Hace 1 min" },
+  ],
+} as const;
+
+/** Formulario placeholder (RF-002): texto + select + boolean, sin validación. */
+export const placeholderForm = {
+  caption: "Nuevo nodo (placeholder, sin validación)",
+  nameLabel: "Nombre del nodo",
+  namePlaceholder: "p. ej. nodo-08",
+  regionLabel: "Región",
+  regionOptions: [
+    { value: "mx-central-1", label: "México central" },
+    { value: "us-east-1", label: "EE. UU. este" },
+    { value: "eu-west-1", label: "Europa oeste" },
+  ],
+  activeLabel: "Activar al crear",
+  submitLabel: "Crear nodo",
+};
+
 export const chat: { title: string; placeholder: string; sendLabel: string; messages: ChatMessage[] } = {
   title: "Asistente Glass UI",
   placeholder: "Enviar comando al agente…",

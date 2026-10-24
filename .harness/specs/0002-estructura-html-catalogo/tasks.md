@@ -219,11 +219,29 @@ actualizado: 2026-10-24
     mensaje sin prop `error`. `ContactoPage` compone `Navbar/Logo/NavLink/ThemeSwitch/
     Footer` directo en la ruta (mismo patrón que Productos/Blog), sin header/aside
     propio.
-- [ ] T-014 — React Dashboard a 5 bloques: 1 gráfico de líneas (SVG estático inline, sin
+- [x] T-014 — React Dashboard a 5 bloques: 1 gráfico de líneas (SVG estático inline, sin
   librería de charts), 1 alerta, 1 tabla (dataset fijo), 1 vista de registro/detalle, 1
   formulario placeholder (texto+select+boolean) con `field` (cubre RF-002) [zona: frontend]
   - CHECK: `npx playwright test e2e/vistas.spec.ts -g dashboard`
   - EXPECT: el dashboard muestra los 5 bloques (tras T-029 escribir el spec).
+  - Hecho (2026-10-24): `DashboardShell` (`app/dashboard/_components/dashboard-shell.tsx`)
+    ahora compone exactamente 5 `<section data-block="grafico|alerta|tabla|registro|
+    formulario">` en el main-content (cada uno con `h2 sr-only` en español), quitando el
+    bloque de métricas (`stats`/`Metric`) que hacía 6. Nuevos: `line-chart.tsx` (SVG
+    estático inline, `stroke="currentColor"` + clase `text-primary`, dataset fijo
+    `chartSeries`), `record-view.tsx` (par clave-valor, dataset fijo `record`),
+    `placeholder-form.tsx` (usa `Field` con los 3 `as`). `components/glass/field.tsx`
+    ganó `as: "input" | "select" | "boolean"` (discriminated union) para soportar
+    select/checkbox sin romper el uso existente de `ContactForm` (T-013). Dataset nuevo en
+    `content/dashboard.ts`: `chartSeries`, `record`, `placeholderForm`. **CHECK formal de
+    Playwright diferido a T-028** (`e2e/vistas.spec.ts` no existe todavía — lo escribe
+    T-028/T-029 según plan §9). Verificado en su lugar: `npm run type-check` limpio (solo
+    el error preexistente de `markdown.test.ts`), `npx vitest run` sin nuevas rojas (38
+    preexistentes, mismas que antes de T-014; 382 pasan), `npm run lint` limpio, y
+    sondeo de Playwright: **no arranca** en este entorno — `chromium_headless_shell`
+    falla con `error while loading shared libraries: libatk-1.0.so.0: cannot open shared
+    object file` (falta de libs del sistema, documentado en README.md/state.md; el
+    workaround `~/.cache/pw-libs` está fuera del sandbox de esta sesión).
 - [ ] T-015 — React Landing: completar carrusel/galería con imágenes locales en
   `public/gallery/` vía `next/image` (cubre RF-001) [zona: frontend]
   - CHECK: `npx playwright test e2e/landing.spec.ts`
