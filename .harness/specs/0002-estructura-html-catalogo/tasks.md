@@ -100,11 +100,20 @@ actualizado: 2026-10-24
     `EmptyState` se resolviera.
 
 ### Bloque B — Frontend / maquetación primero (ambas pistas, datos simulados, sin lógica)
-- [ ] T-008 — React, presentacionales nuevos (datos simulados): `components/glass/
+- [x] T-008 — React, presentacionales nuevos (datos simulados): `components/glass/
   post-card.tsx`, `product-card.tsx`, `empty-state.tsx`, `field.tsx` (error inline)
   (cubre RF-003, RF-005, RF-012, RF-013) [zona: frontend]
   - CHECK: `npm run type-check`
   - EXPECT: type-check limpio; los 4 componentes existen y exportan.
+  - Hecho: 4 componentes creados sin lógica de negocio (presentacional puro, datos vía
+    props). `type-check` limpio salvo el rojo preexistente de `tests/unit/markdown.test.ts`
+    (T-002, se resuelve en T-022) — confirmado por grep sin coincidencias de
+    post-card/product-card/empty-state/field. `empty-state.test.tsx` primer describe (3
+    tests, componente base) en verde; `literals.test.ts` las 4 aserciones de existencia +
+    sin-literales de los componentes nuevos en verde (solo quedan rojas
+    markdown.tsx/prose.ts, T-022). Fallas restantes en reuse/tokens son de tareas
+    posteriores (rutas app/blog, app/productos, app/contacto aún no existen; rojo de
+    --primary-color documentado para T-019) — no las toca esta tarea.
 - [ ] T-009 — React Blog listado: `app/blog/page.tsx` + `app/blog/_components/` +
   `content/blog.ts` (grid de `post-card`, imagen/título/extracto/fecha) (cubre RF-003) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts -t blog`
