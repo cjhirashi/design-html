@@ -275,10 +275,23 @@ actualizado: 2026-10-24
     `assets/vidrio-0{1,2,3}.jpg`; `producto-detalle.html` en texto plano sin cargar
     `markdown-renderer.js` (ajustado un comentario HTML que por accidente contenía esa cadena
     literal y falseaba el test en rojo). Pendiente de `revisor`.
-- [ ] T-018 — Vanilla `blog-detalle.html` (maqueta) con placeholder del Markdown (se
+- [x] T-018 — Vanilla `blog-detalle.html` (maqueta) con placeholder del Markdown (se
   regenera en T-025) + `#themeSwitcher` (cubre RF-004) [zona: frontend]
   - CHECK: `test -f glassmorphism/blog-detalle.html && grep -q md-content glassmorphism/blog-detalle.html`
   - EXPECT: exit 0.
+  - Evidencia: CHECK → exit 0. `npx vitest run tests/unit/paridad.test.ts -t vanilla` →
+    56 passed, 1 failed, 3 skipped (60) — el único rojo es "sección contenido markdown
+    presente en react" (busca `@/components/markdown/markdown`, fuera de alcance: T-022).
+    Todos los rojos vanilla de blog-detalle que dejó T-017 pasan ahora en verde. Suite
+    completa `npx vitest run tests/unit/paridad.test.ts` → 58 passed, 2 failed: el mismo
+    rojo react de T-022 + "blog-detalle.html contiene el mismo HTML de md-content…"
+    (marcado en el propio test como "pendiente/rojo esperado" hasta T-024, script de
+    build). Contenedor `<div class="md-content">…</div><!-- /md-content -->` con
+    placeholder en español, metadata del post `estructura-catalogo` (título/fecha/
+    excerpt materializados desde `content/blog.ts`), imagen local `assets/vidrio-01.jpg`
+    con alt en español, nav/footer/#themeSwitcher idénticos al patrón de `blog.html`.
+    Anti-URL: `grep -REIl "https?://|unsplash|cdn" glassmorphism/blog-detalle.html` →
+    vacío (exit 1). Pendiente de `revisor`.
 - [ ] T-019 — Clases nuevas en `glassmorphism/css/style.css` (`.blog-grid`/`.post-card`/
   `.product-grid`/`.product-card`/`.md-content *`/`.field`/`.field-error`/`.empty-state`),
   **solo variables P3** (sin valores de color nuevos) (cubre RF-009, RNF-003) [zona: tokens]
