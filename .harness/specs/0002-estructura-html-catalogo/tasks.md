@@ -120,23 +120,37 @@ actualizado: 2026-10-24
   - EXPECT: la parte de Blog pasa (usa `post-card`).
   - Hecho: creado `components/glass/footer.tsx` (componente compartido ausente, exigido
     por `reuse.test.ts` desde T-006 para blog/productos/contacto/producto-detalle —
-    reusa `Band`, no declara `backdrop-*` propio) y
-    `app/blog/_components/site-nav.tsx` (compone `Navbar`/`Logo`/`NavLink`/`ThemeSwitch`
-    de `components/glass/navbar`, igual patrón que `app/_landing/site-header.tsx`, con
-    enlaces entre vistas del catálogo en vez de anclas de sección). `content/blog.ts`
+    reusa `Band`, no declara `backdrop-*` propio). `content/blog.ts`
     tipado en español con 3 posts (incluye `estructura-catalogo`, mismo slug que
     `content/blog/estructura-catalogo.md`, misma imagen de portada `/gallery/
     vidrio-01.jpg`, asset ya existente). `app/blog/page.tsx` renderiza el grid de
-    `<PostCard>` dentro de `AuroraBackground` + `SiteNav` + `Footer`; usa `<EmptyState>`
+    `<PostCard>` dentro de `AuroraBackground` + navbar + `Footer`; usa `<EmptyState>`
     si `posts` está vacío (RF-012). `-t blog` → 6/6 verde; `type-check` limpio salvo el
     TS2307 preexistente de `markdown.test.ts` (T-022); `reuse.test.ts` completo →
     37/51 (14 rojas = productos/blog-detalle/producto-detalle/contacto, tareas futuras,
     sin regresión en landing/dashboard/blog); `empty-state.test.tsx`/`literals.test.ts`
     sin regresión (fallas restantes = productos T-010, markdown.tsx/prose.ts T-022).
-- [ ] T-010 — React Productos listado: `app/productos/page.tsx` +
-  `app/productos/_components/` + `content/productos.ts` (grid `product-card`) (cubre RF-005) [zona: frontend]
+  - Corrección post-revisión (amendment #1, rechazo de T-010): el wrapper
+    `app/blog/_components/site-nav.tsx` quedó byte-a-byte idéntico al de
+    `app/productos/_components/site-nav.tsx` (T-010) → duplicación pura. Fix de raíz:
+    se eliminaron ambos wrappers; `app/blog/page.tsx` y `app/productos/page.tsx`
+    componen `Navbar`/`Logo`/`NavLink`/`ThemeSwitch` directamente en el propio
+    `page.tsx` (importados de `@/components/glass/*` dentro de cada ruta, como exige
+    `glassModules()` en `reuse.test.ts`), con el array de enlaces compartido en
+    `content/site.ts` (`catalogNav`) — única fuente de verdad, cada página solo decide
+    su `active`. `app/blog/_components/` y `app/productos/_components/` ya no existen.
+- [x] T-010 — React Productos listado: `app/productos/page.tsx` +
+  `content/productos.ts` (grid `product-card`) (cubre RF-005) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts -t productos`
   - EXPECT: la parte de Productos pasa (usa `product-card`).
+  - Hecho: `content/productos.ts` tipado en español con 3 productos (imagen local
+    `/gallery/vidrio-0X.jpg`, nombre, precio formateado, slug). `app/productos/
+    page.tsx` renderiza el grid de `<ProductCard>` dentro de `AuroraBackground` +
+    navbar + `Footer`; usa `<EmptyState>` si `products` está
+    vacío (RF-012). `-t productos` → 6/6 verde; `type-check` limpio salvo el TS2307
+    preexistente de `markdown.test.ts` (T-022); `reuse.test.ts` completo → 41/51 (10 rojas
+    = post individual/ficha de producto/contacto, tareas futuras T-011/T-012/T-013, sin
+    regresión en landing/dashboard/blog/productos).
 - [ ] T-011 — React Producto detalle **texto plano**: `app/productos/[slug]/page.tsx`
   (descripción como string, **sin** `<Markdown>`) (cubre RF-006) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts -t "producto-detalle sin markdown"`
