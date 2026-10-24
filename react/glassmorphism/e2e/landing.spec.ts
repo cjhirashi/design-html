@@ -48,3 +48,46 @@ test.describe("RF-003 aurora tras el vidrio", () => {
     expect(bg).toContain("rgba(244, 114, 182, 0.18)");
   });
 });
+
+// RF-001 · el landing cierra con el carrusel/galería de glassmorphism, servido con
+// imágenes LOCALES (`public/gallery/`) vía `next/image` — nunca Unsplash ni CDN (P5).
+// Cubre T-015.
+test.describe("RF-001 galería/carrusel con imágenes locales", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#galeria").scrollIntoViewIfNeeded();
+  });
+
+  test("el carrusel monta sus tres tarjetas de galería", async ({ page }) => {
+    const carousel = page.locator("#galeria ul[data-scroll-x]");
+    await expect(carousel).toBeVisible();
+    await expect(carousel.locator("> li")).toHaveCount(3);
+  });
+
+  test("cada imagen se optimiza con next/image desde /gallery y se pinta de verdad", async ({ page }) => {
+    const imgs = page.locator("#galeria img");
+    await expect(imgs).toHaveCount(3);
+    const count = await imgs.count();
+    for (let i = 0; i < count; i++) {
+      const img = imgs.nth(i);
+      await img.scrollIntoViewIfNeeded();
+      // la imagen termina de decodificar (next/image puede diferir la carga)
+      await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
+      const src = await img.evaluate((el: HTMLImageElement) => el.currentSrc || el.src);
+      // pasa por el optimizador de next/image, no es un <img> crudo…
+      expect(src).toContain("/_next/image");
+      // …y la fuente real es un recurso local de /gallery, no remoto.
+      const decoded = decodeURIComponent(new URL(src).searchParams.get("url") ?? "");
+      expect(decoded.startsWith("/gallery/")).toBe(true);
+    }
+  });
+
+  test("ninguna imagen del landing apunta a un host externo", async ({ page }) => {
+    const externals = await page.locator("img").evaluateAll((els) =>
+      els
+        .map((el) => (el as HTMLImageElement).currentSrc || (el as HTMLImageElement).src)
+        .filter((src) => /^https?:\/\//i.test(src) && !src.startsWith(location.origin)),
+    );
+    expect(externals).toEqual([]);
+  });
+});
