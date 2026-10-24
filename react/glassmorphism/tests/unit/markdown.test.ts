@@ -99,7 +99,10 @@ describe("RF-004 Markdown renderer · contrato de salida por construcción", () 
 
   it("RF-015 · bloque de código SIN lenguaje produce <pre><code> monoespaciado sin spans de color", async () => {
     const html = await renderMarkdownToHtml(fixture);
-    const match = html.match(/<pre[^>]*>[\s\S]*?bloque sin lenguaje[\s\S]*?<\/pre>/);
+    // Delta T-022: el tramo inicial excluye `</pre>` para no cruzar el bloque CON
+    // lenguaje que precede a este en el fixture (el lazy original arrancaba en su
+    // <pre> y se extendía hasta el cierre de ESTE bloque, arrastrando sus spans).
+    const match = html.match(/<pre[^>]*>(?:(?!<\/pre>)[\s\S])*?bloque sin lenguaje[\s\S]*?<\/pre>/);
     expect(match).not.toBeNull();
     const block = match![0];
     expect(block).toMatch(/<code[^>]*>/);

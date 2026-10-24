@@ -34,6 +34,12 @@ actualizado: 2026-10-24
   `<script>`/URL externa (RF-011) (cubre RF-004, RF-011, RF-014, RF-015) [zona: test]
   - CHECK: `npx vitest run tests/unit/markdown.test.ts`
   - EXPECT: FALLA (rojo) — aún no existe `components/markdown/markdown.tsx`.
+  - Delta T-022 (autorizado por el orquestador, no es decisión de producto): corregido
+    el regex de la línea 102 — cruzaba el `<pre>` del bloque CON lenguaje que precede en
+    el fixture, arrastrando sus spans de Shiki al match del bloque SIN lenguaje. Ancla
+    `(?:(?!<\/pre>)[\s\S])*?` en el primer tramo para no cruzar un `</pre>` previo.
+    Intención de RF-015 intacta y el test sigue discriminante (verificado: un span
+    inyectado dentro del bloque correcto sigue haciendo fallar el `expect`).
 - [x] T-003 — `tests/unit/paridad.test.ts` (rojo): declara las **7 vistas** esperadas en
   ambas pistas (rutas react ↔ archivos HTML vanilla) y sus secciones; check anti-URL
   externa (`http(s)://`, `cdn`) sobre los `.html` vanilla; producto-detalle NO usa el
@@ -334,11 +340,36 @@ actualizado: 2026-10-24
   - EXPECT: paridad verde; informe visual sin hallazgos Critical/High.
 
 ### Bloque C — Implementación funcional (nunca antes del frontend)
-- [ ] T-022 — React componente Markdown `components/markdown/markdown.tsx` + frontera
+- [x] T-022 — React componente Markdown `components/markdown/markdown.tsx` + frontera
   **Shiki** (resaltado en build/servidor; cero JS de resaltado en cliente); bloque sin
   lenguaje → monoespaciado sin resaltado (RF-015) (cubre RF-004, RF-011, RF-015) [zona: frontera]
   - CHECK: `npx vitest run tests/unit/markdown.test.ts`
   - EXPECT: pasa salvo la parte de Mermaid (T-023).
+  - Instalado `markdown-it@15.0.3` + `shiki@4.5.0` (`dependencies`) y
+    `@types/markdown-it@14.2.0` (`devDependencies`). Creado
+    `components/markdown/markdown.tsx` (`renderMarkdownToHtml`): markdown-it
+    (`html:false`) con `s_open`/`s_close` sobrescritas a `<del>`; la regla `fence`
+    difiere cada bloque de código a un placeholder resuelto después de forma async —
+    con lenguaje reconocido → `shiki.codeToHtml` (tema `github-dark`, bundle local, sin
+    red); sin lenguaje o lenguaje no reconocido → `<pre><code>` escapado, monoespaciado,
+    sin spans (RF-015).
+  - Pausa intermedia (method.md §5): el primer CHECK dio 18 passed/3 failed — 2 de
+    Mermaid (esperado) + 1 defecto real del regex de `tests/unit/markdown.test.ts:102`
+    (T-002), que cruzaba el `<pre>` del bloque CON lenguaje precedente y arrastraba sus
+    spans de Shiki al match del bloque SIN lenguaje (confirmado independiente de la
+    implementación). Reportado al orquestador, que verificó la causa raíz y autorizó el
+    delta mínimo sobre esa línea (ver nota bajo T-002 arriba) — no es decisión de
+    producto, RF-015 no cambia de significado.
+  - CHECK final: `npx vitest run tests/unit/markdown.test.ts` → **19 passed / 2 failed**
+    (SOLO los 2 de Mermaid: "RF-011 · el diagrama Mermaid se emite como `<svg>` inline" y
+    "RF-011 · el output no contiene `<script>`… SVG self-hosted" — esperados, T-023).
+    `npm run type-check` → limpio, 0 errores (desaparece el TS2307 preexistente de
+    `markdown.test.ts`). Suite completa `npx vitest run` → 440 passed / 6 failed: los 2
+    de Mermaid + 4 preexistentes ya documentados como pendientes de T-023/T-024
+    (`reuse.test.ts` "importa/renderiza `<Markdown>`" y `paridad.test.ts` "contenido
+    markdown presente en react"/"blog-detalle.html paridad markdown" — checks estáticos
+    sobre `app/blog/[slug]/page.tsx`, fuera del alcance literal de T-022, que solo pide
+    el componente). Sin regresión en el resto de la suite.
 - [ ] T-023 — Frontera **Mermaid**: pre-render a **SVG inline** en build-time (paquete
   npm, nunca CDN) e incrustación en el output (cubre RF-004, RF-011) [zona: frontera]
   - CHECK: `npx vitest run tests/unit/markdown.test.ts -t mermaid`
