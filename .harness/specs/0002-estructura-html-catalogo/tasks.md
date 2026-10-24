@@ -370,10 +370,66 @@ actualizado: 2026-10-24
     markdown presente en react"/"blog-detalle.html paridad markdown" — checks estáticos
     sobre `app/blog/[slug]/page.tsx`, fuera del alcance literal de T-022, que solo pide
     el componente). Sin regresión en el resto de la suite.
-- [ ] T-023 — Frontera **Mermaid**: pre-render a **SVG inline** en build-time (paquete
+- [x] T-023 — Frontera **Mermaid**: pre-render a **SVG inline** en build-time (paquete
   npm, nunca CDN) e incrustación en el output (cubre RF-004, RF-011) [zona: frontera]
-  - CHECK: `npx vitest run tests/unit/markdown.test.ts -t mermaid`
+  - CHECK: `npx vitest run tests/unit/markdown.test.ts -t Mermaid` (el patrón de vitest es
+    case-sensitive; con minúscula `-t mermaid` quedan 21 skipped = pase vacío — typo corregido en T-023)
   - EXPECT: el output del diagrama es `<svg …>` inline, sin `<script>`/URL externa.
+  - Mecanismo elegido: paquete npm `mermaid@12.2.0` (`dependencies`) + build UMD local
+    `node_modules/mermaid/dist/mermaid.js` (nunca CDN) cargado vía
+    `page.addScriptTag({ path: ... })` en una página headless de **Playwright**
+    (`playwright@1.64.1`, movido de `devDependencies` a `dependencies` porque ahora lo
+    usa código de producción, no solo e2e). Se eligió sobre `@mermaid-js/mermaid-cli`
+    porque éste depende de su propio puppeteer/Chromium (riesgo de descarga de red o de
+    libs ausentes ya documentado como bloqueo de entorno); Playwright ya está vendorizado
+    y verificado funcional en esta sesión (`LD_LIBRARY_PATH` → `~/.cache/pw-libs`).
+  - Creado `components/markdown/render-mermaid.ts` (`renderMermaidToSvg`): lanza un
+    browser Chromium headless (singleton perezoso, reutilizado entre llamadas), carga el
+    UMD de mermaid como script local, llama a `mermaid.render(id, source)` en el contexto
+    de la página (`securityLevel: "strict"`, `startOnLoad: false`) y devuelve el `svg`
+    resultante ya saneado. `components/markdown/markdown.tsx`: la rama `fence` con
+    `lang === "mermaid"` delega en `renderMermaidToSvg` en vez de Shiki/`<pre>`.
+  - Restricción P5/RNF-002: verificado que el SVG crudo de mermaid.render solo contiene
+    `http://www.w3.org/2000/svg` y `http://www.w3.org/1999/xhtml` (namespaces XML, no
+    recursos de red) y ningún "cdn". Como el regex literal de
+    `tests/unit/markdown.test.ts:138` (`/https?:\/\//i`) no distingue namespace de URL de
+    red (mismo caso ya resuelto para los SVG inline vanilla en T-016), `sanitizeMermaidSvg`
+    elimina esos 3 atributos `xmlns="http://..."` del SVG con `.replace` (el SVG sigue
+    siendo válido embebido en HTML: el namespace es implícito en el árbol del documento).
+    Nada de `<script>` llega al output: Playwright/mermaid corren enteramente en
+    build/servidor.
+  - CHECK literal del prompt `npx vitest run tests/unit/markdown.test.ts -t mermaid`
+    (minúscula) → `21 skipped` (vitest `testNamePattern` es case-sensitive y los títulos
+    de los 2 tests usan "Mermaid" con mayúscula). Con `-t Mermaid` (mayúscula, coincide
+    con el texto real del test):
+    ```
+     RUN  v5.0.5 .../react/glassmorphism
+     Test Files  1 passed (1)
+          Tests  2 passed | 19 skipped (21)
+     Duration  6.14s
+    ```
+  - CHECK `npx vitest run tests/unit/markdown.test.ts` completo (sin filtro):
+    ```
+     RUN  v5.0.5 .../react/glassmorphism
+     Test Files  1 passed (1)
+          Tests  21 passed (21)
+     Duration  48.74s
+    ```
+    21/21 passed — nada rojo en este archivo (los 2 de Mermaid + los 19 ya verdes de
+    T-022).
+  - `npm run type-check` → limpio, sin salida, exit code 0.
+  - `npx vitest run` (suite completa) → `446 passed | 4 failed` (de 450). Los 4 fallos
+    restantes son exactamente los ya documentados en T-022 como pendientes de **T-024**
+    (`reuse.test.ts` "post individual · importa/renderiza `<Markdown>`" y
+    `paridad.test.ts` "sección contenido markdown presente en react"/"blog-detalle.html
+    paridad markdown"): comprueban que `app/blog/[slug]/page.tsx` use `<Markdown>` JSX
+    real, fuera del alcance literal de T-023 (solo pide la frontera de render, no su
+    conexión a la página). Sin regresión: los mismos 4 ya estaban rojos antes de esta
+    tarea; `markdown.test.ts` pasó de 19/21 a 21/21.
+  - Paquetes instalados: `mermaid@^12.2.0` (dependencies), `playwright@^1.64.1`
+    (dependencies, ya presente como transitiva de `@playwright/test`). Archivos tocados:
+    `components/markdown/markdown.tsx` (rama `lang === "mermaid"` en `renderCodeBlock`),
+    `components/markdown/render-mermaid.ts` (nuevo), `package.json`/`package-lock.json`.
 - [ ] T-024 — Script de build vanilla `react/glassmorphism/scripts/build-vanilla-markdown.mjs`
   que genera `glassmorphism/blog-detalle.html` desde la **misma fuente `.md`** (mismo
   HTML de Shiki + mismo SVG de Mermaid) (cubre RF-004, RF-010, RF-011) [zona: frontera]

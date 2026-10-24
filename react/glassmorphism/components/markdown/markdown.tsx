@@ -4,10 +4,13 @@
 // lenguaje declarado. Cero JS de resaltado llega al cliente: el resultado es
 // HTML ya coloreado con `style`/`class` inline (self-hosted, sin CDN, P5).
 //
-// El bloque de Mermaid (```mermaid) se resuelve aquí como bloque de código
-// normal; su conversión a <svg> inline es la frontera de T-023.
+// El bloque de Mermaid (```mermaid) se resuelve a <svg> inline vía
+// `renderMermaidToSvg` (T-023): mermaid (paquete npm vendorizado, nunca CDN)
+// se carga en una página headless de Playwright para generar el SVG en
+// build/servidor; el SVG resultante es autocontenido (sin <script>, sin red).
 import MarkdownIt from "markdown-it";
 import { codeToHtml } from "shiki";
+import { renderMermaidToSvg } from "./render-mermaid";
 
 // Tema fijo de Shiki para el resaltado de bloques de código. No es un literal
 // de color del sistema de diseño (RNF-003 regula las vistas, no el output de
@@ -66,12 +69,17 @@ export async function renderMarkdownToHtml(source: string): Promise<string> {
 }
 
 /**
- * Resuelve un único bloque de código. Con lenguaje reconocido delega en Shiki
+ * Resuelve un único bloque de código. Mermaid (RF-011) se pre-renderiza a
+ * <svg> inline en build/servidor. Con lenguaje reconocido delega en Shiki
  * (resaltado real). Sin lenguaje, o si Shiki no reconoce el lenguaje, cae a
  * `<pre><code>` monoespaciado sin ningún span de color (RF-015).
  */
 async function renderCodeBlock(lang: string, code: string): Promise<string> {
   const content = code.replace(/\n$/, "");
+
+  if (lang === "mermaid") {
+    return renderMermaidToSvg(content);
+  }
 
   if (!lang) {
     return plainCodeBlock(content);
