@@ -114,10 +114,25 @@ actualizado: 2026-10-24
     markdown.tsx/prose.ts, T-022). Fallas restantes en reuse/tokens son de tareas
     posteriores (rutas app/blog, app/productos, app/contacto aún no existen; rojo de
     --primary-color documentado para T-019) — no las toca esta tarea.
-- [ ] T-009 — React Blog listado: `app/blog/page.tsx` + `app/blog/_components/` +
+- [x] T-009 — React Blog listado: `app/blog/page.tsx` + `app/blog/_components/` +
   `content/blog.ts` (grid de `post-card`, imagen/título/extracto/fecha) (cubre RF-003) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts -t blog`
   - EXPECT: la parte de Blog pasa (usa `post-card`).
+  - Hecho: creado `components/glass/footer.tsx` (componente compartido ausente, exigido
+    por `reuse.test.ts` desde T-006 para blog/productos/contacto/producto-detalle —
+    reusa `Band`, no declara `backdrop-*` propio) y
+    `app/blog/_components/site-nav.tsx` (compone `Navbar`/`Logo`/`NavLink`/`ThemeSwitch`
+    de `components/glass/navbar`, igual patrón que `app/_landing/site-header.tsx`, con
+    enlaces entre vistas del catálogo en vez de anclas de sección). `content/blog.ts`
+    tipado en español con 3 posts (incluye `estructura-catalogo`, mismo slug que
+    `content/blog/estructura-catalogo.md`, misma imagen de portada `/gallery/
+    vidrio-01.jpg`, asset ya existente). `app/blog/page.tsx` renderiza el grid de
+    `<PostCard>` dentro de `AuroraBackground` + `SiteNav` + `Footer`; usa `<EmptyState>`
+    si `posts` está vacío (RF-012). `-t blog` → 6/6 verde; `type-check` limpio salvo el
+    TS2307 preexistente de `markdown.test.ts` (T-022); `reuse.test.ts` completo →
+    37/51 (14 rojas = productos/blog-detalle/producto-detalle/contacto, tareas futuras,
+    sin regresión en landing/dashboard/blog); `empty-state.test.tsx`/`literals.test.ts`
+    sin regresión (fallas restantes = productos T-010, markdown.tsx/prose.ts T-022).
 - [ ] T-010 — React Productos listado: `app/productos/page.tsx` +
   `app/productos/_components/` + `content/productos.ts` (grid `product-card`) (cubre RF-005) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts -t productos`
