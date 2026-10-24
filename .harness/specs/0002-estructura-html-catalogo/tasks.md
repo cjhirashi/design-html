@@ -246,11 +246,18 @@ actualizado: 2026-10-24
   `public/gallery/` vía `next/image` (cubre RF-001) [zona: frontend]
   - CHECK: `npx playwright test e2e/landing.spec.ts`
   - EXPECT: landing con galería; sin regresiones del spec existente.
-- [ ] T-016 — Vanilla imágenes locales: `glassmorphism/assets/` + migrar el carrusel del
+- [x] T-016 — Vanilla imágenes locales: `glassmorphism/assets/` + migrar el carrusel del
   landing de **Unsplash remoto → local** en `glassmorphism/index.html` (cierra P5)
   (cubre RF-001, RNF-002) [zona: frontend]
   - CHECK: `grep -RIl -E "https?://|unsplash|cdn" glassmorphism/index.html`
   - EXPECT: sin coincidencias (grep devuelve vacío / exit 1).
+  - Evidencia: grep → exit 1 (vacío); `npx vitest run tests/unit/paridad.test.ts -t RNF-002`
+    → "Landing (glassmorphism/index.html) no carga recursos de http(s):// ni cdn" ✓. Imágenes
+    copiadas desde `react/glassmorphism/public/gallery/` a `glassmorphism/assets/`
+    (vidrio-01/02/03.jpg); también se removió `xmlns="http://www.w3.org/2000/svg"` redundante
+    de 4 SVG inline (namespace ya es inferido por el parser HTML; mismo patrón que el SVG del
+    logo en la línea 13, que nunca tuvo `xmlns`) — necesario para que el grep crudo del CHECK
+    diera vacío sin romper los SVG. Pendiente de `revisor`.
 - [ ] T-017 — Vanilla vistas nuevas HTML: `blog.html`, `productos.html`,
   `producto-detalle.html`, `contacto.html` con bloque `#themeSwitcher` de 3 botones,
   carga de `../js/theme-manager.js` + `../js/nav-toggle.js`, datos materializados en
