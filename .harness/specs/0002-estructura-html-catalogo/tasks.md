@@ -50,10 +50,13 @@ actualizado: 2026-10-24
     (3.78:1 < 4.5). Contrato para T-019: el color del enlace de `.md-content` debe ser
     un token P3 que cumpla AA sobre `--bg-card` en ambos temas (p.ej. `--primary-text`,
     no `--primary-color` crudo) — sin declarar ningún valor de color nuevo.
-- [ ] T-005 — Extender `tests/unit/literals.test.ts`: prohibir literales de color e inline
+- [x] T-005 — Extender `tests/unit/literals.test.ts`: prohibir literales de color e inline
   `style` de color en los componentes/vistas nuevos (cubre RNF-003) [zona: test]
   - CHECK: `npx vitest run tests/unit/literals.test.ts`
   - EXPECT: FALLA mientras algún componente nuevo no exista / tenga literal.
+  - ROJO confirmado: 72/78 en verde (escaneo global existente intacto); fallan las 6
+    aserciones de existencia nuevas — `components/glass/{post-card,product-card,field,
+    empty-state}.tsx` y `components/markdown/{markdown.tsx,prose.ts}` aún no existen.
 - [ ] T-006 — Extender `tests/unit/reuse.test.ts`: Blog/Productos usan `post-card`/
   `product-card`; Contacto usa `field` con error inline; las 7 vistas reusan los
   componentes compartidos (cubre RF-003, RF-005, RF-013) [zona: test]
