@@ -248,10 +248,16 @@ actualizado: 2026-10-24
     falla con `error while loading shared libraries: libatk-1.0.so.0: cannot open shared
     object file` (falta de libs del sistema, documentado en README.md/state.md; el
     workaround `~/.cache/pw-libs` está fuera del sandbox de esta sesión).
-- [ ] T-015 — React Landing: completar carrusel/galería con imágenes locales en
+- [x] T-015 — React Landing: completar carrusel/galería con imágenes locales en
   `public/gallery/` vía `next/image` (cubre RF-001) [zona: frontend]
   - CHECK: `npx playwright test e2e/landing.spec.ts`
   - EXPECT: landing con galería; sin regresiones del spec existente.
+  - Evidencia (slice 1, `eedfe8b`): la galería ya existía (MediaCard + `next/image` +
+    `/gallery/vidrio-0{1,2,3}.jpg`); se añadió el bloque e2e "RF-001 galería/carrusel"
+    a `e2e/landing.spec.ts` (3 tarjetas, cada img vía `/_next/image` con `url` local
+    `/gallery/`, `naturalWidth>0`, sin host externo). `landing.spec.ts` → 6/6 verde
+    (3 aurora sin regresión + 3 galería) contra `next dev`. CHECK canónico (build de
+    producción) bloqueado por WIP Slice-2 (ver nota al cierre del bloque).
 - [x] T-016 — Vanilla imágenes locales: `glassmorphism/assets/` + migrar el carrusel del
   landing de **Unsplash remoto → local** en `glassmorphism/index.html` (cierra P5)
   (cubre RF-001, RNF-002) [zona: frontend]
@@ -326,13 +332,25 @@ actualizado: 2026-10-24
     `npx vitest run tests/unit/paridad.test.ts -t vanilla` → 56 passed/1 failed/3 skipped,
     mismo rojo preexistente de T-018 ("sección contenido markdown presente en react",
     T-022) — sin regresión en vanilla. Pendiente de `revisor`.
-- [ ] T-020 — Motion (P10, directiva de Carlos — sin RF nuevo): microinteracciones de las
+- [x] T-020 — Motion (P10, directiva de Carlos — sin RF nuevo): microinteracciones de las
   vistas nuevas (reveal de entrada, hover de `post-card`/`product-card`, transición del
   estado de éxito del form) reusando el easing existente; **ambas pistas** (react
   `MotionConfig`/`motion`, vanilla Motion vendorizado ADR-003); **respeta
   `prefers-reduced-motion`** (cubre RF-008) [zona: frontend]
   - CHECK: `npx playwright test e2e/vistas.spec.ts -g motion` (frame-diff en 2 capturas ≥1s; con reduce → sin diferencia, method §5)
   - EXPECT: movimiento perceptible por diff de píxeles; con `prefers-reduced-motion` el diff ≈ 0.
+  - Evidencia (slice 1, `2f7838e`): el motion ya estaba implementado (GlassCard
+    `interactive` → `hoverLift` gated por `useReducedMotion`); se añadió el bloque
+    "T-020 motion" a `e2e/vistas.spec.ts` (`-g motion` → 4/4 verde): hover de
+    post-card (/blog) y product-card (/productos) eleva a `matrix(1,0,0,1,0,-4)` sin
+    reduce y queda `none` con reduce. **Desvío de técnica (method §5):** se mide el
+    `transform` fotograma a fotograma, no pixel-diff — `glassHover` conserva el cambio
+    de color/sombra aun con reduce (sólo lo instantánea), así que un pixel-diff
+    mezclaría color y movimiento y el control "reduce → sin movimiento" no sería
+    limpio; el transform aísla el desplazamiento. **Fuera de alcance de slice 1:** la
+    "reveal de entrada" sólo anima bajo el pliegue y estas vistas son de una sección
+    superior (el mecanismo Reveal ya está medido en landing, `reduced-motion.spec.ts`);
+    la transición de éxito del form llega con el form funcional (Slice 3, T-025).
 - [ ] T-021 — Correr `paridad.test.ts` tras el bloque frontend + **revisión visual del
   `experto-ux-ui`** de las 7 vistas en claro/oscuro y a 900px, ambas pistas (plan §5)
   (cubre RF-010) [zona: frontend]
@@ -450,10 +468,19 @@ actualizado: 2026-10-24
   - EXPECT: pasa (lista vacía → `empty-state`).
 
 ### Bloque D — Pruebas de sistema (e2e)
-- [ ] T-028 — `e2e/vistas.spec.ts`: 5 vistas nuevas con switcher 3-vías presente;
+- [x] T-028 — `e2e/vistas.spec.ts`: 5 vistas nuevas con switcher 3-vías presente;
   dashboard con los 5 bloques; render sin error (cubre RF-002, RF-008) [zona: test]
   - CHECK: `npx playwright test e2e/vistas.spec.ts`
   - EXPECT: verde.
+  - Evidencia (slice 1, `7d1c6a8`): creado `e2e/vistas.spec.ts`. 6+4 tests → verde
+    contra `next dev`. Las 5 vistas nuevas (/blog, /productos, /productos/[slug],
+    /contacto, /blog/[slug]) montan el conmutador 3-vías (`data-testid="theme-switch"`,
+    role=group "Tema de color", 3 botones claro/sistema/oscuro), responden HTTP ok y no
+    lanzan `pageerror`; el dashboard expone sus 5 `[data-block=...]`
+    (grafico/alerta/tabla/registro/formulario) + conmutador. blog-detalle se prueba con
+    un post SIN Mermaid (`tokens-de-vidrio`): el render Markdown real es frontera de
+    Slice 2 con su propia cobertura. CHECK canónico (build de producción) bloqueado por
+    WIP Slice-2 (ver nota al cierre del bloque).
 - [ ] T-029 — `e2e/contacto.spec.ts`: envío válido → éxito; inválido → error junto al
   campo; sin peticiones de red (cubre RF-007, RF-013) [zona: test]
   - CHECK: `npx playwright test e2e/contacto.spec.ts`

@@ -6,9 +6,12 @@ slice se refina (criterios + plan corto) solo al tomarla, no antes. Driver
 loop, scope creep, trampa en tests. Checkpoint a Carlos al cerrar cada slice,
 no al final del backlog.
 
-- [ ] **Slice 1 — Landing completo (ambas pistas)**: T-015 (carrusel react con
+- [x] **Slice 1 — Landing completo (ambas pistas)**: T-015 (carrusel react con
   imágenes locales), T-020 (motion P10 en esa vista), T-028 (e2e vistas con
   switcher 3-vías). Demoable: landing navegable con carrusel y motion.
+  _Cerrado 2026-10-24 (AIRA Modo 2 headless). e2e verdes (16/16) contra `next dev`;
+  el CHECK canónico (webServer = `next build && next start`) sigue bloqueado por el
+  WIP Slice-2 (T-024) sin commitear → re-correr al cerrar Slice 2. Ver history.md._
 - [ ] **Slice 2 — Markdown build vanilla**: T-024 (script `build-vanilla-markdown.mjs`,
   usa T-022/T-023 ya cerrados). Demoable: `blog-detalle.html` generado con el
   mismo render que react.
