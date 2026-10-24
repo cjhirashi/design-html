@@ -294,6 +294,9 @@ Antes de cualquier cambio.
 - No @import de Google Fonts
 - No <link> a CDNs
 - Tipografía del sistema únicamente
+- Librerías de terceros (p. ej. `Motion`, ver `ADR-003`): se vendorizan en
+  `js/vendor/` y se sirven desde el propio origen — nunca `<script src="https://…">`
+  a un CDN, aunque sea un host "de confianza"
 
 **P6: HTML agnóstico de estilo**
 - NO hardcodear colores en HTML (data-theme en <html>)
