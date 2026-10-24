@@ -1,6 +1,6 @@
 ---
 ultima_actualizacion: 2026-10-24
-fase: SPEC-0002 — Gate 2 aprobado (AIRA) · Fase 3 (tasks.md) lista · Fase 4 BLOQUEADA por permisos de mutación (sin worktree/commit/test aún)
+fase: SPEC-0002 — Fase 4 EN CURSO · 19/36 tareas cerradas y committeadas (T-001…T-014, T-016…T-019, T-027) · 17 bloqueadas por entorno (Playwright + npm install) · spec sigue `approved`, NO `implemented`
 arquitectura_verificada: True
 ---
 
@@ -8,162 +8,84 @@ arquitectura_verificada: True
 
 ## Correcciones & Contexto Actual
 
-### SPEC-0002 · Estructura HTML del catálogo — Fase 1 aprobada (2026-10-16, chat Carlos↔AIRA)
+### SPEC-0002 · Estructura HTML del catálogo — Fase 4 avanzada 19/36, bloqueo de entorno para el resto (2026-10-24, AIRA Modo 2 headless)
 
-- Rama **`feature/catalogo-estructura-html`** (nueva, separada de la del piloto React —
-  limpia para revisión independiente), anclada en `8731efb`.
-- Primera spec del roadmap de `ADR-002`: estructura de las 7 vistas (Landing, Dashboard,
-  Blog listado/detalle, Productos listado/detalle, Contacto) en **glassmorphism, ambas
-  pistas, una sola instancia de cada componente** — sin variantes todavía. Detalle
-  completo: `specs/0002-estructura-html-catalogo/spec.md`.
-- Decisiones nuevas de esta elicitación (no estaban en `ADR-002` original):
-  - Ambas pistas **en paralelo** (Carlos, no la recomendación inicial de AIRA de ir
-    vanilla-primero).
-  - Componente **Markdown reutilizable** (no solo de blog) para texto enriquecido —
-    único consumidor en esta spec: Blog Detalle. Producto Detalle queda en **texto
-    plano** (decisión explícita).
-  - Markdown requiere **resaltado de sintaxis real** y **renderizado de diagramas
-    Mermaid** — ambos self-hosted, nunca CDN (P5).
-  - Control de tema claro/sistema/oscuro: **ya existe** en ambas pistas (vanilla:
-    `theme-manager.js` + switcher de 3 botones; react: `next-themes`) — esta spec solo
-    exige replicarlo en las vistas nuevas, no inventar nada.
-- **Gate 2 aprobado por AIRA (2026-10-24, autoridad delegada por Carlos, Modo 2):**
-  `plan.md` → `estado: approved`, `aprobaciones.fase_2` registrada en plan.md y spec.md.
-  Carlos revisó plan.md (Art. 1-11 incl. P10 Motion), sin decisiones de producto pendientes.
-- **Fase 3 lista:** `tasks.md` redactada (36 tareas T-001…T-036, test-first, frontend antes
-  que funcional, `CHECK:`/`EXPECT:` por tarea, tabla de cobertura 100% RF/RNF). Gate 3
-  auto-verificado. `estado: draft` todavía (se marca al cerrar Fase 4).
-- **Fase 4 NO iniciada — bloqueada por permisos:** la sesión es no interactiva; el sandbox
-  auto-corre read-only pero `git add/commit/worktree`, ejecutar `gate/check.sh` y correr
-  tests/baseline requieren aprobación que no se puede conceder aquí. Faltan por tanto:
-  (1) commitear la aprobación Gate 2 + tasks.md, (2) crear el worktree aislado con
-  `baseRef=head` (NO el default `fresh`=origin/main, que perdería esta rama y los commits
-  Motion ADR-003), (3) baseline limpio, (4) el bucle TDD una-tarea-a-la-vez
-  (implementador → revisor adversarial). Nada de merge/deploy sin confirmación de Carlos.
-- **Gate (reproducido read-only 2026-10-24):** abierto — warns preexistentes (method.md
-  486>400 líneas), 0 errores. El `.sh` no se pudo ejecutar (permiso); se reprodujeron a
-  mano integridad/trazabilidad/anclaje/presupuesto.
+- **Rama/worktree:** worktree `.claude/worktrees/0002-estructura-html-catalogo`, rama
+  **`0002-estructura-html-catalogo-impl`**, HEAD **`e03c8d0`**. El prompt esperaba `feature/catalogo-estructura-html`
+  (rama hermana del worktree principal, partía de `6dc26bd`). **No se cambió de rama. Aclarar con Carlos cuál es
+  la de integración antes de cualquier merge.** Nunca push/merge/PR.
+- **Qué quedó HECHO y verificado (19 tareas, commit por tarea, cada una aprobada por `revisor` adversarial):**
+  - Bloque A (contrato/tests en rojo): T-001 (fixture + post fuente única Markdown), T-002 (markdown.test.ts),
+    T-003 (paridad.test.ts), T-004 (tokens AA pares nuevos), T-005 (literals componentes nuevos),
+    T-006 (reuse post-card/product-card/field), T-007 (empty-state.test.tsx).
+  - Bloque B (frontend/maqueta): T-008 (presentacionales post-card/product-card/empty-state/field),
+    T-009 (blog listado react), T-010 (productos listado react + nav de catálogo compartida sin duplicar),
+    T-011 (producto-detalle texto plano react), T-012 (blog-detalle maqueta + prose.ts),
+    T-013 (contacto maqueta), T-014 (dashboard a 5 bloques), T-016 (carrusel vanilla con imágenes locales),
+    T-017 (4 vistas vanilla nuevas), T-018 (blog-detalle.html maqueta), T-019 (clases vanilla P3 + reconciliar
+    AA del enlace .md-content en tokens.test.ts).
+  - Bloque C (parcial): T-027 (toggle de estado vacío Blog/Productos, ambas pistas).
+  - Rebotes del revisor (todos resueltos): T-006 ×2, T-007 ×1, T-010 ×1, T-013 ×1. Ningún ABANDON por calidad.
+- **BLOQUEOS DE ENTORNO (impiden cerrar las 17 restantes — NO son decisión de producto ni defecto del plan):**
+  1. **Playwright no arranca:** `chrome-headless-shell: libatk-1.0.so.0: cannot open shared object file`
+     (libs de sistema ausentes; `~/.cache/pw-libs` fuera del sandbox). Además `next build` falla en `tsc` por
+     `markdown.test.ts` hasta T-022. ⇒ ningún e2e corre. Afecta T-015, T-020, T-025, T-028, T-029, T-030, T-031
+     y la revisión visual de T-021.
+  2. **`npm install` no concedible:** hasta `npm --version` pide aprobación no otorgable en sesión no interactiva.
+     `npx`/`node`/`git`/`vitest`/`tsc` SÍ corren (por eso se cerraron 19 tareas). Afecta T-022, T-023, T-024
+     (núcleo Markdown: necesita instalar shiki + parser markdown + mermaid).
+- **En cascada quedan rojos POR DISEÑO (se resuelven al desbloquear):** `markdown.test.ts` (módulo
+  `components/markdown/markdown.tsx` ausente = T-022), `type-check`/`next build` (mismo TS2307), `reuse` "post
+  individual", `paridad` markdown, el gate global. No tocar: son el contrato TDD a verde en T-022/T-024.
+- **Tareas pendientes (gaps, ver history.md para razón de cada ABANDON):** T-015, T-020, T-021, T-022, T-023,
+  T-024, T-025, T-026, T-028, T-029, T-030, T-031, T-032, T-033, T-034, T-035, T-036.
+- **Para CERRAR la feature — relanzar sesión con DOS permisos pre-concedidos:**
+  (a) `npm install` (allow-list) → T-022→T-024; (b) libs de Playwright (`npx playwright install-deps chromium`
+  con sudo, o `LD_LIBRARY_PATH`→`~/.cache/pw-libs`) → e2e. Orden: T-022→T-024 → T-015/020/025/026 →
+  T-028–031 → T-021 → T-032 → T-033–035 → T-036 (mover `anchor_commit`, gate verde, spec `implemented`).
+  No hay decisiones de producto pendientes.
+- **Cómo probar localmente lo ya hecho:** desde `react/glassmorphism/`: `npx vitest run` (verdes salvo los reds
+  por-diseño de markdown/e2e); `npx vitest run tests/unit/{tokens,reuse,literals,empty-state,paridad}.test.ts`.
+  Vanilla: abrir `glassmorphism/{index,blog,productos,producto-detalle,contacto,blog-detalle}.html`; anti-red con
+  `grep -REIl "https?://|unsplash|cdn" glassmorphism/*.html` (vacío). El render visual real de React necesita
+  `next build`/`next dev`, hoy bloqueado por el TS2307 de markdown (se abre en T-022).
 
-### Catálogo ampliado + ratificación del piloto React (2026-10-16, chat Carlos↔AIRA)
+### SPEC-0002 · Fase 1/2 aprobadas (2026-10-16 / 2026-10-24)
 
-- **Gate 2 de `0001-glassmorphism-react` ratificado** y **`ADR-001` aceptado** (antes
-  *proposed*/pendiente) — Carlos: "este se vuelve la base de todo lo que sigue". La
-  aprobación quedó registrada en `spec.md`/`plan.md` (`aprobaciones.fase_2`) y en el
-  frontmatter de `ADR-001`, con nota de que se dio en chat con AIRA, no en una sesión de
-  Claude Code dentro del repo.
-- **`ADR-002` (nuevo, accepted):** el catálogo se amplía mucho más allá de la landing y
-  el dashboard simples de Génesis — inventario completo validado contra
-  `cjhirashi-career` (navbar/hero/cards/carrusel/footer/blog/productos/contacto en
-  landing; gráficos/alertas/tabla/registro/formularios con tipos de campo reales en
-  admin) **más un sistema de tokens de motion** (animación es alcance explícito, no un
-  añadido posterior). Estrategia: construirlo **una sola vez en `glassmorphism`**
-  (vanilla + `react/glassmorphism`, en paridad) y replicarlo a los otros 20 estilos solo
-  cuando esa estructura cierre — evita 21 reimplementaciones mientras el diseño es
-  inestable. Detalle completo: `decisions/ADR-002-glassmorphism-laboratorio-canonico.md`.
-- `constitution.md` Art. 1 y Art. 3 actualizados para reflejar este alcance real (no se
-  repite aquí — un canon por hecho, `method.md §10`).
-- Roadmap de specs candidatas (orden aún sin decidir por Carlos) — ver Backlog #1.
-- Fuera de alcance por ahora: panel de chat/asistente (visto en `bedrock/*` de
-  `cjhirashi-career`, específico de ese proyecto, no genérico).
+- 7 vistas de ADR-002 (Landing, Dashboard, Blog listado/detalle, Productos listado/detalle, Contacto),
+  glassmorphism, ambas pistas en paralelo, una sola instancia de cada componente. `plan.md` `approved`,
+  Gate 2 ratificado por AIRA (autoridad delegada) en `6dc26bd`.
+- Decisiones firmes: Markdown reutilizable (resaltado real + Mermaid, self-hosted, nunca CDN; único consumidor
+  Blog Detalle); Producto Detalle en texto plano; tema claro/sistema/oscuro replica el mecanismo existente
+  (vanilla `theme-manager.js`, react `next-themes`). Motion = alcance explícito (P10, ADR-003). 15 tipos de campo
+  + catálogo de gráficos en spec §6.
 
-### Reparación de harness (2026-10-16, a solicitud de Carlos — "harness al 100 operativo")
+### Piloto React — 0001-glassmorphism-react (2026-10-16)
 
-AIRA auditó y corrigió deuda de harness acumulada desde Génesis:
-- `model: opus` fijado en `autor-de-spec.md`/`arquitecto.md` (faltaba, method.md §7).
-- `AGENTS.md`: 311→111 líneas — quitada la duplicación de P1-P9 (ya vivían en
-  `constitution.md` Art. 8, `method.md §10` prohíbe repetir el canon) y la tabla de roles
-  obsoleta (`especialista-diseño`/`revisor-contraste`, que nunca existieron como agentes
-  reales) corregida a los 7 roles reales de `.claude/agents/`.
-- `constitution.md`: mismos nombres de rol obsoletos corregidos en Art. 8/10; frontmatter
-  ya no duplica la fase (vivía también aquí, en `state.md` y en el footer — un solo canon
-  ahora); Art. 2 y el footer ahora marcan explícitamente "symlinks es el objetivo, hoy son
-  copias" en vez de darlo por hecho.
-- **Hallazgo nuevo:** el "Gate de Design-HTML (Especializado)" del Art. 4 (symlinks,
-  familia CSS P3, contraste AA P4, stylelint, html-validate) **nunca se implementó** —
-  no hay `package.json` ni `contrast-check` ni `stylelint`/`html-validate` en el repo. El
-  `gate/check.sh` real es el genérico de SDD Anchored; no valida nada de lo que el Art. 4
-  describe. Queda como Backlog #6 (abajo) — es trabajo propio no trivial, no un ajuste
-  suelto, y requiere su propia spec antes de tocar nada (igual que cualquier otro cambio
-  de este proyecto).
-- `frontend-design-pro`: la nota de abajo ("si se quiere, hay que instalarla") estaba
-  **desactualizada** — ya estaba copiado completo en `.claude/skills/frontend-design-pro/`
-  (idéntico a `workspace-aira/skills/frontend-design-pro/`), solo sin commitear. Commiteado.
-- Gate verificado en verde tras los cambios (ver próxima entrada de `history.md`).
-- **Lo que NO se tocó (requiere tu decisión, no son fixes de harness):** ratificación de
-  Gate 2 del piloto React, aceptación/rechazo de ADR-001, revisión visual, réplica a
-  `glass-*`, corrección AA/P3 de `glassmorphism` vanilla, variedad estructural de
-  dashboards, e implementar el gate especializado del Art. 4.
+- App `react/glassmorphism/` (spec `implemented`, Gate 2 ratificado): base de SPEC-0002. Vitest + Playwright.
+  Entorno: Playwright necesita libs del sistema; con sudo `npx playwright install-deps chromium`.
+- Hallazgos colaterales fuera de alcance: `style.css` vanilla de glassmorphism no cumple AA en `--text-muted`
+  ni define la familia P3 completa (feature `1001-*`).
 
-### Piloto pista React — 0001-glassmorphism-react (2026-10-16)
+### Reglas Vigentes (P1-P10)
 
-- Rama local **`feature/glassmorphism-react-pilot`**, sin push ni merge (main está
-  desplegado en GitHub; un push a main puede disparar deploy). Nada se publica hasta que
-  Carlos lo apruebe explícitamente.
-- **ADR-001** (`decisions/ADR-001-track-react-paralelo.md`, estado **accepted** desde
-  2026-10-16): pista React/Next.js paralela en `react/<estilo>/`, la vanilla sigue siendo
-  fuente de verdad visual; P5/P6 vanilla intactos; equivalente React = `next/font` local
-  y tokens P3 en `app/tokens.css`. Constitución Art. 2 enlaza el ADR.
-- App `react/glassmorphism/` (spec `implemented`, Gate 2 **ratificado**): landing +
-  dashboard, Vitest 204 + Playwright 31 en verde. Cómo correr/portar:
-  `react/glassmorphism/README.md`.
-- **Pendiente humano:** revisión visual (nadie la hizo todavía); réplica a
-  `glass-aurum/ember/borealis/neon/steel` queda pospuesta hasta cerrar el catálogo
-  ampliado en glassmorphism (ADR-002) — ya no es "solo cambiar tokens", portaría una
-  estructura todavía incompleta.
-- **Hallazgos colaterales (fuera de alcance, no tocados):** el `style.css` vanilla de
-  glassmorphism no cumple AA en `--text-muted` (2.3:1 claro, 3.7:1 oscuro) ni en textos
-  semánticos claros, y no define la familia P3 completa; su HTML tiene etiquetas en inglés
-  ("Success State", "Cyan Core") contra P7.
-- Entorno: Playwright 1.64 necesita libs del sistema que no están; se extrajeron sin root en
-  `~/.cache/pw-libs` (ver README). Con sudo: `npx playwright install-deps chromium`.
-
-### Skill ui-ux-pro-max Integrado de Verdad (2026-10-16)
-
-Instalado vía `npx ui-ux-pro-max-cli@latest init --ai claude` → `.claude/skills/` (7
-skills). `.claude/settings.json` lista el alcance real de cada uno. Commit propio
-(`chore: install ui-ux-pro-max…`). Pendiente corregir la wiki de AIRA: `--ai openclaw` no
-es valor válido del CLI v2.15.0.
-
-### Génesis (2026-10-10)
-
-Harness instalado; commiteado recién el 2026-10-16 (commit `chore(harness): …`).
-
-### Decisión Arquitectónica: Symlinks — NO aplicada aún
-
-El Art. 2 describe symlinks a `index.html`/`dashboard.html` de raíz, pero cada carpeta de
-estilo tiene **copias** y no existe `dashboard.html` en raíz (verificado 2026-10-16).
-Convertir a symlinks exige unificar primero los HTML (hoy difieren por estilo) → feature
-propia con spec.
-
-### Reglas Vigentes (P1-P9)
-
-P1 gate primero · P2 sincronización vía symlinks · P3 familia `:root` estándar · P4 AA
-light+dark · P5 sin red (pista React: equivalente en ADR-001) · P6 HTML agnóstico (pista
-React: equivalente en ADR-001) · P7 español · P8 Conventional Commits + (RF-NNN) · P9 no
-auto-aprobarse.
+P1 gate primero · P2 sincronización vía symlinks (hoy copias) · P3 familia `:root` estándar · P4 AA light+dark ·
+P5 sin red en runtime (build deps como shiki/mermaid SÍ permitidas, su output no carga CDN) · P6 HTML agnóstico ·
+P7 español · P8 Conventional Commits + (RF-NNN) · P9 no auto-aprobarse (implementador⇄revisor por tarea; el
+orquestador comitea tras veredicto) · P10 Motion estándar de animación (ADR-003, vendorizado en vanilla).
 
 ### Backlog
 
-1. **Roadmap del catálogo ampliado (ADR-002), orden pendiente de que Carlos decida** —
-   candidatas (todas con alcance "solo glassmorphism, vanilla + react en paridad", no 21
-   estilos): sistema de tokens de motion (fundacional, análogo a P3) · navbar variants ·
-   hero variants · card variants · carrusel/galería · footer variants · blog (listado +
-   detalle) · productos (listado + detalle) · formulario de contacto · chart types ·
-   alert variants · table view · record view · form field types (texto/número/boolean/
-   select/creatable-select/FK-select/FK-multi-select/fecha/archivo/json-list). Cada una
-   es su propia spec (`0NNN-*`), por P1 (no hay vía libre sin spec).
-2. Revisión visual del piloto React (pendiente, nadie la hizo todavía).
-3. Corregir AA y P3 en `glassmorphism/css/style.css` vanilla (feature `1001-*`) — se
-   puede hacer antes o junto con el catálogo ampliado, es independiente.
-4. Cuando el catálogo cierre en glassmorphism: replicar a los otros 20 estilos
-   (symlinks + retoque de tokens de color/motion por estilo) y resolver ahí la variedad
-   estructural de los 6 Estilos de Dashboard.
-5. Implementar el gate especializado del Art. 4 (symlinks, familia CSS P3, contraste AA
-   P4, stylelint, html-validate) — hoy es solo aspiración documentada, no código. Requiere
-   spec propia; el check de AA ya sabemos que fallaría en `glassmorphism` (ver arriba).
+1. **Cerrar SPEC-0002** (17 tareas, ver arriba) en sesión con npm install + Playwright libs. Prioridad.
+2. Revisión visual del piloto React (pendiente desde 0001).
+3. Corregir AA y P3 en `glassmorphism/css/style.css` vanilla (feature `1001-*`, independiente).
+4. Al cerrar el catálogo: replicar a los otros 20 estilos (symlinks + tokens) + variedad de dashboards.
+5. Implementar el gate especializado del Art. 4 (symlinks, contraste AA, stylelint, html-validate) — hoy aspiración.
 
 ### Notas para Carlos
 
 - Design-HTML NO se expone vía cjhirashi-srv (infraestructura local).
-- `frontend-design-pro` ya está instalado en `.claude/skills/` de este repo (commiteado
-  2026-10-16) — disponible para Claude Code vía `/audit`, `/polish`, etc.
+- **Cambios de graphify** (`.claude/settings.json`, `CLAUDE.md`, `graphify-out/`, `.gitattributes`): NO tocados ni
+  commiteados (no autorizados para SPEC-0002). `git status` de este worktree solo muestra memoria del arnés.
+- SPEC-0002 quedó a 19/36. Lo construido es sólido y verificado; lo que falta es ejecutable tal cual en cuanto
+  haya `npm install` + libs de Playwright. Ninguna decisión de producto pendiente.
