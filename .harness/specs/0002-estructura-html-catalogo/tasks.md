@@ -21,7 +21,7 @@ actualizado: 2026-10-24
 ## Tareas
 
 ### Bloque A — Contrato primero (integración, tests en rojo)
-- [ ] T-001 — Fuente única del post de ejemplo `content/blog/estructura-catalogo.md` +
+- [x] T-001 — Fuente única del post de ejemplo `content/blog/estructura-catalogo.md` +
   fixture `tests/fixtures/markdown-showcase.md` con **todas** las construcciones de RF-004
   (h1-h6, negrita/cursiva/tachado, listas ord/desord/anidadas, blockquote, código inline y
   en bloque **con** lenguaje, **un** bloque **sin** lenguaje (RF-015), ≥1 diagrama Mermaid,
