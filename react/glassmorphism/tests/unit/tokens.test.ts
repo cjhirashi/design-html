@@ -105,4 +105,41 @@ describe.each(Object.entries(themes))("tema %s", (_name, vars) => {
   it("--on-primary cumple AA sobre --primary-solid (botones)", () => {
     expect(contrast(parseColor(vars["--on-primary"]), parseColor(vars["--primary-solid"]))).toBeGreaterThanOrEqual(4.5);
   });
+
+  // RF-009 / RNF-004 · pares que estrenan las clases/componentes nuevos de SPEC-0002
+  // (post-card, product-card, field + field-error, empty-state, .md-content*).
+  // Plan §2 Zona B: esas clases reusan solo tokens P3 ya declarados — ningún valor de
+  // color nuevo. Por eso este bloque NO añade tokens al diccionario P3: valida pares
+  // (fg sobre bg) ya existentes bajo el uso nuevo que les dan las vistas.
+
+  it("--error-text cumple AA como texto de error inline (RF-013) sobre --bg-card", () => {
+    // Error junto al campo, no como badge: el error vive directo sobre la superficie
+    // de la tarjeta/formulario (--bg-card), no sobre el tinte --error-bg.
+    expect(contrast(parseColor(vars["--error-text"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("--text-muted cumple AA como texto secundario de empty-state / fecha de post / precio de producto sobre --bg-card", () => {
+    // Ya cubierto en el bloque P3 de arriba para bg-primary/bg-card/bg-glass, pero se
+    // deja explícito aquí como contrato de las vistas nuevas (RF-003/005/012).
+    expect(contrast(parseColor(vars["--text-muted"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("código inline/bloque de .md-content (--text-secondary) cumple AA sobre --bg-tertiary", () => {
+    const codeSurface = over(parseColor(vars["--bg-tertiary"]), bg());
+    expect(contrast(parseColor(vars["--text-secondary"]), codeSurface)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("blockquote de .md-content (--text-secondary) cumple AA sobre --bg-card", () => {
+    expect(contrast(parseColor(vars["--text-secondary"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("enlace de .md-content (--primary-color, el único color interactivo P3) cumple AA sobre --bg-card", () => {
+    // ROJO ESPERADO en oscuro (T-004): --primary-color sobre --bg-card da ~3.78:1 en
+    // [data-theme="dark"], por debajo de 4.5. Es el único par candidato de esta spec
+    // que de verdad falla hoy con los tokens P3 existentes (el resto ya cumple). T-019
+    // debe resolverlo SIN declarar ningún color nuevo (plan §2 Zona B): usando para el
+    // enlace un token P3 que sí cumpla AA sobre --bg-card en ambos temas (p.ej.
+    // --primary-text, que da 6.69:1 claro / 8.68:1 oscuro) en vez de --primary-color.
+    expect(contrast(parseColor(vars["--primary-color"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
 });

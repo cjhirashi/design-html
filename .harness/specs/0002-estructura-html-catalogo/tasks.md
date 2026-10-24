@@ -40,10 +40,16 @@ actualizado: 2026-10-24
   renderer de Markdown (RF-006) (cubre RF-010, RNF-002) [zona: test]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts`
   - EXPECT: FALLA (rojo) — faltan las vistas nuevas en ambas pistas.
-- [ ] T-004 — Extender `tests/unit/tokens.test.ts`: contraste AA en claro y oscuro de los
+- [x] T-004 — Extender `tests/unit/tokens.test.ts`: contraste AA en claro y oscuro de los
   pares de color que usan las clases/tokens nuevos de esta spec (cubre RF-009, RNF-004) [zona: test]
   - CHECK: `npx vitest run tests/unit/tokens.test.ts`
   - EXPECT: FALLA para los pares nuevos hasta declarar las clases (T-019).
+  - ROJO confirmado: 29/30 tests en verde (error-text/text-muted/text-secondary nuevos
+    ya cumplen con los tokens P3 existentes); falla únicamente
+    "enlace de .md-content (--primary-color) cumple AA sobre --bg-card" en tema oscuro
+    (3.78:1 < 4.5). Contrato para T-019: el color del enlace de `.md-content` debe ser
+    un token P3 que cumpla AA sobre `--bg-card` en ambos temas (p.ej. `--primary-text`,
+    no `--primary-color` crudo) — sin declarar ningún valor de color nuevo.
 - [ ] T-005 — Extender `tests/unit/literals.test.ts`: prohibir literales de color e inline
   `style` de color en los componentes/vistas nuevos (cubre RNF-003) [zona: test]
   - CHECK: `npx vitest run tests/unit/literals.test.ts`
