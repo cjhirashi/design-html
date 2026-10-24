@@ -198,11 +198,27 @@ actualizado: 2026-10-24
     markdown T-022). `vitest run tests/unit/` → 347 passed/45 failed, mismo conjunto de
     fallos preexistentes documentado arriba (contacto T-013, vanilla T-017/T-018/T-024,
     markdown T-022/T-023, enlace AA T-019) — ninguno nuevo introducido por esta tarea.
-- [ ] T-013 — React Contacto (maqueta): `app/contacto/page.tsx` +
+- [x] T-013 — React Contacto (maqueta): `app/contacto/page.tsx` +
   `_components/contact-form.tsx` con campos `field` (sin lógica de validación aún)
   (cubre RF-007, RF-013) [zona: frontend]
   - CHECK: `npm run type-check`
   - EXPECT: type-check limpio; el form renderiza campos con `field`.
+  - Evidencia: `npm run type-check` → solo el error preexistente de
+    `tests/unit/markdown.test.ts` (TS2307, `components/markdown/markdown` no existe
+    hasta T-022), cero errores nuevos. `vitest run tests/unit/reuse.test.ts -t contacto`
+    → 7 passed (import de `field`, `<Field … error>`, reuso navbar/footer). Suite
+    completa `reuse.test.ts` → 49 passed/2 failed, los 2 fallos son únicamente
+    "post individual … <Markdown>" (blog-detalle, pendiente T-022) — sin regresión.
+    `ContactForm` cablea el campo "Correo electrónico" con `error={emailError}`, donde
+    `emailError` es una constante local `undefined` (sin estado/lógica): la prop
+    `error` sigue presente en el JSX (contrato RF-013 que `reuse.test.ts:159` exige),
+    pero `Field` no renderiza ningún mensaje/`role="alert"`/`border-error-line` porque
+    el valor es falsy — T-025 conecta ahí la validación real. Amendment #1 (revisor):
+    rechazado el primer intento por cablear un string de error FIJO que se mostraba
+    permanentemente desde el primer render; corregido a constante vacía. Nombre y
+    mensaje sin prop `error`. `ContactoPage` compone `Navbar/Logo/NavLink/ThemeSwitch/
+    Footer` directo en la ruta (mismo patrón que Productos/Blog), sin header/aside
+    propio.
 - [ ] T-014 — React Dashboard a 5 bloques: 1 gráfico de líneas (SVG estático inline, sin
   librería de charts), 1 alerta, 1 tabla (dataset fijo), 1 vista de registro/detalle, 1
   formulario placeholder (texto+select+boolean) con `field` (cubre RF-002) [zona: frontend]
