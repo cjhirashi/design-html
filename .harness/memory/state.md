@@ -1,6 +1,6 @@
 ---
-ultima_actualizacion: 2026-10-16
-fase: SPEC-0002 (estructura HTML del catálogo) aprobada Fase 1 — entra a Fase 2 (Plan)
+ultima_actualizacion: 2026-10-24
+fase: SPEC-0002 — Gate 2 aprobado (AIRA) · Fase 3 (tasks.md) lista · Fase 4 BLOQUEADA por permisos de mutación (sin worktree/commit/test aún)
 arquitectura_verificada: True
 ---
 
@@ -27,9 +27,22 @@ arquitectura_verificada: True
   - Control de tema claro/sistema/oscuro: **ya existe** en ambas pistas (vanilla:
     `theme-manager.js` + switcher de 3 botones; react: `next-themes`) — esta spec solo
     exige replicarlo en las vistas nuevas, no inventar nada.
-- **Próximo paso:** Fase 2 (Plan) — el `arquitecto` redacta `plan.md` conforme al patrón,
-  fija `covers`, y detalla cómo se implementan ambas pistas en paralelo sin que diverjan.
-- Gate: 19 ok · 0 warn · 0 error.
+- **Gate 2 aprobado por AIRA (2026-10-24, autoridad delegada por Carlos, Modo 2):**
+  `plan.md` → `estado: approved`, `aprobaciones.fase_2` registrada en plan.md y spec.md.
+  Carlos revisó plan.md (Art. 1-11 incl. P10 Motion), sin decisiones de producto pendientes.
+- **Fase 3 lista:** `tasks.md` redactada (36 tareas T-001…T-036, test-first, frontend antes
+  que funcional, `CHECK:`/`EXPECT:` por tarea, tabla de cobertura 100% RF/RNF). Gate 3
+  auto-verificado. `estado: draft` todavía (se marca al cerrar Fase 4).
+- **Fase 4 NO iniciada — bloqueada por permisos:** la sesión es no interactiva; el sandbox
+  auto-corre read-only pero `git add/commit/worktree`, ejecutar `gate/check.sh` y correr
+  tests/baseline requieren aprobación que no se puede conceder aquí. Faltan por tanto:
+  (1) commitear la aprobación Gate 2 + tasks.md, (2) crear el worktree aislado con
+  `baseRef=head` (NO el default `fresh`=origin/main, que perdería esta rama y los commits
+  Motion ADR-003), (3) baseline limpio, (4) el bucle TDD una-tarea-a-la-vez
+  (implementador → revisor adversarial). Nada de merge/deploy sin confirmación de Carlos.
+- **Gate (reproducido read-only 2026-10-24):** abierto — warns preexistentes (method.md
+  486>400 líneas), 0 errores. El `.sh` no se pudo ejecutar (permiso); se reprodujeron a
+  mano integridad/trazabilidad/anclaje/presupuesto.
 
 ### Catálogo ampliado + ratificación del piloto React (2026-10-16, chat Carlos↔AIRA)
 

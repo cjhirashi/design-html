@@ -7,16 +7,35 @@ estado: approved
 anchor_commit: 8731efb
 anchor_mode: advisory
 covers:
-  - glassmorphism/**
-  - react/glassmorphism/**
-  - index.html
-  - css/base.css
+  # --- pista vanilla (glassmorphism/) ---
+  - glassmorphism/index.html
+  - glassmorphism/dashboard.html
+  - glassmorphism/blog.html
+  - glassmorphism/blog-detalle.html
+  - glassmorphism/productos.html
+  - glassmorphism/producto-detalle.html
+  - glassmorphism/contacto.html
+  - glassmorphism/css/style.css
+  - glassmorphism/assets/**
+  - js/markdown-renderer.js
   - js/theme-manager.js
+  - js/nav-toggle.js
+  # --- pista react (react/glassmorphism/) ---
+  - react/glassmorphism/app/**
+  - react/glassmorphism/components/glass/**
+  - react/glassmorphism/components/markdown/**
+  - react/glassmorphism/content/**
+  - react/glassmorphism/public/**
+  - react/glassmorphism/tests/**
+  - react/glassmorphism/e2e/**
+  # --- documentación (Art. 11) ---
+  - react/glassmorphism/README.md
+  - .harness/specs/0002-estructura-html-catalogo/plan.md
 # --- aprobaciones humanas ---
 aprobaciones:
   fase_1: { por: "Carlos (chat con AIRA, 'así es')", fecha: 2026-10-16 }
-  fase_2: pendiente
-actualizado: 2026-10-16
+  fase_2: { por: "AIRA (autoridad delegada por Carlos, Modo 2)", fecha: 2026-10-24 }
+actualizado: 2026-10-24
 ---
 
 # SPEC-0002 · Estructura HTML del catálogo ampliado (laboratorio glassmorphism)
