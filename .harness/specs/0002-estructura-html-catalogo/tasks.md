@@ -170,11 +170,34 @@ actualizado: 2026-10-24
     módulos de markdown); los 8 rojos restantes (`blog-detalle`, `contacto`) son
     preexistentes — esas rutas no existen todavía (T-012/T-013), sin regresión en
     landing/dashboard/blog/productos/ficha de producto.
-- [ ] T-012 — React Blog detalle (maqueta): `app/blog/[slug]/page.tsx` +
+- [x] T-012 — React Blog detalle (maqueta): `app/blog/[slug]/page.tsx` +
   `components/markdown/prose.ts` (clases sobre tokens P3; placeholder del cuerpo hasta
   T-023) (cubre RF-004) [zona: frontend]
   - CHECK: `npm run type-check`
   - EXPECT: type-check limpio; la ruta `[slug]` existe.
+  - Hecho: `components/markdown/prose.ts` nuevo (patrón `surface.ts`) — exporta
+    `proseRoot`, un string de utilidades Tailwind `[&_x]:...` sobre tokens P3 existentes
+    (encabezados h1-h6, párrafos, listas/anidadas, blockquote, código inline/bloque,
+    tabla, enlaces, imágenes, hr). Enlace con `text-primary-ink` (`--primary-text`,
+    6.69/8.68:1 AA), NO `text-primary` (`--primary-color`, falla AA en oscuro 3.78:1) —
+    nota dejada en el propio archivo: la conciliación final de la aserción de
+    `tokens.test.ts` (hoy compara `--primary-color`) queda para T-019 (zona tokens), sin
+    tocarla aquí. `app/blog/[slug]/page.tsx` nuevo — `generateStaticParams` sobre
+    `content/blog.ts`, `generateMetadata` por post, imagen de portada `next/image` con
+    `alt`, título/fecha/excerpt, cuerpo envuelto en `proseRoot` con placeholder en
+    español (el render real de `<Markdown>` es T-022/T-023, sin importarlo todavía);
+    reusa `Navbar`/`Logo`/`NavLink`/`ThemeSwitch`/`Footer` directamente, sin
+    header/aside propio. `npm run type-check` → único error es el preexistente
+    `tests/unit/markdown.test.ts(13,38): TS2307` (T-022); cero errores nuevos de
+    blog/[slug] o prose. `literals.test.ts` → 99/100 verde, la única roja es
+    `components/markdown/markdown.tsx existe` (T-022); la existencia/sin-literales de
+    `prose.ts` pasa. `reuse.test.ts` → "post individual importa components/markdown/
+    prose" pasa; "renderiza `<Markdown>`" sigue roja (esperado hasta T-022); sin
+    regresión en landing/dashboard/blog/productos/ficha de producto (36/36 verde en esos
+    grupos); los 7 rojos restantes de la suite son preexistentes (contacto T-013,
+    markdown T-022). `vitest run tests/unit/` → 347 passed/45 failed, mismo conjunto de
+    fallos preexistentes documentado arriba (contacto T-013, vanilla T-017/T-018/T-024,
+    markdown T-022/T-023, enlace AA T-019) — ninguno nuevo introducido por esta tarea.
 - [ ] T-013 — React Contacto (maqueta): `app/contacto/page.tsx` +
   `_components/contact-form.tsx` con campos `field` (sin lógica de validación aún)
   (cubre RF-007, RF-013) [zona: frontend]
