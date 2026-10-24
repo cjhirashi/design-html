@@ -258,12 +258,23 @@ actualizado: 2026-10-24
     de 4 SVG inline (namespace ya es inferido por el parser HTML; mismo patrón que el SVG del
     logo en la línea 13, que nunca tuvo `xmlns`) — necesario para que el grep crudo del CHECK
     diera vacío sin romper los SVG. Pendiente de `revisor`.
-- [ ] T-017 — Vanilla vistas nuevas HTML: `blog.html`, `productos.html`,
+- [x] T-017 — Vanilla vistas nuevas HTML: `blog.html`, `productos.html`,
   `producto-detalle.html`, `contacto.html` con bloque `#themeSwitcher` de 3 botones,
   carga de `../js/theme-manager.js` + `../js/nav-toggle.js`, datos materializados en
   español (cubre RF-003, RF-005, RF-006, RF-007, RF-008) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts -t vanilla`
   - EXPECT: las 4 vistas vanilla existen con sus secciones y el switcher.
+  - Evidencia: `npx vitest run tests/unit/paridad.test.ts -t vanilla` → 50 passed, 7 failed
+    (los 7 restantes son EXCLUSIVOS de `blog-detalle.html`, fuera de alcance — T-018), 3 skipped.
+    Suite completa `npx vitest run tests/unit/paridad.test.ts` → 52 passed, 8 failed (mismos 7 +
+    "blog-detalle.html contiene el mismo HTML de md-content…" de T-024, marcado en el propio
+    test como "pendiente/rojo esperado"). Anti-URL: `grep -REIl "https?://|unsplash|cdn"
+    glassmorphism/blog.html glassmorphism/productos.html glassmorphism/producto-detalle.html
+    glassmorphism/contacto.html` → vacío (exit 1). Contenido materializado desde
+    `content/blog.ts`/`content/productos.ts` (react) en español; imágenes locales
+    `assets/vidrio-0{1,2,3}.jpg`; `producto-detalle.html` en texto plano sin cargar
+    `markdown-renderer.js` (ajustado un comentario HTML que por accidente contenía esa cadena
+    literal y falseaba el test en rojo). Pendiente de `revisor`.
 - [ ] T-018 — Vanilla `blog-detalle.html` (maqueta) con placeholder del Markdown (se
   regenera en T-025) + `#themeSwitcher` (cubre RF-004) [zona: frontend]
   - CHECK: `test -f glassmorphism/blog-detalle.html && grep -q md-content glassmorphism/blog-detalle.html`
