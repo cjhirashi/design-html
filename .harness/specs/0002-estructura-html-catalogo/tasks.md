@@ -34,7 +34,7 @@ actualizado: 2026-10-24
   `<script>`/URL externa (RF-011) (cubre RF-004, RF-011, RF-014, RF-015) [zona: test]
   - CHECK: `npx vitest run tests/unit/markdown.test.ts`
   - EXPECT: FALLA (rojo) — aún no existe `components/markdown/markdown.tsx`.
-- [ ] T-003 — `tests/unit/paridad.test.ts` (rojo): declara las **7 vistas** esperadas en
+- [x] T-003 — `tests/unit/paridad.test.ts` (rojo): declara las **7 vistas** esperadas en
   ambas pistas (rutas react ↔ archivos HTML vanilla) y sus secciones; check anti-URL
   externa (`http(s)://`, `cdn`) sobre los `.html` vanilla; producto-detalle NO usa el
   renderer de Markdown (RF-006) (cubre RF-010, RNF-002) [zona: test]
