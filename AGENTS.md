@@ -68,24 +68,6 @@ Roles y responsabilidades completos en `.harness/method.md §8` (canon único, n
 
 `react/<estilo>/` es una app Next.js paralela a la carpeta vanilla del estilo, que **no la reemplaza**: la vanilla sigue siendo la fuente de verdad visual. Hoy solo existe `react/glassmorphism/` (spec `0001-glassmorphism-react`). Allí P5/P6 se cumplen por su equivalente (fuentes vía `next/font`, colores solo vía `app/tokens.css`). Reglas completas en `decisions/ADR-001-track-react-paralelo.md`. Comandos y cómo portar otro estilo: `react/glassmorphism/README.md`.
 
-## 🎬 Animaciones: Motion (ADR-001 pista React, ADR-003 pista vanilla)
-
-`Motion` (ex-Framer Motion, 34,483★ MIT, 0 vulnerabilidades OSV-Scanner) es la
-librería de animación de este catálogo en **las dos pistas** — úsala para
-microinteracciones (hover, reveal-on-scroll, transiciones de estado), no CSS
-`transition`/`@keyframes` sueltos cuando la interacción lo amerite:
-
-- **Pista vanilla** (`<estilo>/`): `<script src="../js/vendor/motion.js">`
-  (vendorizado, sin CDN — `ADR-003`). Expone el global `window.Motion`
-  (`animate`, `stagger`, `scroll`, …). Nunca referenciar el paquete npm ni un
-  CDN aquí — P5 lo prohíbe.
-- **Pista React** (`react/<estilo>/`): ya es dependencia de npm
-  (`motion: ^14.3.0`, `ADR-001`) — `import { motion } from "motion/react"`.
-
-`frontend-design-pro` (abajo) da el criterio de *cuándo* y *cómo* animar
-(easing, duración, `prefers-reduced-motion`); Motion es el *con qué* en ambas
-pistas — no compiten.
-
 ## 🧩 Skills Disponibles (`.claude/skills/`)
 
 - **`ui-ux-pro-max`** (+ 6 complementarios del mismo paquete: `design-system`, `ui-styling`, `design`, `brand`, `banner-design`, `slides`) — instalado 2026-10-16 vía `npx ui-ux-pro-max-cli@latest init --ai claude`. Apoyo para P3/P4: consultar paletas y guías UX antes de proponer valores. Alcance real de cada uno en `.claude/settings.json` → `skills`.
@@ -99,9 +81,9 @@ Criterio de **diseñador senior de firma top**: composición tipográfica precis
 
 ---
 
-## 🔒 Reglas P1-P9
+## 🔒 Reglas P1-P10
 
-Viven en `.harness/constitution.md` Art. 8 — **canon único, no se repiten aquí** (`method.md §10`). Resumen de una línea para orientarte: P1 gate primero · P2 sincronización de HTML compartido · P3 familia de variables CSS estándar · P4 contraste AA · P5 sin red · P6 HTML agnóstico de estilo · P7 copy en español · P8 Conventional Commits + RF-NNN · P9 no auto-aprobarse (Carlos firma Gate 4).
+Viven en `.harness/constitution.md` Art. 8 — **canon único, no se repiten aquí** (`method.md §10`). Resumen de una línea para orientarte: P1 gate primero · P2 sincronización de HTML compartido · P3 familia de variables CSS estándar · P4 contraste AA · P5 sin red · P6 HTML agnóstico de estilo · P7 copy en español · P8 Conventional Commits + RF-NNN · P9 no auto-aprobarse (Carlos firma Gate 4) · P10 Motion es el estándar de animación (vendorizado en vanilla, npm en React).
 
 ---
 

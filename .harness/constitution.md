@@ -267,7 +267,7 @@ vercel
 
 ---
 
-## Art. 8 — Reglas Innegociables (Principios P1-P9)
+## Art. 8 — Reglas Innegociables (Principios P1-P10)
 
 **P1: Gate siempre primero**
 ```bash
@@ -319,6 +319,14 @@ Antes de cualquier cambio.
 - `autor-de-spec` redacta, `arquitecto` planea, `experto-ux-ui` revisa la UI implementada
 - `revisor` valida gates adversarialmente antes de merge
 - Carlos firma Gate 4 (verified)
+
+**P10: Motion es el estándar de animación del catálogo (ADR-001, ADR-003)**
+- Microinteracciones (hover, reveal-on-scroll, transición de estado) se construyen con
+  `Motion`, no CSS `transition`/`@keyframes` sueltos cuando la interacción lo amerite
+- Pista vanilla: `<script src="../js/vendor/motion.js">` (vendorizado, cumple P5 — nunca
+  CDN ni el paquete npm)
+- Pista React: `import { motion } from "motion/react"` (ya en `package.json`, `ADR-001`)
+- `frontend-design-pro` sigue dando el criterio de cuándo/cómo animar; P10 fija el con qué
 
 ---
 
