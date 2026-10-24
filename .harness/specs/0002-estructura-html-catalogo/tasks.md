@@ -57,11 +57,29 @@ actualizado: 2026-10-24
   - ROJO confirmado: 72/78 en verde (escaneo global existente intacto); fallan las 6
     aserciones de existencia nuevas — `components/glass/{post-card,product-card,field,
     empty-state}.tsx` y `components/markdown/{markdown.tsx,prose.ts}` aún no existen.
-- [ ] T-006 — Extender `tests/unit/reuse.test.ts`: Blog/Productos usan `post-card`/
+- [x] T-006 — Extender `tests/unit/reuse.test.ts`: Blog/Productos usan `post-card`/
   `product-card`; Contacto usa `field` con error inline; las 7 vistas reusan los
   componentes compartidos (cubre RF-003, RF-005, RF-013) [zona: test]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts`
   - EXPECT: FALLA (rojo) — los componentes nuevos aún no se importan.
+  - ROJO confirmado: 33/51 en verde (landing/dashboard existentes intactos); fallan las
+    18 aserciones nuevas — blog/productos aún no importan `post-card`/`product-card` ni
+    reusan navbar/footer; el post individual no importa `markdown`/`prose`; la ficha de
+    producto no reusa navbar/footer; contacto no importa/renderiza `field` con error inline.
+  - Naming de describes/tests cuidado a propósito para que `-t blog` y `-t productos`
+    (tal cual los usan T-009/T-010) seleccionen SOLO el listado correspondiente: el
+    detalle se describe como "post individual · ..." y "ficha de producto · ..." (sin el
+    substring "blog"/"productos" en ningún título de test, incluidas las etiquetas del
+    `it.each` transversal). Verificado: `-t blog` → 6 tests (describe blog + 2 del bloque
+    transversal "listado de blog"), ninguno de "post individual"; `-t productos` → 6
+    tests equivalentes, ninguno de "ficha de producto".
+  - Amendment #2: quitado el flag `s` (dotAll, requiere ES2018+) del regex de la
+    aserción de error inline de `field` (línea ~159) — innecesario, el patrón no usa
+    `.`; `[^>]*` ya cruza saltos de línea sin ese flag. Auditado el resto del archivo:
+    sin otros flags `s`/`u`/`d`. `npm run type-check` limpio para `reuse.test.ts` (el
+    único error restante es `markdown.test.ts` por el módulo `@/components/markdown/
+    markdown` ausente, preexistente de T-002, se resuelve en T-022). Vitest sigue en
+    18 failed/33 passed; `-t blog`/`-t productos` sin regresión.
 - [ ] T-007 — `tests/unit/empty-state.test.tsx` (rojo): Blog y Productos con lista vacía
   renderizan `empty-state` (RF-012) (cubre RF-012) [zona: test]
   - CHECK: `npx vitest run tests/unit/empty-state.test.tsx`
