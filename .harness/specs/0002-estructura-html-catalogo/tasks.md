@@ -357,7 +357,7 @@ actualizado: 2026-10-24
   estado de éxito simulado y `.field-error` por campo (cubre RF-007, RF-013) [zona: backend]
   - CHECK: `grep -RIL -E "fetch\\(|XMLHttpRequest|https?://" glassmorphism/contacto.html`
   - EXPECT: sin llamadas de red; validación y error inline presentes (verificación visual experto-ux-ui).
-- [ ] T-027 — Estados vacíos funcionales Blog/Productos (toggle según datos), ambas pistas
+- [x] T-027 — Estados vacíos funcionales Blog/Productos (toggle según datos), ambas pistas
   (cubre RF-012) [zona: backend]
   - CHECK: `npx vitest run tests/unit/empty-state.test.tsx`
   - EXPECT: pasa (lista vacía → `empty-state`).
