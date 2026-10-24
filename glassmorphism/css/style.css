@@ -567,6 +567,196 @@ code, .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, mono
 }
 .chat-input:focus { border-color: var(--primary-color); box-shadow: 0 0 15px var(--primary-glow); }
 /* ==========================================
+   CATÁLOGO AMPLIADO — Blog / Productos / Markdown / Formulario (SPEC-0002)
+   Reusa exclusivamente los tokens P3 ya declarados arriba — sin valores de
+   color nuevos (RNF-003). `.post-card`/`.product-card` extienden `.card`.
+   ========================================== */
+
+/* Blog listado */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.post-card-img,
+.post-detail-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+}
+.post-card-img img,
+.post-detail-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.post-card h3 { font-size: 1.15rem; font-weight: 600; }
+.post-card p { color: var(--text-secondary); font-size: 0.875rem; }
+
+/* Productos listado + ficha de detalle */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.product-card-img,
+.product-detail-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+}
+.product-card-img img,
+.product-detail-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-card h3 { font-size: 1.15rem; font-weight: 600; }
+.product-detail { gap: 2.5rem; }
+
+/* Contenido Markdown (.md-content) — mismas reglas que `prose.ts` (react) */
+.md-content { max-width: none; font-size: 1rem; line-height: 1.7; color: var(--text-secondary); }
+.md-content h1, .md-content h2, .md-content h3,
+.md-content h4, .md-content h5, .md-content h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.md-content h1 { font-size: 1.875rem; margin: 2rem 0 1rem; }
+.md-content h2 { font-size: 1.5rem; margin: 2rem 0 0.9rem; }
+.md-content h3 { font-size: 1.25rem; margin: 1.75rem 0 0.75rem; }
+.md-content h4 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; }
+.md-content h5 { font-size: 1rem; margin: 1.5rem 0 0.5rem; }
+.md-content h6 {
+  font-size: 0.85rem;
+  margin: 1.5rem 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.md-content h1:first-child, .md-content h2:first-child { margin-top: 0; }
+.md-content p { margin: 1rem 0; color: var(--text-secondary); }
+.md-content ul, .md-content ol { margin: 1rem 0; padding-left: 1.5rem; }
+.md-content li { margin: 0.25rem 0; color: var(--text-secondary); }
+.md-content li > ul, .md-content li > ol { margin: 0.25rem 0; }
+.md-content blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border-glass);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+.md-content code {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+.md-content pre {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+.md-content pre code { background: transparent; padding: 0; }
+.md-content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.md-content th, .md-content td {
+  border: 1px solid var(--border-glass);
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  color: var(--text-secondary);
+}
+.md-content th { background-color: var(--bg-card); font-weight: 600; color: var(--text-primary); }
+.md-content a {
+  /* El vanilla no declara un token --primary-text (acento AA-safe) como el de
+     react (app/tokens.css); ninguno de los acentos crudos (--primary-color/
+     --primary-hover/--secondary-color/--secondary-hover) cumple AA ≥4.5:1 sobre
+     --bg-card en AMBOS temas (p.ej. --primary-hover: 6.79:1 claro pero 2.81:1
+     oscuro). Por eso el enlace usa --text-secondary (texto primario legible,
+     17.05/15.31 y 7.24/6.61 sobre superficies según el tema — AA en ambos) +
+     subrayado para conservar la affordance de enlace sin introducir color nuevo
+     (RNF-003). Coherente con RF-009: mismo criterio que prose.ts (react), que
+     usa su equivalente AA-safe (--primary-text) en vez del acento crudo. */
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.md-content a:hover { color: var(--text-primary); }
+.md-content img {
+  margin: 1.5rem 0;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+.md-content hr {
+  margin: 2.5rem 0;
+  border: none;
+  border-top: 1px solid var(--border-glass);
+}
+
+/* Formulario de Contacto — campo + error inline (RF-013) */
+.field { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
+.field label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+.field input, .field textarea, .field select {
+  background-color: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 0.625rem 0.875rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 15px var(--primary-glow);
+}
+.field-error {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--error-text);
+}
+.field-error[hidden] { display: none; }
+
+/* Estado vacío (RF-012) */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ==========================================
    RESPONSIVE
    ========================================== */
 .data-table-container { overflow-x: auto; }

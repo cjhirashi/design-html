@@ -133,13 +133,15 @@ describe.each(Object.entries(themes))("tema %s", (_name, vars) => {
     expect(contrast(parseColor(vars["--text-secondary"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
   });
 
-  it("enlace de .md-content (--primary-color, el único color interactivo P3) cumple AA sobre --bg-card", () => {
-    // ROJO ESPERADO en oscuro (T-004): --primary-color sobre --bg-card da ~3.78:1 en
-    // [data-theme="dark"], por debajo de 4.5. Es el único par candidato de esta spec
-    // que de verdad falla hoy con los tokens P3 existentes (el resto ya cumple). T-019
-    // debe resolverlo SIN declarar ningún color nuevo (plan §2 Zona B): usando para el
-    // enlace un token P3 que sí cumpla AA sobre --bg-card en ambos temas (p.ej.
-    // --primary-text, que da 6.69:1 claro / 8.68:1 oscuro) en vez de --primary-color.
-    expect(contrast(parseColor(vars["--primary-color"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  it("enlace de .md-content (--primary-text, decidido en prose.ts T-012) cumple AA sobre --bg-card", () => {
+    // Reconciliado en T-019: el enlace de `.md-content` NO usa `--primary-color`
+    // (`text-primary`, falla AA en oscuro: 3.78:1 < 4.5). `components/markdown/prose.ts`
+    // (T-012) aplica `text-primary-ink`, que Tailwind resuelve a `--color-primary-ink`
+    // (`app/globals.css`) → `--primary-text` (`app/tokens.css`). Por eso esta aserción
+    // valida el token que el enlace REALMENTE consume (`--primary-text`, 6.69:1 claro /
+    // 8.68:1 oscuro sobre --bg-card), no el placeholder `--primary-color` del contrato
+    // original de T-004. Sigue siendo discriminante: si `--primary-text` cambiara a un
+    // valor sin AA, este test volvería a fallar.
+    expect(contrast(parseColor(vars["--primary-text"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
   });
 });

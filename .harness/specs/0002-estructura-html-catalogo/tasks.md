@@ -292,11 +292,34 @@ actualizado: 2026-10-24
     con alt en español, nav/footer/#themeSwitcher idénticos al patrón de `blog.html`.
     Anti-URL: `grep -REIl "https?://|unsplash|cdn" glassmorphism/blog-detalle.html` →
     vacío (exit 1). Pendiente de `revisor`.
-- [ ] T-019 — Clases nuevas en `glassmorphism/css/style.css` (`.blog-grid`/`.post-card`/
+- [x] T-019 — Clases nuevas en `glassmorphism/css/style.css` (`.blog-grid`/`.post-card`/
   `.product-grid`/`.product-card`/`.md-content *`/`.field`/`.field-error`/`.empty-state`),
   **solo variables P3** (sin valores de color nuevos) (cubre RF-009, RNF-003) [zona: tokens]
   - CHECK: `npx vitest run tests/unit/tokens.test.ts tests/unit/literals.test.ts`
   - EXPECT: AA de los pares nuevos pasa; sin literales de color.
+  - Evidencia: Parte A — añadidas en `glassmorphism/css/style.css` (bloque "CATÁLOGO
+    AMPLIADO"): `.blog-grid`/`.post-card`/`.post-card-img`/`.post-detail-img`,
+    `.product-grid`/`.product-card`/`.product-card-img`/`.product-detail`/
+    `.product-detail-img`, `.md-content` + hijos (h1-h6/p/ul/ol/li/blockquote/code/pre/
+    table-th-td/a/img/hr), `.field`/`.field-error`, `.empty-state` — solo `var(--...)`
+    ya declaradas en `:root`/`[data-theme="dark"]`; grep de hex/rgb/hsl/oklch sobre el
+    bloque nuevo (líneas 569-758) → sin coincidencias (exit 1). El enlace de
+    `.md-content a` usa `--text-secondary` (no `--primary-color`/`--primary-hover`:
+    ningún acento crudo vanilla cumple AA≥4.5 en AMBOS temas sobre `--bg-card` —
+    `--primary-hover` da 6.79:1 claro pero 2.81:1 oscuro; el vanilla no tiene un token
+    `--primary-text` AA-safe equivalente al de react) + `text-decoration: underline`
+    para conservar la affordance; mismo criterio que `prose.ts` (react, RF-009).
+    Parte B — reconciliada la aserción "enlace de .md-content cumple AA sobre
+    --bg-card" en `react/glassmorphism/tests/unit/tokens.test.ts` (antes comparaba
+    `--primary-color`, 3.78:1 rojo en oscuro; ahora compara `--primary-text`, el token
+    que `prose.ts` (T-012) realmente aplica vía `text-primary-ink`, 6.69:1 claro/8.68:1
+    oscuro) — sigue discriminante (umbral 4.5, claro+oscuro) y documentada con
+    comentario. `npx vitest run tests/unit/tokens.test.ts` → 30/30 verde (antes 29/30).
+    `npx vitest run tests/unit/literals.test.ts` → 139 passed/1 failed, el único rojo es
+    "components/markdown/markdown.tsx existe" (T-022, esperado, no toca `style.css`).
+    `npx vitest run tests/unit/paridad.test.ts -t vanilla` → 56 passed/1 failed/3 skipped,
+    mismo rojo preexistente de T-018 ("sección contenido markdown presente en react",
+    T-022) — sin regresión en vanilla. Pendiente de `revisor`.
 - [ ] T-020 — Motion (P10, directiva de Carlos — sin RF nuevo): microinteracciones de las
   vistas nuevas (reveal de entrada, hover de `post-card`/`product-card`, transición del
   estado de éxito del form) reusando el easing existente; **ambas pistas** (react
