@@ -151,10 +151,25 @@ actualizado: 2026-10-24
     preexistente de `markdown.test.ts` (T-022); `reuse.test.ts` completo → 41/51 (10 rojas
     = post individual/ficha de producto/contacto, tareas futuras T-011/T-012/T-013, sin
     regresión en landing/dashboard/blog/productos).
-- [ ] T-011 — React Producto detalle **texto plano**: `app/productos/[slug]/page.tsx`
+- [x] T-011 — React Producto detalle **texto plano**: `app/productos/[slug]/page.tsx`
   (descripción como string, **sin** `<Markdown>`) (cubre RF-006) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts -t "producto-detalle sin markdown"`
   - EXPECT: pasa (producto-detalle no referencia el renderer).
+  - Hecho: `app/productos/[slug]/page.tsx` nuevo — `generateStaticParams` sobre los slugs
+    de `content/productos.ts`, `generateMetadata` por producto, imagen `next/image` con
+    `alt`, nombre, precio y descripción como párrafos de texto plano (`product.description:
+    string[]`, sin `<Markdown>`/sin import de `components/markdown/*`); reusa `Navbar`/
+    `Logo`/`NavLink`/`ThemeSwitch`/`Footer` igual que el listado. `content/productos.ts`
+    ampliado con el campo `description` (3 párrafos en español por producto, dominio
+    real). El filtro `-t "producto-detalle sin markdown"` selecciona 2 tests: react
+    (paridad.test.ts:153) → PASA; vanilla (paridad.test.ts:160, exige
+    `glassmorphism/producto-detalle.html`) → sigue rojo, esperado hasta T-017 (fuera de
+    alcance de T-011). `type-check` limpio salvo el TS2307 preexistente de
+    `markdown.test.ts` (T-022, componente aún no existe). `reuse.test.ts` → el bloque
+    "ficha de producto" (5/5) pasa en verde (incluye reuso de `navbar`/`footer` y 0
+    módulos de markdown); los 8 rojos restantes (`blog-detalle`, `contacto`) son
+    preexistentes — esas rutas no existen todavía (T-012/T-013), sin regresión en
+    landing/dashboard/blog/productos/ficha de producto.
 - [ ] T-012 — React Blog detalle (maqueta): `app/blog/[slug]/page.tsx` +
   `components/markdown/prose.ts` (clases sobre tokens P3; placeholder del cuerpo hasta
   T-023) (cubre RF-004) [zona: frontend]
