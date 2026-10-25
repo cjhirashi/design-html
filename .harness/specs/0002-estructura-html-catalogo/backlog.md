@@ -12,7 +12,9 @@ no al final del backlog.
   _Cerrado 2026-10-24 (AIRA Modo 2 headless). RE-VERIFICADO 2026-10-25 contra el
   CHECK canónico (`next build && next start`): 16/16 e2e verdes tras resolver el WIP
   Slice-2 y 3 fixes reales de build (commit `8c9c656`). Ver history.md._
-- [ ] **Slice 1.5 — Catálogo de dashboard (GAP real, refinado 2026-10-25 con Carlos)**:
+- [x] **Slice 1.5 — Catálogo de dashboard (GAP real, refinado 2026-10-25 con Carlos)**:
+  _Cerrado 2026-10-25. 7 sub-slices a–g (commits 94ae4cd…6e96a50), ambas pistas,
+  vitest 578/578 + e2e vistas 15/15 contra build&&start. Ver history.md._
   la enmienda de RF-002 (2026-10-24, 15 tipos de campo + 7 tipos de gráfico,
   ambas pistas) quedó en `spec.md` pero **nunca se desglosó en tasks.md** —
   T-014 solo cubre 1 gráfico de líneas placeholder en react. Refinamiento de
