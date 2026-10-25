@@ -76,10 +76,10 @@ todavía inestable. Esta spec no toca ningún otro estilo.
   posteriores del roadmap.
 - Sistema formal de tokens de motion — spec posterior, por decisión explícita de Carlos
   en esta misma elicitación.
-- Los 9 tipos de campo de formulario completos — esta spec pone **un** formulario
-  placeholder (texto + select + boolean); el inventario completo es `0014-form-field-types`.
-- Catálogo completo de tipos de gráfico — esta spec pone **un** gráfico placeholder
-  (líneas); el resto es `0010-chart-types`.
+- ~~Los 9 tipos de campo de formulario completos~~ **ABSORBIDO 2026-10-24** (ver §6) —
+  ya no hay `0014-form-field-types` aparte, el catálogo completo de 15 tipos vive en RF-002.
+- ~~Catálogo completo de tipos de gráfico~~ **ABSORBIDO 2026-10-24** (ver §6) — ya no
+  hay `0010-chart-types` aparte, los 7 tipos de gráfico viven en RF-002.
 - Réplica a los otros 20 estilos — fase posterior, cuando esta estructura cierre.
 - Corrección del bug de contraste AA ya existente en `glassmorphism` vanilla (es
   `1001-*`, feature aparte, no se mezcla aquí).
@@ -95,10 +95,26 @@ contrato HTTP que documentar.
 
 - **RF-001** — El sistema DEBE tener una Landing (vanilla + react) con navbar, hero,
   cards de feature, carrusel/galería y footer — una instancia de cada uno.
-- **RF-002** — El sistema DEBE tener un Dashboard (vanilla + react) con topbar,
-  sidebar-left, y en el main-content: 1 gráfico (líneas, placeholder), 1 alerta, 1 vista
-  de tabla (dataset fijo, sin paginación real todavía), 1 vista de registro/detalle, y 1
-  formulario placeholder (texto + select + boolean).
+- **RF-002** — El sistema DEBE tener un Dashboard (vanilla + react) con topbar y
+  sidebar-left que activa 7 vistas en el main-content (enmienda 2026-10-25, ver §6):
+  1. **Vista Tabla** — sub-pestañas Tabla / Vista / Editar (listado con dataset fijo,
+     detalle de un registro, formulario de edición del mismo registro).
+  2. **Vista Métricas** — catálogo de 7 tipos de gráfico: línea, barras, área, pie,
+     dona, radar, gauge/radial.
+  3. **Vista Markdown** — documentación, reusa el componente Markdown de RF-004.
+  4. **Vista Tareas** — lista de tareas tipo to-do/kanban simple.
+  5. **Vista Formulario** — formulario standalone con el catálogo de 15 tipos de
+     campo: texto, número, textarea, código (monoespaciado), fecha, fecha-hora,
+     boolean/toggle, select de opciones fijas, multi-select de opciones fijas,
+     creatable-select, select-FK (dataset de ejemplo separado, sin backend real),
+     multi-select-FK, lista-texto (líneas→array), lista-número (coma→array), y
+     JSON-list en 3 variantes (clave-valor / lista-de-strings / lista-de-objetos).
+     "Estado" no es un tipo aparte: es el select pintado con badge de color.
+  6. **Vista Controles** — catálogo de controles UI (toggles, selects, etc.).
+  7. Extensible — el inventario de vistas no cierra en 6 (decisión de Carlos).
+  La Vista Tabla y la Vista Formulario comparten el MISMO dataset de ejemplo (un
+  registro visto de varias formas). Alerta de RF original (1 alerta) se conserva
+  como elemento de la Vista Tabla o del overview general.
 - **RF-003** — El sistema DEBE tener una vista de Blog listado (vanilla + react): grid de
   posts con imagen, título, extracto y fecha.
 - **RF-004** — El sistema DEBE tener una vista de Blog detalle (vanilla + react) que
@@ -145,7 +161,9 @@ contrato HTTP que documentar.
 | Ambas pistas (vanilla + react) en paralelo en esta spec | Decisión explícita de Carlos | Vanilla primero, portar después (recomendación inicial de AIRA: menor riesgo de rehacer el port) | ADR-001 |
 | Las 7 vistas completas en una sola spec | Decisión explícita de Carlos; evita dejar el catálogo incompleto otra vez | Landing+Dashboard ahora, Blog/Productos/Contacto en specs separadas | — |
 | Motion fuera de esta spec | Estructura estática primero; motion sobre algo que puede cambiar es trabajo desechable | Incluir tokens de motion mínimos ya | ADR-002 |
-| Un solo placeholder de formulario/gráfico, no el catálogo completo | Consistencia con el patrón "una instancia, variantes después" aplicado a navbar/hero/cards | Los 9 tipos de campo y el catálogo de gráficos completos ya en esta spec | — |
+| ~~Un solo placeholder de formulario/gráfico~~ **REVERTIDO 2026-10-24**: RF-002 absorbe el catálogo COMPLETO de 15 tipos de campo + 7 tipos de gráfico | Carlos confirmó explícitamente vía elicitación con AIRA, 2026-10-24; cierra `0014-form-field-types` y `0010-chart-types` como specs aparte (ya no hacen falta) | Dejar el catálogo incompleto para specs posteriores | — |
+| RF-002 se entrega como sidebar de 7 vistas conmutables (Tabla+pestañas/Métricas/Markdown/Tareas/Formulario/Controles/extensible), no como un overview estático de 5 bloques simultáneos | Carlos, 2026-10-25, tras revisar el despliegue: "deberías activar las secciones para que cada uno muestre las diferentes vistas que pedí" | Overview de 5 bloques fijos en una sola pantalla (redacción original de RF-002) | — |
+| Verificación móvil real (Playwright, medición de overflow/posición, no solo guías de ui-ux-pro-max) es parte del criterio de cierre de CADA slice, no solo de la Fase de verificación final | Carlos, 2026-10-25: Slice 1 se cerró "demoable" sin probarse en 390px; 3 bugs reales de overflow aparecieron después (h1/h2 sin clamp, topbar del dashboard, overflow-x del body) | Verificación responsive solo al final (Slice 4) | — |
 | Markdown reutilizable, no específico de blog; único consumidor en esta spec es Blog Detalle | Carlos: "donde usamos Markdown es donde ocupemos texto enriquecido… etc." — es una capacidad general, no una feature de blog | Componente de Markdown acoplado a la página de blog | — |
 | Producto detalle en texto plano | Decisión explícita de Carlos | Reusar Markdown también en producto detalle | — |
 | Código con resaltado de sintaxis real + Mermaid | Decisión explícita de Carlos, revirtiendo la recomendación inicial de AIRA (solo monoespaciado) | Bloques de código sin resaltado | — |
