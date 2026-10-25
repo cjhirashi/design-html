@@ -9,9 +9,18 @@ Spec: `.harness/specs/0001-glassmorphism-react/`.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000  ·  /  y  /dashboard
+npm run dev          # http://localhost:3000
 npm run build && npm run start   # versión de producción
 ```
+
+Vistas (SPEC-0002, las 7 del catálogo): `/` (landing), `/dashboard` (catálogo de 7 vistas
+conmutables: Tabla/Métricas/Markdown/Tareas/Formulario/Controles), `/blog` + `/blog/[slug]`
+(detalle con Markdown real: Shiki + Mermaid), `/productos` + `/productos/[slug]` (texto plano),
+`/contacto` (formulario validado en cliente, éxito simulado sin red).
+
+El bloque Markdown de la pista vanilla (`glassmorphism/blog-detalle.html` y la Vista Markdown
+de `glassmorphism/dashboard.html`) se **genera** desde las mismas fuentes `.md` con el mismo
+renderer que react: `node scripts/build-vanilla-markdown.mjs` (RF-010, sin reimplementar el parser).
 
 ## Verificación
 
@@ -19,7 +28,7 @@ npm run build && npm run start   # versión de producción
 npm run type-check   # TypeScript
 npm run lint         # ESLint
 npm test             # Vitest: tokens + contraste AA, easing, literales, reuso, aurora
-npm run test:e2e     # Playwright: tema sin FOUC, SO, aurora, reduced-motion, responsive, red
+npm run test:e2e     # Playwright: tema/FOUC, aurora, reduced-motion, responsive, red, vistas (7), contacto
 ```
 
 `test:e2e` levanta su propio `build` + `start` en el puerto 3107. El gate del arnés
@@ -45,8 +54,11 @@ sistema le faltan dependencias del navegador. Hay dos salidas:
 | `components/background/aurora-background.tsx` | Aurora: degradados del original + MagicUI `light-rays` |
 | `components/magicui/` | Código vendorizado de magicui.design, sin modificar |
 | `lib/motion.ts` | Única fuente de easing (`[0.16, 1, 0.3, 1]`) y duraciones |
-| `content/` | Copy y datos de maqueta en español |
-| `app/page.tsx`, `app/dashboard/` | Composición de las dos vistas |
+| `content/` | Copy y datos de maqueta en español (incl. `dashboard-doc.md`, fuente de la Vista Markdown) |
+| `app/page.tsx`, `app/dashboard/`, `app/blog/`, `app/productos/`, `app/contacto/` | Las 7 vistas del catálogo (SPEC-0002) |
+| `app/dashboard/_components/views/` | Las 7 vistas conmutables del dashboard (Tabla, Métricas, Formulario, Tareas, Controles, Markdown) |
+| `components/markdown/` | Renderer de Markdown compartido (Shiki + Mermaid, build-time); `render-markdown-core.ts` lo usa react y el script vanilla |
+| `scripts/build-vanilla-markdown.mjs` | Genera el bloque Markdown de las páginas vanilla desde las mismas fuentes `.md` |
 
 ## Portar otro estilo (p. ej. `glass-aurum`)
 

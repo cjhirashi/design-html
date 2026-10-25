@@ -66,7 +66,7 @@ Roles y responsabilidades completos en `.harness/method.md §8` (canon único, n
 
 ## ⚛️ Pista React/Next.js (ADR-001, piloto)
 
-`react/<estilo>/` es una app Next.js paralela a la carpeta vanilla del estilo, que **no la reemplaza**: la vanilla sigue siendo la fuente de verdad visual. Hoy solo existe `react/glassmorphism/` (spec `0001-glassmorphism-react`). Allí P5/P6 se cumplen por su equivalente (fuentes vía `next/font`, colores solo vía `app/tokens.css`). Reglas completas en `decisions/ADR-001-track-react-paralelo.md`. Comandos y cómo portar otro estilo: `react/glassmorphism/README.md`.
+`react/<estilo>/` es una app Next.js paralela a la carpeta vanilla del estilo, que **no la reemplaza**: la vanilla sigue siendo la fuente de verdad visual. Hoy solo existe `react/glassmorphism/` (specs `0001-glassmorphism-react` y `0002-estructura-html-catalogo`: las 7 vistas del catálogo —landing, dashboard de 7 vistas conmutables, blog listado/detalle con Markdown real, productos listado/detalle, contacto funcional— en ambas pistas). Allí P5/P6 se cumplen por su equivalente (fuentes vía `next/font`, colores solo vía `app/tokens.css`). Reglas completas en `decisions/ADR-001-track-react-paralelo.md`. Comandos y cómo portar otro estilo: `react/glassmorphism/README.md`.
 
 ## 🧩 Skills Disponibles (`.claude/skills/`)
 
