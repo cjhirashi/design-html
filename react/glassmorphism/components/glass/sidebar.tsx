@@ -97,34 +97,60 @@ export function Sidebar({
   );
 }
 
-/** Ítem de menú lateral (dashboard y menú móvil del landing). */
+const sidebarItemClasses = (active?: boolean) =>
+  cn(
+    "flex w-full items-center gap-3 rounded-glass-sm px-4 py-2.5 text-left text-sm font-medium [&_svg]:size-4 [&_svg]:shrink-0",
+    "transition-colors duration-200 ease-glass motion-reduce:transition-none",
+    active ? "bg-primary-soft text-primary-ink" : "text-fg-2 hover:bg-primary-soft hover:text-primary-ink",
+  );
+
+/**
+ * Ítem de menú lateral (dashboard y menú móvil del landing). Con `href` es un enlace de
+ * navegación (`<Link>`); con `onSelect` (sin `href`) es un botón que conmuta una vista
+ * en el mismo panel sin navegar — lo usa el catálogo de vistas del dashboard (RF-002).
+ */
 export function SidebarItem({
   href,
   active,
   icon,
   onNavigate,
+  onSelect,
+  controls,
   children,
 }: {
-  href: string;
+  href?: string;
   active?: boolean;
   icon?: React.ReactNode;
   onNavigate?: () => void;
+  onSelect?: () => void;
+  controls?: string;
   children: React.ReactNode;
 }) {
+  if (href) {
+    return (
+      <Link
+        href={href}
+        onClick={onNavigate}
+        aria-current={active ? "page" : undefined}
+        className={sidebarItemClasses(active)}
+      >
+        {icon}
+        {children}
+      </Link>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      onClick={onNavigate}
+    <button
+      type="button"
+      onClick={onSelect}
       aria-current={active ? "page" : undefined}
-      className={cn(
-        "flex items-center gap-3 rounded-glass-sm px-4 py-2.5 text-sm font-medium [&_svg]:size-4 [&_svg]:shrink-0",
-        "transition-colors duration-200 ease-glass motion-reduce:transition-none",
-        active ? "bg-primary-soft text-primary-ink" : "text-fg-2 hover:bg-primary-soft hover:text-primary-ink",
-      )}
+      aria-controls={controls}
+      className={cn(sidebarItemClasses(active), "cursor-pointer")}
     >
       {icon}
       {children}
-    </Link>
+    </button>
   );
 }
 

@@ -80,17 +80,37 @@ for (const reduce of [false, true]) {
   });
 }
 
-test.describe("RF-002 · el dashboard expone sus 5 bloques", () => {
-  const BLOQUES = ["grafico", "alerta", "tabla", "registro", "formulario"] as const;
+// RF-002 (enmienda 2026-10-25, §6): el dashboard ya NO expone 5 bloques fijos, sino un
+// sidebar que activa 7 vistas conmutables en el main-content. Verificamos que el catálogo
+// de vistas existe, que la vista por defecto es Tabla, y que cada ítem del sidebar conmuta
+// el panel a su vista (`data-view`) sin recargar ni lanzar errores.
+test.describe("RF-002 · el dashboard conmuta entre las vistas del catálogo", () => {
+  const VISTAS = [
+    { id: "tabla", label: "Tabla" },
+    { id: "metricas", label: "Métricas" },
+    { id: "markdown", label: "Markdown" },
+    { id: "tareas", label: "Tareas" },
+    { id: "formulario", label: "Formulario" },
+    { id: "controles", label: "Controles" },
+  ] as const;
 
-  test("los 5 bloques están presentes, con conmutador y sin errores", async ({ page }) => {
+  test("el sidebar activa cada vista en el panel, con conmutador y sin errores", async ({ page }) => {
     const errors = trackPageErrors(page);
     await page.setViewportSize({ width: 1280, height: 900 });
     const response = await page.goto("/dashboard");
     expect(response?.ok(), "HTTP de /dashboard").toBe(true);
-    for (const bloque of BLOQUES) {
-      await expect(page.locator(`[data-block="${bloque}"]`)).toBeVisible();
+
+    const panel = page.locator("#dashboard-view-panel");
+    // Vista por defecto: Tabla.
+    await expect(panel).toHaveAttribute("data-view", "tabla");
+
+    const nav = page.getByRole("navigation", { name: "Vistas del panel" });
+    for (const vista of VISTAS) {
+      await nav.getByRole("button", { name: vista.label, exact: true }).click();
+      await expect(panel).toHaveAttribute("data-view", vista.id);
+      await expect(panel).toBeVisible();
     }
+
     await expectThemeSwitch(page);
     expect(errors, errors.join("\n")).toEqual([]);
   });

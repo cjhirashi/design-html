@@ -169,6 +169,37 @@ describe("RF-006 producto-detalle sin markdown", () => {
   });
 });
 
+// RF-002 (enmienda 2026-10-25): el dashboard expone un catálogo de 7 vistas conmutables.
+// Paridad: cada `id` de vista existe en AMBAS pistas — en vanilla como panel `data-view` y
+// como botón `data-view-target`; en react en el registro `dashboardViews` (content) y
+// conmutado por el shell (`data-view={view}`). El inventario no cierra en 6 ("y más").
+describe("RF-002 · catálogo de vistas del dashboard (paridad vanilla ↔ react)", () => {
+  const VIEW_IDS = ["tabla", "metricas", "markdown", "tareas", "formulario", "controles"] as const;
+  const dashboardHtml = readVanilla("dashboard.html");
+  const content = ownSources().find((s) => s.file === "content/dashboard.ts")?.code ?? "";
+  const shell = ownSources().find((s) => s.file === "app/dashboard/_components/dashboard-shell.tsx")?.code ?? "";
+
+  it.each(VIEW_IDS)("vanilla · la vista %s tiene panel data-view y botón data-view-target", (id) => {
+    expect(dashboardHtml).toContain(`data-view="${id}"`);
+    expect(dashboardHtml).toContain(`data-view-target="${id}"`);
+  });
+
+  it.each(VIEW_IDS)("react · la vista %s está en el registro dashboardViews", (id) => {
+    expect(content).toMatch(new RegExp(`id:\\s*["']${id}["']`));
+  });
+
+  it("react · el shell conmuta la vista activa en un panel con data-view", () => {
+    expect(shell).toMatch(/data-view=\{view\}/);
+    for (const id of VIEW_IDS) {
+      expect(shell).toContain(`view === "${id}"`);
+    }
+  });
+
+  it("vanilla · carga el conmutador de vistas (dashboard-views.js)", () => {
+    expect(dashboardHtml).toMatch(/dashboard-views\.js/);
+  });
+});
+
 // Seleccionable con `-t vanilla` (T-017): las 4 vistas vanilla nuevas + su switcher de
 // tema de 3 vías (#themeSwitcher), igual que ya existe en index.html/dashboard.html.
 describe("vanilla vistas nuevas · estructura mínima", () => {

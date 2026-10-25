@@ -7,6 +7,23 @@ export const user = { initials: "CH", name: "Charlie H.", role: "Ingeniero UI" }
 export const breadcrumb = { root: "Glass", current: "Panel principal" };
 export const searchPlaceholder = "Buscar capas, nodos, tokens…";
 
+/**
+ * Catálogo de vistas del dashboard (RF-002, enmienda 2026-10-25): el sidebar-left activa
+ * una de estas vistas en el main-content. El inventario NO cierra en 6 ("y más", Carlos);
+ * cada `id` es estable y se usa como `data-view` (vanilla) / clave de estado (react) y
+ * como ancla de los tests de paridad. `icon` es una clave del mapa de íconos del shell.
+ */
+export const dashboardViews = [
+  { id: "tabla", label: "Tabla", icon: "dashboard", caption: "Listado, detalle y edición de un registro" },
+  { id: "metricas", label: "Métricas", icon: "activity", caption: "Catálogo de tipos de gráfico" },
+  { id: "markdown", label: "Markdown", icon: "tokens", caption: "Documentación con texto enriquecido" },
+  { id: "tareas", label: "Tareas", icon: "layers", caption: "Tablero de tareas estilo kanban" },
+  { id: "formulario", label: "Formulario", icon: "plus", caption: "Catálogo de tipos de campo" },
+  { id: "controles", label: "Controles", icon: "settings", caption: "Catálogo de controles de interfaz" },
+] as const;
+
+export type DashboardViewId = (typeof dashboardViews)[number]["id"];
+
 export const menu = [
   {
     label: "General",
