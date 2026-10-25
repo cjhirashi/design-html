@@ -36,9 +36,13 @@ no al final del backlog.
   Ambas pistas (vanilla + react) en paridad, mismo dataset de ejemplo.
   Demoable tras (a): navegar el sidebar y ver cada vista (aunque esté vacía).
   Demoable completo: las 7 vistas con contenido real.
-- [ ] **Slice 2 — Markdown build vanilla**: T-024 (script `build-vanilla-markdown.mjs`,
+- [x] **Slice 2 — Markdown build vanilla**: T-024 (script `build-vanilla-markdown.mjs`,
   usa T-022/T-023 ya cerrados). Demoable: `blog-detalle.html` generado con el
   mismo render que react.
+  _Cerrado 2026-10-25 al resolver el WIP sin commitear (commit `26a7f75`). Extrae
+  `render-markdown-core.ts` compartido (RF-010); `paridad.test.ts` verifica paridad
+  byte-a-byte; gate verde (454 vitest + type-check). Ver history.md. NOTA: desbloqueó
+  el hallazgo de que Playwright/chromium y las deps npm YA funcionan en esta sesión._
 - [ ] **Slice 3 — Contacto funcional**: T-025 (react), T-026 (vanilla), T-029
   (e2e). Demoable: formulario de contacto valida y muestra error/éxito en
   ambas pistas.
