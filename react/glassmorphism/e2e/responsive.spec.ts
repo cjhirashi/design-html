@@ -34,6 +34,30 @@ for (const [name, width] of Object.entries(VIEWPORTS)) {
   }
 }
 
+// T-031: las 7 vistas del catálogo sin scroll horizontal de página en móvil/tablet/desktop.
+// Chequeo a nivel documento (lo crítico); el barrido fino por elemento vive arriba para
+// landing/dashboard (el markdown lleva `<pre>` con scroll-x intencional, que no es desborde).
+const CATALOG_ROUTES = [
+  "/blog",
+  "/blog/tokens-de-vidrio",
+  "/productos",
+  "/productos/panel-vidrio-esmerilado",
+  "/contacto",
+];
+
+for (const [name, width] of Object.entries(VIEWPORTS)) {
+  for (const route of CATALOG_ROUTES) {
+    test(`${route} sin scroll horizontal de página en ${name} (${width}px)`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(route);
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      );
+      expect(overflow).toBeLessThanOrEqual(0);
+    });
+  }
+}
+
 test.describe("landing", () => {
   test("mobile: menú hamburguesa abre y cierra un cajón con los enlaces", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 800 });
