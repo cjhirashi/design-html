@@ -386,6 +386,25 @@ describe("markdown · paridad del bloque renderizado dashboard <-> componente", 
   });
 });
 
+// RF-007/RF-013 · Contacto funcional en AMBAS pistas: valida en cliente, error inline por
+// campo y éxito simulado sin red.
+describe("RF-007/RF-013 · contacto funcional (paridad vanilla ↔ react)", () => {
+  const contactoHtml = readVanilla("contacto.html");
+  const contactForm = ownSources().find((s) => s.file === "app/contacto/_components/contact-form.tsx")?.code ?? "";
+
+  it("vanilla · carga contact-form.js y tiene estado de éxito + form data-contact", () => {
+    expect(contactoHtml).toMatch(/contact-form\.js/);
+    expect(contactoHtml).toMatch(/id="contacto-success"/);
+    expect(contactoHtml).toMatch(/<form[^>]*\bdata-contact\b/);
+  });
+
+  it("react · ContactForm valida (email + requeridos) y muestra éxito (role=status)", () => {
+    expect(contactForm).toMatch(/EMAIL_RE/);
+    expect(contactForm).toMatch(/role="status"/);
+    expect(contactForm).toMatch(/error=\{errors\.(nombre|email|mensaje)\}/);
+  });
+});
+
 // Saneamiento del propio helper vanilla_root: evita que un typo silencioso apunte a un
 // directorio inexistente y todos los `existsSync` anteriores den falsos negativos iguales.
 describe("saneamiento de rutas del test de paridad", () => {
