@@ -21,14 +21,33 @@
     });
   }
 
+  // Sub-pestañas dentro de una vista (p. ej. Tabla → Tabla/Vista/Editar). Scoped al
+  // contenedor [data-subtabs] del botón: varias vistas pueden tener sus propias sub-pestañas
+  // sin interferir. Un solo sub-panel [data-subtab] visible por contenedor.
+  function activateSubtab(container, id) {
+    container.querySelectorAll("[data-subtab]").forEach(function (panel) {
+      panel.hidden = panel.getAttribute("data-subtab") !== id;
+    });
+    container.querySelectorAll("[data-subtab-target]").forEach(function (btn) {
+      btn.setAttribute("aria-selected", String(btn.getAttribute("data-subtab-target") === id));
+    });
+  }
+
   function initDashboardViews() {
     var navs = document.querySelectorAll("[data-view-target]");
-    if (!navs.length) return;
     navs.forEach(function (btn) {
       btn.addEventListener("click", function () {
         activateView(btn.getAttribute("data-view-target"));
         // Cerrar el cajón lateral en móvil tras elegir (mismo gesto que nav-toggle).
         if (typeof closeSidebars === "function") closeSidebars();
+      });
+    });
+
+    document.querySelectorAll("[data-subtabs]").forEach(function (container) {
+      container.querySelectorAll("[data-subtab-target]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          activateSubtab(container, btn.getAttribute("data-subtab-target"));
+        });
       });
     });
   }

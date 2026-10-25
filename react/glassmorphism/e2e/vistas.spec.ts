@@ -114,4 +114,27 @@ test.describe("RF-002 · el dashboard conmuta entre las vistas del catálogo", (
     await expectThemeSwitch(page);
     expect(errors, errors.join("\n")).toEqual([]);
   });
+
+  test("la Vista Tabla conmuta sus sub-pestañas Tabla / Vista / Editar", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/dashboard");
+
+    const panel = page.locator("#dashboard-view-panel");
+    const subtabs = page.getByRole("tablist", { name: "Sub-vistas de la tabla" });
+    const subpanel = panel.locator("[data-subtab]");
+
+    // Por defecto: listado (la tabla de servicios).
+    await expect(subpanel).toHaveAttribute("data-subtab", "tabla");
+    await expect(panel.getByRole("table")).toBeVisible();
+
+    // Vista: detalle de un registro.
+    await subtabs.getByRole("tab", { name: "Vista", exact: true }).click();
+    await expect(subpanel).toHaveAttribute("data-subtab", "vista");
+    await expect(panel.getByText("Detalle del nodo seleccionado")).toBeVisible();
+
+    // Editar: formulario del mismo registro.
+    await subtabs.getByRole("tab", { name: "Editar", exact: true }).click();
+    await expect(subpanel).toHaveAttribute("data-subtab", "editar");
+    await expect(panel.getByRole("form", { name: "Editar registro" })).toBeVisible();
+  });
 });

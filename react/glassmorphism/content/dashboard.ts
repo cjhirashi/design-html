@@ -133,6 +133,33 @@ export const record = {
   ],
 } as const;
 
+/**
+ * Mismo registro que `record` (RF-002, §6: "un registro visto de varias formas"), pero
+ * en forma de valores prefijados para la sub-pestaña Editar de la Vista Tabla. Sin backend.
+ */
+export const recordEdit = {
+  id: { defaultValue: "nodo-07" },
+  nombre: { defaultValue: "Motor Glassmorphism" },
+  estado: {
+    defaultValue: "operativo",
+    options: [
+      { value: "operativo", label: "Operativo" },
+      { value: "degradado", label: "Degradado" },
+      { value: "caido", label: "Caído" },
+    ],
+  },
+  region: {
+    defaultValue: "mx-central-1",
+    options: [
+      { value: "mx-central-1", label: "México central" },
+      { value: "us-east-1", label: "EE. UU. este" },
+      { value: "eu-west-1", label: "Europa oeste" },
+    ],
+  },
+  responsable: { defaultValue: "Charlie H." },
+  activo: { defaultChecked: true },
+};
+
 /** Formulario placeholder (RF-002): texto + select + boolean, sin validación. */
 export const placeholderForm = {
   caption: "Nuevo nodo (placeholder, sin validación)",

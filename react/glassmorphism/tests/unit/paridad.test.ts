@@ -198,6 +198,23 @@ describe("RF-002 · catálogo de vistas del dashboard (paridad vanilla ↔ react
   it("vanilla · carga el conmutador de vistas (dashboard-views.js)", () => {
     expect(dashboardHtml).toMatch(/dashboard-views\.js/);
   });
+
+  // RF-002 §6: la Vista Tabla muestra un registro de 3 formas (listado/detalle/edición).
+  const SUBTABS = ["tabla", "vista", "editar"] as const;
+  const viewTabla = ownSources().find((s) => s.file === "app/dashboard/_components/views/view-tabla.tsx")?.code ?? "";
+
+  it.each(SUBTABS)("vanilla · la sub-pestaña %s de la Vista Tabla existe", (id) => {
+    expect(dashboardHtml).toContain(`data-subtab="${id}"`);
+    expect(dashboardHtml).toContain(`data-subtab-target="${id}"`);
+  });
+
+  it("react · la Vista Tabla declara las 3 sub-pestañas y las conmuta", () => {
+    expect(viewTabla).toMatch(/data-subtab-target=\{t\.id\}/);
+    expect(viewTabla).toMatch(/data-subtab=\{tab\}/);
+    for (const id of SUBTABS) {
+      expect(viewTabla).toMatch(new RegExp(`id:\\s*["']${id}["']`));
+    }
+  });
 });
 
 // Seleccionable con `-t vanilla` (T-017): las 4 vistas vanilla nuevas + su switcher de
