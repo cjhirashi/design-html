@@ -167,4 +167,22 @@ test.describe("RF-002 · el dashboard conmuta entre las vistas del catálogo", (
     // Controles nativos reales: varios inputs/selects/textareas.
     expect(await form.locator("input, select, textarea").count()).toBeGreaterThanOrEqual(12);
   });
+
+  test("las Vistas Tareas y Controles muestran su contenido", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/dashboard");
+    const nav = page.getByRole("navigation", { name: "Vistas del panel" });
+    const panel = page.locator("#dashboard-view-panel");
+
+    await nav.getByRole("button", { name: "Tareas", exact: true }).click();
+    await expect(panel).toHaveAttribute("data-view", "tareas");
+    for (const col of ["Pendiente", "En curso", "Hecho"]) {
+      await expect(panel.getByRole("region", { name: col })).toBeVisible();
+    }
+
+    await nav.getByRole("button", { name: "Controles", exact: true }).click();
+    await expect(panel).toHaveAttribute("data-view", "controles");
+    await expect(panel.getByRole("tablist", { name: "Rango temporal" })).toBeVisible();
+    await expect(panel.getByRole("region", { name: "Botones" })).toBeVisible();
+  });
 });

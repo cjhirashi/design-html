@@ -281,6 +281,33 @@ describe("RF-002 · catálogo de 15 tipos de campo (paridad vanilla ↔ react)",
   });
 });
 
+// RF-002 §6: Vista Tareas (kanban) y Vista Controles, en AMBAS pistas.
+describe("RF-002 · Vistas Tareas y Controles (paridad vanilla ↔ react)", () => {
+  const dashboardHtml = readVanilla("dashboard.html");
+  const viewTareas = ownSources().find((s) => s.file === "app/dashboard/_components/views/view-tareas.tsx")?.code ?? "";
+  const viewControles = ownSources().find((s) => s.file === "app/dashboard/_components/views/view-controles.tsx")?.code ?? "";
+  const content = ownSources().find((s) => s.file === "content/dashboard.ts")?.code ?? "";
+
+  it.each(["Pendiente", "En curso", "Hecho"])("Tareas · la columna «%s» existe en ambas pistas", (col) => {
+    expect(dashboardHtml).toContain(col);
+    expect(content).toContain(col); // react pinta las columnas desde taskBoard (content)
+  });
+
+  it.each(["Botones", "Badges", "Toggle", "Select y slider", "Segmented control"])(
+    "Controles · el grupo «%s» existe en ambas pistas",
+    (group) => {
+      expect(dashboardHtml).toContain(group);
+      expect(viewControles).toContain(group);
+    },
+  );
+
+  it("react · Tareas se pinta desde taskBoard; Controles usa segmented/toggle", () => {
+    expect(viewTareas).toMatch(/taskBoard\.columns\.map/);
+    expect(viewControles).toMatch(/role="tablist"/);
+    expect(viewControles).toMatch(/type="range"/);
+  });
+});
+
 // Seleccionable con `-t vanilla` (T-017): las 4 vistas vanilla nuevas + su switcher de
 // tema de 3 vías (#themeSwitcher), igual que ya existe en index.html/dashboard.html.
 describe("vanilla vistas nuevas · estructura mínima", () => {

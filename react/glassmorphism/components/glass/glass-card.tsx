@@ -17,12 +17,16 @@ export function GlassCard({
   level = "card",
   className,
   children,
+  ...aria
 }: {
   as?: "article" | "div" | "section" | "li";
   interactive?: boolean;
   level?: "card" | "panel";
   className?: string;
   children: React.ReactNode;
+  /** Nombre accesible opcional (p. ej. columnas de un tablero o grupos de controles). */
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 }) {
   const reduceMotion = useReducedMotion();
   const Component = motion[as];
@@ -30,6 +34,7 @@ export function GlassCard({
     <Component
       whileHover={interactive && !reduceMotion ? hoverLift : undefined}
       className={cn(glass[level], interactive && glassHover, className)}
+      {...aria}
     >
       {children}
     </Component>

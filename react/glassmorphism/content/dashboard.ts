@@ -207,6 +207,35 @@ export const formCatalog = {
   jsonObjetos: '[\n  { "capa": 4, "blur": "16px" },\n  { "capa": 2, "blur": "8px" }\n]',
 };
 
+/** Tablero de tareas estilo kanban (RF-002 §6, Vista Tareas). Maqueta, sin arrastrar. */
+export const taskBoard: {
+  columns: { id: string; label: string; tasks: { id: string; title: string; tag: string; tone: Tone }[] }[];
+} = {
+  columns: [
+    {
+      id: "pendiente",
+      label: "Pendiente",
+      tasks: [
+        { id: "t1", title: "Optimizar el blur de la capa translúcida #4", tag: "UI", tone: "warning" },
+        { id: "t2", title: "Documentar la familia de tokens P3", tag: "Docs", tone: "primary" },
+      ],
+    },
+    {
+      id: "encurso",
+      label: "En curso",
+      tasks: [{ id: "t3", title: "Reescribir el sincronizador de blur", tag: "Core", tone: "primary" }],
+    },
+    {
+      id: "hecho",
+      label: "Hecho",
+      tasks: [
+        { id: "t4", title: "Carrusel del landing con imágenes locales", tag: "UI", tone: "success" },
+        { id: "t5", title: "Tema claro/sistema/oscuro sin FOUC", tag: "UI", tone: "success" },
+      ],
+    },
+  ],
+};
+
 export const chat: { title: string; placeholder: string; sendLabel: string; messages: ChatMessage[] } = {
   title: "Asistente Glass UI",
   placeholder: "Enviar comando al agente…",
