@@ -12,6 +12,13 @@ no al final del backlog.
   _Cerrado 2026-10-24 (AIRA Modo 2 headless). e2e verdes (16/16) contra `next dev`;
   el CHECK canónico (webServer = `next build && next start`) sigue bloqueado por el
   WIP Slice-2 (T-024) sin commitear → re-correr al cerrar Slice 2. Ver history.md._
+- [ ] **Slice 1.5 — Catálogo de dashboard (GAP real, sin tarea asignada)**: la
+  enmienda de RF-002 (2026-10-24, 15 tipos de campo + 7 tipos de gráfico,
+  ambas pistas) quedó en `spec.md` pero **nunca se desglosó en tasks.md** —
+  T-014 solo cubre 1 gráfico de líneas placeholder en react. `dashboard.html`
+  vanilla sigue en 182 líneas, sin ningún tipo de campo nuevo. Pendiente:
+  refinar esta historia (criterios + archivos concretos) antes de implementar.
+  Demoable: tabla/registro/formulario con los 15 tipos + 7 gráficos, ambas pistas.
 - [ ] **Slice 2 — Markdown build vanilla**: T-024 (script `build-vanilla-markdown.mjs`,
   usa T-022/T-023 ya cerrados). Demoable: `blog-detalle.html` generado con el
   mismo render que react.
