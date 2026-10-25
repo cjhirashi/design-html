@@ -137,4 +137,17 @@ test.describe("RF-002 · el dashboard conmuta entre las vistas del catálogo", (
     await expect(subpanel).toHaveAttribute("data-subtab", "editar");
     await expect(panel.getByRole("form", { name: "Editar registro" })).toBeVisible();
   });
+
+  test("la Vista Métricas muestra los 7 gráficos como SVG inline", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/dashboard");
+    const nav = page.getByRole("navigation", { name: "Vistas del panel" });
+    await nav.getByRole("button", { name: "Métricas", exact: true }).click();
+
+    const panel = page.locator("#dashboard-view-panel");
+    await expect(panel).toHaveAttribute("data-view", "metricas");
+    // 7 gráficos, cada uno un <svg role="img"> (sin <img>/<canvas>/librería externa).
+    await expect(panel.getByRole("img")).toHaveCount(7);
+    await expect(panel.locator("img, canvas")).toHaveCount(0);
+  });
 });

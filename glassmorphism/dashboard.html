@@ -14,7 +14,6 @@
         .dash-placeholder { padding: 2rem; }
         .dash-placeholder h3 { margin: 0.75rem 0 0.5rem; }
         .dash-placeholder p { color: var(--text-secondary); font-size: 0.9rem; max-width: 60ch; }
-        .dash-chart { color: var(--primary-color); width: 100%; height: 6rem; }
         /* Sub-pestañas (Tabla → Tabla/Vista/Editar). Activo en --text-primary sobre
            --primary-light: AA seguro en claro y oscuro (no usa --primary-color como texto). */
         .subtab-nav { display: flex; gap: 0.25rem; flex-wrap: wrap; width: fit-content; padding: 0.25rem; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: var(--radius-md); }
@@ -25,6 +24,13 @@
         .dash-record { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem 1.5rem; margin: 0; }
         .dash-record dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-secondary); }
         .dash-record dd { margin: 0.25rem 0 0; color: var(--text-primary); font-size: 0.9rem; }
+        /* Catálogo de gráficos (SVG inline, sin librería; color vía currentColor + opacidad). */
+        .dash-metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
+        .dash-metrics-grid figure { margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+        .dash-metrics-grid figcaption .chart-title { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+        .dash-metrics-grid figcaption .chart-sub { display: block; font-size: 0.75rem; color: var(--text-secondary); }
+        .dash-chart { color: var(--primary-color); width: 100%; }
+        .dash-chart.tall { height: 7rem; }
     </style>
 </head>
 <body>
@@ -243,16 +249,81 @@
 
             <!-- Vista Métricas -->
             <section class="dash-view" data-view="metricas" aria-label="Métricas" hidden>
-                <div class="card" style="padding: 1.5rem;">
-                    <figure style="display: flex; flex-direction: column; gap: 0.75rem; margin: 0;">
-                        <figcaption style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;">
-                            <span style="font-size: 0.9rem; color: var(--text-secondary);">Latencia de capa (últimas 7 muestras)</span>
-                            <span class="mono" style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary);">12 ms</span>
-                        </figcaption>
-                        <svg class="dash-chart" viewBox="0 0 280 96" role="img" aria-label="Latencia de capa: serie de 7 muestras en ms">
-                            <path d="M8.0,32.0 L53.3,8.0 L98.7,24.0 L144.0,88.0 L189.3,56.0 L234.7,24.0 L280.0,8.0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </figure>
+                <div class="dash-metrics-grid">
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Línea</span><span class="chart-sub">Latencia de capa (7 muestras)</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 280 96" role="img" aria-label="Gráfico de líneas: 7 muestras">
+                                <path d="M8.0,72.0 L52.0,40.0 L96.0,56.0 L140.0,8.0 L184.0,32.0 L228.0,64.0 L272.0,88.0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Barras</span><span class="chart-sub">Peticiones por nodo</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 280 96" role="img" aria-label="Gráfico de barras: 7 categorías">
+                                <rect x="10.5" y="62.4" width="28" height="33.6" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="49.0" y="37.2" width="28" height="58.8" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="87.5" y="49.8" width="28" height="46.2" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="126.0" y="20.4" width="28" height="75.6" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="164.5" y="41.4" width="28" height="54.6" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="203.0" y="28.8" width="28" height="67.2" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="241.5" y="12.0" width="28" height="84.0" rx="3" fill="currentColor" fill-opacity="1"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Área</span><span class="chart-sub">Carga acumulada</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 280 96" role="img" aria-label="Gráfico de área: 7 muestras">
+                                <path d="M8.0,72.0 L52.0,40.0 L96.0,56.0 L140.0,8.0 L184.0,32.0 L228.0,64.0 L272.0,88.0 L272,88 L8,88 Z" fill="currentColor" fill-opacity="0.15" stroke="none"/>
+                                <path d="M8.0,72.0 L52.0,40.0 L96.0,56.0 L140.0,8.0 L184.0,32.0 L228.0,64.0 L272.0,88.0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Pie</span><span class="chart-sub">Distribución de tokens</span></figcaption>
+                            <svg class="dash-chart" style="height: 8rem; width: auto; align-self: center;" viewBox="0 0 120 120" role="img" aria-label="Gráfico de pie: 3 segmentos">
+                                <g transform="rotate(-90 60 60)">
+                                    <circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-opacity="1" stroke-width="56" stroke-dasharray="70.37 105.56" stroke-dashoffset="0"/>
+                                    <circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="56" stroke-dasharray="61.58 114.35" stroke-dashoffset="-70.37"/>
+                                    <circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="56" stroke-dasharray="43.98 131.95" stroke-dashoffset="-131.95"/>
+                                </g>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Dona</span><span class="chart-sub">Uso por región</span></figcaption>
+                            <svg class="dash-chart" style="height: 8rem; width: auto; align-self: center;" viewBox="0 0 120 120" role="img" aria-label="Gráfico de dona: 3 segmentos">
+                                <g transform="rotate(-90 60 60)">
+                                    <circle cx="60" cy="60" r="42" fill="none" stroke="currentColor" stroke-opacity="1" stroke-width="16" stroke-dasharray="105.56 158.34" stroke-dashoffset="0"/>
+                                    <circle cx="60" cy="60" r="42" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="16" stroke-dasharray="92.36 171.53" stroke-dashoffset="-105.56"/>
+                                    <circle cx="60" cy="60" r="42" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="16" stroke-dasharray="65.97 197.92" stroke-dashoffset="-197.92"/>
+                                </g>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Radar</span><span class="chart-sub">Perfil de capacidades</span></figcaption>
+                            <svg class="dash-chart" style="height: 8rem; width: auto; align-self: center;" viewBox="0 0 120 120" role="img" aria-label="Gráfico de radar: 5 ejes">
+                                <polygon points="60.0,12.0 105.7,45.2 88.2,98.8 31.8,98.8 14.3,45.2" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1"/>
+                                <polygon points="60.0,16.8 87.4,51.1 81.2,89.1 45.9,79.4 23.5,48.1" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Gauge</span><span class="chart-sub">Disponibilidad objetivo</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 120 74" role="img" aria-label="Gauge radial: 70%">
+                                <path d="M12,60 A48,48 0 0 1 108,60" fill="none" stroke="currentColor" stroke-opacity="0.2" stroke-width="10" stroke-linecap="round"/>
+                                <path d="M12,60 A48,48 0 0 1 88.2,21.2" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+                                <text x="60" y="58" text-anchor="middle" class="mono" style="fill: var(--text-primary); font-size: 18px; font-weight: 700;">70%</text>
+                            </svg>
+                        </figure>
+                    </div>
                 </div>
             </section>
 

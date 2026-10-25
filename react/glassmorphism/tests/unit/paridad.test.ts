@@ -217,6 +217,37 @@ describe("RF-002 · catálogo de vistas del dashboard (paridad vanilla ↔ react
   });
 });
 
+// RF-002 §6: la Vista Métricas cataloga los 7 tipos de gráfico, en AMBAS pistas, como SVG
+// inline (sin librería). Anclamos por el aria-label de cada gráfico.
+describe("RF-002 · catálogo de 7 gráficos (paridad vanilla ↔ react)", () => {
+  const CHART_LABELS = [
+    "de líneas",
+    "de barras",
+    "de área",
+    "de pie",
+    "de dona",
+    "de radar",
+    "Gauge radial",
+  ] as const;
+  const dashboardHtml = readVanilla("dashboard.html");
+  const charts = ownSources().find((s) => s.file === "app/dashboard/_components/views/charts.tsx")?.code ?? "";
+
+  it.each(CHART_LABELS)("vanilla · el gráfico %s existe como SVG inline", (label) => {
+    expect(dashboardHtml).toContain(label);
+  });
+
+  it.each(CHART_LABELS)("react · el gráfico %s existe como SVG inline", (label) => {
+    expect(charts).toContain(label);
+  });
+
+  it("los gráficos no cargan ninguna librería por red (P5): sin <script> de charts en vanilla", () => {
+    // El bloque de métricas vanilla es SVG puro; no debe inyectar <script> de gráficos.
+    const metricas = dashboardHtml.match(/data-view="metricas"[\s\S]*?<\/section>/)?.[0] ?? "";
+    expect(metricas).not.toMatch(/<script/i);
+    expect(metricas).toMatch(/<svg/);
+  });
+});
+
 // Seleccionable con `-t vanilla` (T-017): las 4 vistas vanilla nuevas + su switcher de
 // tema de 3 vías (#themeSwitcher), igual que ya existe en index.html/dashboard.html.
 describe("vanilla vistas nuevas · estructura mínima", () => {
