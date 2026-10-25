@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -9,7 +11,7 @@ import { Logo } from "@/components/glass/logo";
 import { Navbar, NavLink } from "@/components/glass/navbar";
 import { Reveal } from "@/components/glass/reveal";
 import { ThemeSwitch } from "@/components/glass/theme-switch";
-import { proseRoot } from "@/components/markdown/prose";
+import { Markdown } from "@/components/markdown/markdown";
 import { footer } from "@/content/landing";
 import { posts } from "@/content/blog";
 import { catalogNav } from "@/content/site";
@@ -24,6 +26,19 @@ function findPost(slug: string) {
   return posts.find((post) => post.slug === slug);
 }
 
+// Fuente única del cuerpo (RF-010): el mismo `.md` que lee
+// `scripts/build-vanilla-markdown.mjs` para la pista vanilla — cero divergencia de
+// contenido entre pistas. No todo post de `content/blog.ts` tiene un `.md` propio
+// todavía; para esos casos se cae con elegancia al `excerpt` (sin romper la ruta ni
+// `generateStaticParams`).
+function readPostSource(slug: string): string | null {
+  const path = join(process.cwd(), "content/blog", `${slug}.md`);
+  if (!existsSync(path)) {
+    return null;
+  }
+  return readFileSync(path, "utf8");
+}
+
 export function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
@@ -36,11 +51,11 @@ export async function generateMetadata({ params }: BlogDetallePageProps): Promis
 
 /**
  * Detalle de Blog (RF-004): título, fecha, imagen de portada y cuerpo renderizado con
- * el componente `Markdown` (T-022/T-023) + las clases de `prose`. MAQUETA: el render
- * real del Markdown todavía no existe, así que el cuerpo es un contenedor de
- * aviso/placeholder con las mismas clases que usará el contenido final. Compone
- * `Navbar`/`Logo`/`NavLink`/`ThemeSwitch`/`Footer` directamente, igual que el resto
- * del catálogo — sin header/aside propios.
+ * el componente `Markdown` (T-022/T-023/T-024), que ya aplica las clases de `prose`.
+ * La fuente del cuerpo es el `.md` propio del post (`content/blog/<slug>.md`); si el
+ * post todavía no tiene uno, se renderiza su `excerpt` como cuerpo corto (sin romper
+ * `generateStaticParams`). Compone `Navbar`/`Logo`/`NavLink`/`ThemeSwitch`/`Footer`
+ * directamente, igual que el resto del catálogo — sin header/aside propios.
  */
 export default async function BlogDetallePage({ params }: BlogDetallePageProps) {
   const { slug } = await params;
@@ -49,6 +64,8 @@ export default async function BlogDetallePage({ params }: BlogDetallePageProps) 
   if (!post) {
     notFound();
   }
+
+  const source = readPostSource(slug) ?? post.excerpt;
 
   return (
     <div className="overflow-x-clip">
@@ -89,20 +106,7 @@ export default async function BlogDetallePage({ params }: BlogDetallePageProps) 
             </div>
 
             <GlassCard as="div" className="p-6 sm:p-10">
-              {/*
-                Placeholder del cuerpo (maqueta, T-012): el render real del Markdown
-                (Shiki + Mermaid) llega en T-022/T-023 vía `<Markdown>`. Mientras tanto
-                este contenedor ya aplica `proseRoot` para validar el estilo visual.
-              */}
-              <div className={proseRoot}>
-                <p>
-                  El cuerpo completo de esta publicación se renderiza desde{" "}
-                  <code>content/blog/{post.slug}.md</code> con el componente{" "}
-                  <code>Markdown</code> (resaltado de sintaxis y diagramas Mermaid
-                  incluidos). Esta es una maqueta: el contenido real se conecta en una
-                  tarea posterior del catálogo.
-                </p>
-              </div>
+              <Markdown source={source} />
             </GlassCard>
           </Reveal>
         </article>

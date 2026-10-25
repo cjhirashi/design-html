@@ -126,11 +126,21 @@ describe("post individual · usa el componente Markdown + prose (RF-004)", () =>
     expect(rendered("blog-detalle")).toMatch(/<Markdown[\s>]/);
   });
 
-  it("la ruta del post individual importa components/markdown/prose", () => {
-    const mods = routeFiles("blog-detalle").flatMap((s) =>
-      [...s.code.matchAll(/from\s*["']@\/components\/markdown\/prose["']/g)],
-    );
-    expect(mods.length).toBeGreaterThan(0);
+  // La receta `prose` la aplica el PROPIO componente Markdown
+  // (components/markdown/markdown.tsx envuelve su HTML en `proseRoot`), no la ruta:
+  // así `page.tsx` solo compone `<Markdown source=…/>` sin conocer la receta
+  // tipográfica. Es el diseño de registro documentado en prose.ts ("El renderer …
+  // envuelve su HTML con esta clase; hasta entonces la maqueta T-012 la usa sobre el
+  // placeholder"): la era-maqueta aplicaba prose en la ruta, el componente final la
+  // aplica en sí mismo. Verificamos la APLICACIÓN real (no solo el import) para que la
+  // garantía RF-004/RF-009 — el cuerpo Markdown usa la receta prose — siga siendo
+  // fuerte tras mover la propiedad al componente.
+  it("el componente Markdown aplica la receta prose (proseRoot) al cuerpo renderizado", () => {
+    const markdown = ownSources().find((s) => s.file === "components/markdown/markdown.tsx");
+    expect(markdown, "components/markdown/markdown.tsx debe existir").toBeTruthy();
+    const code = markdown!.code;
+    expect(code).toMatch(/import\s*\{[^}]*\bproseRoot\b[^}]*\}\s*from\s*["']\.\/prose["']/);
+    expect(code).toMatch(/className=\{proseRoot\}/);
   });
 });
 

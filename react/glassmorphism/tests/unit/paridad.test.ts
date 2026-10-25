@@ -136,8 +136,13 @@ describe("RF-010 paridad vanilla <-> react · secciones por vista", () => {
 describe("RNF-002 vanilla · vistas -t vanilla · sin recursos de red externos", () => {
   // Namespace de SVG (xmlns="http://www.w3.org/2000/svg") NO es un recurso cargado por
   // red: se excluye explícitamente para no generar falsos positivos.
+  // Delta T-024: un `<a href>` editorial es navegación (el usuario puede clicarlo), no
+  // un recurso CARGADO por build/runtime — consistente con markdown.test.ts, que ya
+  // permite `<a href="https://...">` en contenido editorial. El check sigue cazando
+  // cualquier carga real: `src=` (script/img/source/iframe/...), `href` de `<link>`
+  // (hojas de estilo/iconos/preload), `url()` de CSS y el literal `cdn`.
   const CARGA_EXTERNA =
-    /\b(?:src|href)\s*=\s*"https?:\/\/(?!www\.w3\.org\/)[^"]*"|url\(\s*https?:\/\/(?!www\.w3\.org\/)[^)]*\)|\bcdn\b/i;
+    /\bsrc\s*=\s*"https?:\/\/(?!www\.w3\.org\/)[^"]*"|<link\b[^>]*\bhref\s*=\s*"https?:\/\/(?!www\.w3\.org\/)[^"]*"|url\(\s*https?:\/\/(?!www\.w3\.org\/)[^)]*\)|\bcdn\b/i;
 
   it.each(VISTAS.map((v) => [v.nombre, v.vanilla] as const))(
     "%s (glassmorphism/%s) no carga recursos de http(s):// ni cdn",

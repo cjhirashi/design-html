@@ -9,12 +9,17 @@
 // resultante vía `mermaid.render(...)`. Todo esto ocurre en build/servidor:
 // ningún JS de Mermaid ni de Playwright llega al cliente (P5/RNF-002); el
 // HTML final solo contiene el `<svg>` ya resuelto, sin <script>.
-import path from "node:path";
+import { createRequire } from "node:module";
 import { chromium, type Browser } from "playwright";
 
 // Build UMD de mermaid: archivo local empaquetado por npm, se carga como
 // <script> de la página headless vía ruta de filesystem (sin red, sin CDN).
-const MERMAID_UMD_PATH = require.resolve("mermaid/dist/mermaid.js");
+// `createRequire(import.meta.url)` en vez del global `require` (delta T-024,
+// mecánico): el `require` ambiental no existe bajo Node ESM puro — necesario para que
+// `scripts/build-vanilla-markdown.mjs` pueda importar este mismo módulo sin
+// reimplementarlo. Resuelve exactamente a la misma ruta bajo Vitest/Next (verificado:
+// mismo resultado que `require.resolve`), sin cambio de comportamiento observable.
+const MERMAID_UMD_PATH = createRequire(import.meta.url).resolve("mermaid/dist/mermaid.js");
 
 let browserPromise: Promise<Browser> | null = null;
 
