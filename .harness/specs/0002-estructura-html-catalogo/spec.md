@@ -2,7 +2,12 @@
 id: SPEC-0002
 tipo: spec
 feature: 0002-estructura-html-catalogo
-estado: approved
+estado: superseded-por-backlog  # draft | in-review | approved | implemented | verified | deprecated | superseded-por-backlog
+# --- piloto slice-development (2026-10-25) ---
+# Tareas restantes migradas a `backlog.md` de esta misma carpeta como slices
+# verticales; las tareas ya cerradas en tasks.md quedan tal cual, no se
+# re-documentan. Fuente de verdad del trabajo pendiente: backlog.md, no tasks.md.
+# Detalle de la migración en synthesis.planes-de-ejecución-pendientes (wiki de AIRA).
 # --- anclaje (fusionado; ver method.md §9) ---
 anchor_commit: 8731efb
 anchor_mode: advisory
