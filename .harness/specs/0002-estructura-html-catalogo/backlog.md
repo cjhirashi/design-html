@@ -9,9 +9,9 @@ no al final del backlog.
 - [x] **Slice 1 — Landing completo (ambas pistas)**: T-015 (carrusel react con
   imágenes locales), T-020 (motion P10 en esa vista), T-028 (e2e vistas con
   switcher 3-vías). Demoable: landing navegable con carrusel y motion.
-  _Cerrado 2026-10-24 (AIRA Modo 2 headless). e2e verdes (16/16) contra `next dev`;
-  el CHECK canónico (webServer = `next build && next start`) sigue bloqueado por el
-  WIP Slice-2 (T-024) sin commitear → re-correr al cerrar Slice 2. Ver history.md._
+  _Cerrado 2026-10-24 (AIRA Modo 2 headless). RE-VERIFICADO 2026-10-25 contra el
+  CHECK canónico (`next build && next start`): 16/16 e2e verdes tras resolver el WIP
+  Slice-2 y 3 fixes reales de build (commit `8c9c656`). Ver history.md._
 - [ ] **Slice 1.5 — Catálogo de dashboard (GAP real, refinado 2026-10-25 con Carlos)**:
   la enmienda de RF-002 (2026-10-24, 15 tipos de campo + 7 tipos de gráfico,
   ambas pistas) quedó en `spec.md` pero **nunca se desglosó en tasks.md** —
