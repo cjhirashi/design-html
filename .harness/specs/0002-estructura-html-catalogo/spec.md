@@ -9,7 +9,11 @@ estado: superseded-por-backlog  # draft | in-review | approved | implemented | v
 # re-documentan. Fuente de verdad del trabajo pendiente: backlog.md, no tasks.md.
 # Detalle de la migración en synthesis.planes-de-ejecución-pendientes (wiki de AIRA).
 # --- anclaje (fusionado; ver method.md §9) ---
-anchor_commit: 8731efb
+# anchor movido en el cierre de la feature (2026-10-25, slice-development): todas las
+# slices del backlog [x], código completo ambas pistas, gate verde. estado sigue
+# `superseded-por-backlog` (el tracker es backlog.md); NO `verified` — pendiente el
+# checkpoint demostrable de Carlos (regla dura: no auto-aprobarse).
+anchor_commit: d1336d4
 anchor_mode: advisory
 covers:
   # --- pista vanilla (glassmorphism/) ---
@@ -25,6 +29,9 @@ covers:
   - js/markdown-renderer.js
   - js/theme-manager.js
   - js/nav-toggle.js
+  - js/dashboard-views.js
+  - js/contact-form.js
+  - js/empty-state.js
   # --- pista react (react/glassmorphism/) ---
   - react/glassmorphism/app/**
   - react/glassmorphism/components/glass/**

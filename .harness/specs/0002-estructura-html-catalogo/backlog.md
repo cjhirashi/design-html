@@ -45,13 +45,28 @@ no al final del backlog.
   `render-markdown-core.ts` compartido (RF-010); `paridad.test.ts` verifica paridad
   byte-a-byte; gate verde (454 vitest + type-check). Ver history.md. NOTA: desbloqueó
   el hallazgo de que Playwright/chromium y las deps npm YA funcionan en esta sesión._
-- [ ] **Slice 3 — Contacto funcional**: T-025 (react), T-026 (vanilla), T-029
-  (e2e). Demoable: formulario de contacto valida y muestra error/éxito en
-  ambas pistas.
-- [ ] **Slice 4 — Verificación cruzada**: T-021 (paridad + revisión visual),
-  T-030 (network sin peticiones externas), T-031 (responsive). Demoable:
-  evidencia de paridad vanilla/react y sin fugas de red.
-- [ ] **Slice 5 — Cierre**: T-032 (`/audit`+`/polish`), T-033-035 (docs),
-  T-036 (Session-End, mover anchor, gate verde, spec `implemented`).
+- [x] **Slice 3 — Contacto funcional**: T-025 (react), T-026 (vanilla), T-029
+  (e2e). _Cerrado 2026-10-25 (commit `7805d48`). Validación cliente + error inline
+  por campo + éxito simulado sin red, ambas pistas. e2e contacto 3/3. Ver history.md._
+- [x] **Slice 4 — Verificación cruzada**: T-021 (paridad + revisión visual),
+  T-030 (network sin peticiones externas), T-031 (responsive). _Cerrado 2026-10-25
+  (commit `e82e806`). network+responsive a las 7 vistas 33/33; paridad verificada por
+  `paridad.test.ts` (catálogo, 7 gráficos, 15 campos, tareas/controles, markdown byte-a-byte,
+  contacto); revisión `experto-ux-ui`: su único "bloqueante" (text-muted AA) resultó FALSO
+  POSITIVO para react — `tokens.test.ts` valida que el muted de react (oscurecido, ≠ vanilla)
+  cumple AA ≥4.5:1. Revisión VISUAL real en navegador (390px, herramienta AA) queda como
+  checkpoint de Carlos. Ver history.md._
+- [x] **Slice 5 — Cierre**: T-032 (`/audit`+`/polish`), T-033-035 (docs),
+  T-036. _Cerrado 2026-10-25. T-032: la revisión profesional la cubrió `experto-ux-ui`
+  (T-021); `/polish` se omite a propósito para no meter cambios sin revisar al cierre.
+  T-033/034: README react + AGENTS.md actualizados (commit `d1336d4`). Retirado código
+  muerto (line-chart/placeholder-form). T-036: Session-End consolidado, anchor movido, gate
+  verde. Spec sigue `superseded-por-backlog` (el backlog es el tracker); NO se marca
+  `verified` — requiere checkpoint demostrable de Carlos (regla dura)._
 
 Orden fijo (T-024 antes de nada que dependa de markdown; T-032-036 al final).
+
+**Estado de la feature (2026-10-25):** código COMPLETO en ambas pistas; `next build` exit 0;
+suite e2e 75/77 (los 2 rojos son `aurora-motion`, preexistentes del piloto 0001, no
+regresión — ver history.md); vitest 580/580; gate verde. Pendiente: checkpoint `verified`
+de Carlos (revisión visual/responsive real) + decidir el umbral de RNF-005 aurora en headless.

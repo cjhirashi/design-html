@@ -1,6 +1,6 @@
 ---
 ultima_actualizacion: 2026-10-24
-fase: SPEC-0002 — Fase 4 EN CURSO · 19/36 tareas cerradas y committeadas (T-001…T-014, T-016…T-019, T-027) · 17 bloqueadas por entorno (Playwright + npm install) · spec sigue `approved`, NO `implemented`
+fase: SPEC-0002 — CÓDIGO COMPLETO (slice-development, 2026-10-25). Las 7 vistas del catálogo en ambas pistas; next build exit 0; vitest 580/580; e2e 75/77 (2 rojos = aurora-motion preexistente del piloto 0001); gate verde. Backlog todas las slices [x]. Spec `superseded-por-backlog`, NO `verified` (pendiente checkpoint de Carlos). El bloqueo de entorno (Playwright/npm) de la nota vieja YA NO aplica.
 arquitectura_verificada: True
 ---
 
@@ -8,7 +8,23 @@ arquitectura_verificada: True
 
 ## Correcciones & Contexto Actual
 
-### SPEC-0002 · Estructura HTML del catálogo — Fase 4 avanzada 19/36, bloqueo de entorno para el resto (2026-10-24, AIRA Modo 2 headless)
+### SPEC-0002 · Estructura HTML del catálogo — CÓDIGO COMPLETO (2026-10-25, slice-development)
+
+- **Estado real:** las 7 vistas del catálogo implementadas en ambas pistas (landing, dashboard de 7
+  vistas conmutables, blog listado/detalle con Markdown real Shiki+Mermaid, productos listado/detalle,
+  contacto funcional). `next build` exit 0; `npx vitest run` 580/580; `npx playwright test` 75/77
+  (los 2 rojos son `aurora-motion`, RNF-005 preexistente del piloto 0001, no regresión —
+  [[aurora-motion-rnf005-headless]]); `bash .harness/gate/check.sh` verde. Rama
+  `0002-estructura-html-catalogo-impl`. Tracker: `backlog.md` (todas las slices [x]).
+- **Pendiente para `verified`:** checkpoint demostrable de Carlos (ver render real en navegador,
+  claro/oscuro, 390px) + decidir umbral RNF-005 aurora en headless. NO auto-aprobado (regla dura).
+- **Los tres bloqueos reales de build que estaban latentes se corrigieron** (commit `8c9c656`): Shiki
+  `Date.now()` bajo cacheComponents → `"use cache"`; `require.resolve` de mermaid reescrito por
+  Turbopack a id numérico → clave computada en runtime; `playwright` a `serverExternalPackages`.
+- **El bloqueo de entorno (Playwright/npm) de la nota de 2026-10-24 de abajo YA NO APLICA**: chromium
+  arranca y las deps están instaladas/committeadas. Lo de abajo queda como histórico (NO vigente):
+
+#### (histórico, ya resuelto — 2026-10-24) Fase 4 avanzada 19/36, bloqueo de entorno
 
 - **Rama/worktree:** worktree `.claude/worktrees/0002-estructura-html-catalogo`, rama
   **`0002-estructura-html-catalogo-impl`**, HEAD **`e03c8d0`**. El prompt esperaba `feature/catalogo-estructura-html`
