@@ -150,4 +150,21 @@ test.describe("RF-002 · el dashboard conmuta entre las vistas del catálogo", (
     await expect(panel.getByRole("img")).toHaveCount(7);
     await expect(panel.locator("img, canvas")).toHaveCount(0);
   });
+
+  test("la Vista Formulario cataloga los 15 tipos de campo", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/dashboard");
+    await page.getByRole("navigation", { name: "Vistas del panel" }).getByRole("button", { name: "Formulario", exact: true }).click();
+
+    const panel = page.locator("#dashboard-view-panel");
+    await expect(panel).toHaveAttribute("data-view", "formulario");
+    const form = panel.getByRole("form", { name: "Catálogo de tipos de campo" });
+    await expect(form).toBeVisible();
+    // Tipos representativos presentes.
+    for (const label of ["Código", "Select-FK (dataset de ejemplo)", "JSON-list · clave-valor", "Lista-texto (una por línea)"]) {
+      await expect(form.getByText(label, { exact: false }).first()).toBeVisible();
+    }
+    // Controles nativos reales: varios inputs/selects/textareas.
+    expect(await form.locator("input, select, textarea").count()).toBeGreaterThanOrEqual(12);
+  });
 });

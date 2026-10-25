@@ -31,6 +31,16 @@
         .dash-metrics-grid figcaption .chart-sub { display: block; font-size: 0.75rem; color: var(--text-secondary); }
         .dash-chart { color: var(--primary-color); width: 100%; }
         .dash-chart.tall { height: 7rem; }
+        /* Catálogo de campos (Vista Formulario). Chips con --text-primary sobre
+           --primary-light (AA seguro); hints en --text-secondary (AA), no --text-muted. */
+        .form-grid { display: grid; gap: 1.25rem; }
+        .form-field-hint { font-size: 0.75rem; color: var(--text-secondary); margin: 0.1rem 0 0; }
+        .chipbox { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 0.625rem; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: var(--radius-sm); }
+        .chip { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; font-size: 0.75rem; font-weight: 500; border-radius: var(--radius-sm); background-color: var(--primary-light); color: var(--text-primary); }
+        .chip-placeholder { font-size: 0.75rem; color: var(--text-secondary); }
+        .json-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .mono-input { font-family: var(--font-mono, ui-monospace, monospace); }
+        @media (min-width: 640px) { .form-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
@@ -347,26 +357,135 @@
 
             <!-- Vista Formulario -->
             <section class="dash-view" data-view="formulario" aria-label="Formulario" hidden>
-                <div class="card" style="padding: 2rem; max-width: 560px;">
-                    <form novalidate>
-                        <div class="field">
-                            <label for="nodo-nombre">Nombre del nodo</label>
-                            <input type="text" id="nodo-nombre" name="nombre-nodo" placeholder="p. ej. nodo-08">
+                <div class="card" style="padding: 2rem;">
+                    <form novalidate aria-label="Catálogo de tipos de campo">
+                        <div class="form-grid cols-2">
+                            <div class="field">
+                                <label for="f-texto">Texto</label>
+                                <input type="text" id="f-texto" name="f-texto" value="Motor Glassmorphism" placeholder="p. ej. nodo-08">
+                            </div>
+                            <div class="field">
+                                <label for="f-numero">Número</label>
+                                <input type="number" id="f-numero" name="f-numero" value="12">
+                            </div>
+                            <div class="field">
+                                <label for="f-textarea">Textarea</label>
+                                <textarea id="f-textarea" name="f-textarea" rows="4">Descripción larga del nodo…</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="f-codigo">Código</label>
+                                <textarea id="f-codigo" name="f-codigo" rows="4" class="mono-input">transition: transform 0.3s ease;</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="f-fecha">Fecha</label>
+                                <input type="date" id="f-fecha" name="f-fecha" value="2026-10-25">
+                            </div>
+                            <div class="field">
+                                <label for="f-fechahora">Fecha y hora</label>
+                                <input type="datetime-local" id="f-fechahora" name="f-fechahora" value="2026-10-25T09:30">
+                            </div>
+                            <div class="field">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="f-bool" style="width: auto;" checked> Boolean / toggle
+                                </label>
+                            </div>
+                            <div class="field">
+                                <label for="f-estado">Estado (select pintado con badge)</label>
+                                <select id="f-estado" name="f-estado">
+                                    <option value="operativo" selected>Operativo</option>
+                                    <option value="degradado">Degradado</option>
+                                    <option value="caido">Caído</option>
+                                </select>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <span class="badge badge-success">Operativo</span>
+                                    <span class="badge badge-warning">Degradado</span>
+                                    <span class="badge badge-error">Caído</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="field">
-                            <label for="nodo-region">Región</label>
-                            <select id="nodo-region" name="region">
-                                <option value="mx-central-1">México central</option>
-                                <option value="us-east-1">EE. UU. este</option>
-                                <option value="eu-west-1">Europa oeste</option>
-                            </select>
+
+                        <div class="form-grid cols-2" style="margin-top: 1.25rem;">
+                            <div class="field">
+                                <label>Multi-select (opciones fijas)</label>
+                                <div class="chipbox">
+                                    <span class="chip">translúcido</span>
+                                    <span class="chip">blur</span>
+                                    <span class="chip-placeholder">Añadir etiqueta…</span>
+                                </div>
+                                <p class="form-field-hint">Opciones: atmosférico, translúcido, blur, aurora</p>
+                            </div>
+                            <div class="field">
+                                <label>Creatable-select</label>
+                                <div class="chipbox">
+                                    <span class="chip">violeta</span>
+                                    <span class="chip">rosa</span>
+                                    <span class="chip-placeholder">Crear o elegir (escribe y Enter)</span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="f-fk">Select-FK (dataset de ejemplo)</label>
+                                <select id="f-fk" name="f-fk">
+                                    <option value="nodo-07" selected>nodo-07 · Motor Glassmorphism</option>
+                                    <option value="nodo-04">nodo-04 · Búfer atmosférico</option>
+                                    <option value="nodo-02">nodo-02 · Sincronizador de blur</option>
+                                </select>
+                                <p class="form-field-hint">Referencia a otro registro — sin backend real</p>
+                            </div>
+                            <div class="field">
+                                <label>Multi-select-FK</label>
+                                <div class="chipbox">
+                                    <span class="chip">nodo-07 · Motor Glassmorphism</span>
+                                    <span class="chip">nodo-02 · Sincronizador de blur</span>
+                                    <span class="chip-placeholder">Añadir referencia…</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="field">
-                            <label style="display: flex; align-items: center; gap: 0.5rem;">
-                                <input type="checkbox" name="activo" style="width: auto;"> Activar al crear
-                            </label>
+
+                        <div class="form-grid cols-2" style="margin-top: 1.25rem;">
+                            <div class="field">
+                                <label for="f-lista-texto">Lista-texto (una por línea)</label>
+                                <textarea id="f-lista-texto" name="f-lista-texto" rows="4" class="mono-input">Capa de aurora
+Capa de vidrio
+Capa de contenido</textarea>
+                                <p class="form-field-hint">Cada línea es un elemento del array</p>
+                            </div>
+                            <div class="field">
+                                <label for="f-lista-num">Lista-número (separados por coma)</label>
+                                <input type="text" id="f-lista-num" name="f-lista-num" value="14, 18, 16, 22, 19">
+                                <p class="form-field-hint">Se divide por coma en un array de números</p>
+                            </div>
                         </div>
-                        <button type="submit" class="btn">Crear nodo</button>
+
+                        <div class="field" style="margin-top: 1.25rem;">
+                            <label>JSON-list · clave-valor</label>
+                            <div class="json-row">
+                                <input class="mono-input" value="region" aria-label="clave 1">
+                                <input class="mono-input" value="mx-central-1" aria-label="valor 1">
+                            </div>
+                            <div class="json-row">
+                                <input class="mono-input" value="blur" aria-label="clave 2">
+                                <input class="mono-input" value="16px" aria-label="valor 2">
+                            </div>
+                            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">+ Añadir par</button>
+                        </div>
+
+                        <div class="form-grid cols-2" style="margin-top: 1.25rem;">
+                            <div class="field">
+                                <label>JSON-list · lista de strings</label>
+                                <input class="mono-input" value="--primary-color" aria-label="cadena 1" style="margin-bottom: 0.5rem;">
+                                <input class="mono-input" value="--bg-card" aria-label="cadena 2" style="margin-bottom: 0.5rem;">
+                                <input class="mono-input" value="--border-glass" aria-label="cadena 3">
+                            </div>
+                            <div class="field">
+                                <label for="f-json-obj">JSON-list · lista de objetos</label>
+                                <textarea id="f-json-obj" name="f-json-obj" rows="5" class="mono-input">[
+  { "capa": 4, "blur": "16px" },
+  { "capa": 2, "blur": "8px" }
+]</textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn" style="margin-top: 1.5rem;">Guardar</button>
                     </form>
                 </div>
             </section>

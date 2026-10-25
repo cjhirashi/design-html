@@ -248,6 +248,39 @@ describe("RF-002 · catálogo de 7 gráficos (paridad vanilla ↔ react)", () =>
   });
 });
 
+// RF-002 §6: la Vista Formulario cataloga los 15 tipos de campo, en AMBAS pistas.
+// Anclamos por las etiquetas distintivas de los tipos (los nativos y los compuestos).
+describe("RF-002 · catálogo de 15 tipos de campo (paridad vanilla ↔ react)", () => {
+  const FIELD_TYPES = [
+    "Texto",
+    "Número",
+    "Textarea",
+    "Código",
+    "Fecha y hora",
+    "Boolean / toggle",
+    "Estado (select pintado con badge)",
+    "Multi-select (opciones fijas)",
+    "Creatable-select",
+    "Select-FK (dataset de ejemplo)",
+    "Multi-select-FK",
+    "Lista-texto (una por línea)",
+    "Lista-número (separados por coma)",
+    "JSON-list · clave-valor",
+    "JSON-list · lista de strings",
+    "JSON-list · lista de objetos",
+  ] as const;
+  const dashboardHtml = readVanilla("dashboard.html");
+  const viewForm = ownSources().find((s) => s.file === "app/dashboard/_components/views/view-formulario.tsx")?.code ?? "";
+
+  it.each(FIELD_TYPES)("vanilla · el tipo de campo «%s» existe", (label) => {
+    expect(dashboardHtml).toContain(label);
+  });
+
+  it.each(FIELD_TYPES)("react · el tipo de campo «%s» existe", (label) => {
+    expect(viewForm).toContain(label);
+  });
+});
+
 // Seleccionable con `-t vanilla` (T-017): las 4 vistas vanilla nuevas + su switcher de
 // tema de 3 vías (#themeSwitcher), igual que ya existe en index.html/dashboard.html.
 describe("vanilla vistas nuevas · estructura mínima", () => {

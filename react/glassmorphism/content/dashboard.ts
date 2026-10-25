@@ -175,6 +175,38 @@ export const placeholderForm = {
   submitLabel: "Crear nodo",
 };
 
+/**
+ * Datos de maqueta del catálogo de 15 tipos de campo (RF-002 §6, Vista Formulario). Sin
+ * backend: el select-FK y multi-select-FK usan un dataset de ejemplo separado, no una tabla
+ * real. Los controles compuestos (multi-select, creatable, JSON-list) se muestran como
+ * maquetas presentacionales fieles — esta spec es de estructura/apariencia, no de lógica.
+ */
+export const formCatalog = {
+  estadoOptions: [
+    { value: "operativo", label: "Operativo", tone: "success" as Tone },
+    { value: "degradado", label: "Degradado", tone: "warning" as Tone },
+    { value: "caido", label: "Caído", tone: "error" as Tone },
+  ],
+  etiquetasFijas: ["atmosférico", "translúcido", "blur", "aurora"],
+  etiquetasSeleccionadas: ["translúcido", "blur"],
+  creatableSeleccionadas: ["violeta", "rosa"],
+  // Dataset de ejemplo para los campos FK (sin backend real).
+  fkNodos: [
+    { value: "nodo-07", label: "nodo-07 · Motor Glassmorphism" },
+    { value: "nodo-04", label: "nodo-04 · Búfer atmosférico" },
+    { value: "nodo-02", label: "nodo-02 · Sincronizador de blur" },
+  ],
+  fkSeleccionados: ["nodo-07", "nodo-02"],
+  listaTexto: "Capa de aurora\nCapa de vidrio\nCapa de contenido",
+  listaNumero: "14, 18, 16, 22, 19",
+  jsonClaveValor: [
+    { k: "region", v: "mx-central-1" },
+    { k: "blur", v: "16px" },
+  ],
+  jsonStrings: ["--primary-color", "--bg-card", "--border-glass"],
+  jsonObjetos: '[\n  { "capa": 4, "blur": "16px" },\n  { "capa": 2, "blur": "8px" }\n]',
+};
+
 export const chat: { title: string; placeholder: string; sendLabel: string; messages: ChatMessage[] } = {
   title: "Asistente Glass UI",
   placeholder: "Enviar comando al agente…",

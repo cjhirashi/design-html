@@ -30,9 +30,16 @@ type BooleanFieldProps = FieldBaseProps &
     as: "boolean";
   };
 
-type FieldProps = TextFieldProps | SelectFieldProps | BooleanFieldProps;
+type TextareaFieldProps = FieldBaseProps &
+  Omit<ComponentProps<"textarea">, "id" | "aria-invalid" | "aria-describedby" | "className"> & {
+    as: "textarea";
+    /** `true` → fuente monoespaciada (tipo de campo "código", RF-002). */
+    mono?: boolean;
+  };
 
-const FIELD_OWN_KEYS = ["label", "error", "hint", "className", "as"] as const;
+type FieldProps = TextFieldProps | SelectFieldProps | BooleanFieldProps | TextareaFieldProps;
+
+const FIELD_OWN_KEYS = ["label", "error", "hint", "className", "as", "mono"] as const;
 
 /** Quita las props propias de `Field` (presentacionales) para pasar el resto al control nativo. */
 function omitFieldProps<T extends Record<string, unknown>>(props: T) {
@@ -84,6 +91,33 @@ export function Field(props: FieldProps) {
             </option>
           ))}
         </select>
+        <FieldMessage error={error} hint={hint} errorId={errorId} hintId={hintId} />
+      </div>
+    );
+  }
+
+  if (props.as === "textarea") {
+    const { mono } = props;
+    const textareaProps = omitFieldProps(props);
+    return (
+      <div className={cn("flex flex-col gap-1.5", className)}>
+        <label htmlFor={inputId} className="text-sm font-medium text-fg">
+          {label}
+        </label>
+        <textarea
+          id={inputId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy}
+          className={cn(
+            glass.control,
+            "rounded-glass-sm px-3.5 py-2.5 text-sm text-fg outline-none placeholder:text-muted",
+            "focus-visible:border-focus",
+            mono && "font-mono",
+            error && "border-error-line",
+          )}
+          rows={4}
+          {...textareaProps}
+        />
         <FieldMessage error={error} hint={hint} errorId={errorId} hintId={hintId} />
       </div>
     );
