@@ -360,6 +360,32 @@ describe("markdown · paridad del bloque renderizado blog-detalle <-> componente
   });
 });
 
+// RF-002 §6 · Vista Markdown del dashboard: reusa el MISMO renderer (RF-004/RF-010). El
+// bloque md-content de dashboard.html debe coincidir byte-a-byte con renderMarkdownToHtml
+// de content/dashboard-doc.md (lo genera scripts/build-vanilla-markdown.mjs). En react lo
+// inyecta page.tsx como markdownSlot.
+describe("markdown · paridad del bloque renderizado dashboard <-> componente", () => {
+  const MARKDOWN_MODULE = join(REACT_ROOT, "components/markdown/markdown.tsx");
+
+  it("dashboard.html contiene el mismo HTML de md-content que renderMarkdownToHtml(doc)", async () => {
+    const html = readVanilla("dashboard.html");
+    const m = html.match(/<div class="md-content"[^>]*>([\s\S]*?)<\/div>\s*<!--\s*\/md-content\s*-->/);
+    expect(m, "dashboard.html debe tener el bloque md-content").toBeTruthy();
+
+    const { renderMarkdownToHtml } = await import(MARKDOWN_MODULE);
+    const docPath = join(REACT_ROOT, "content/dashboard-doc.md");
+    expect(existsSync(docPath)).toBe(true);
+    const esperado = await renderMarkdownToHtml(readFileSync(docPath, "utf8"));
+    expect(m![1].trim()).toBe(esperado.trim());
+  });
+
+  it("react · page.tsx inyecta <Markdown> como markdownSlot desde dashboard-doc.md", () => {
+    const page = ownSources().find((s) => s.file === "app/dashboard/page.tsx")?.code ?? "";
+    expect(page).toMatch(/markdownSlot=\{<Markdown/);
+    expect(page).toMatch(/dashboard-doc\.md/);
+  });
+});
+
 // Saneamiento del propio helper vanilla_root: evita que un typo silencioso apunte a un
 // directorio inexistente y todos los `existsSync` anteriores den falsos negativos iguales.
 describe("saneamiento de rutas del test de paridad", () => {

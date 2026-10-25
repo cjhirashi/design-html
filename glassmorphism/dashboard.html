@@ -360,10 +360,52 @@
 
             <!-- Vista Markdown -->
             <section class="dash-view" data-view="markdown" aria-label="Markdown" hidden>
-                <div class="card dash-placeholder">
-                    <span class="badge badge-primary">Próximamente</span>
-                    <h3>Documentación Markdown</h3>
-                    <p>Esta vista reusa el renderizador de Markdown (resaltado de sintaxis real + Mermaid) para mostrar documentación. El contenido real llega en la sub-slice (g) de este catálogo.</p>
+                <div class="card" style="padding: 2rem;">
+                    <div class="md-content">
+<h1>Guía del panel Glass</h1>
+<p>Esta vista reutiliza el <strong>mismo</strong> componente Markdown que el blog (RF-004): el resaltado
+de sintaxis y el resto del render ocurren en build/servidor, sin cargar nada por red.</p>
+<h2>Capas del sistema</h2>
+<p>El panel se compone de tres capas atmosféricas:</p>
+<ol>
+<li><strong>Aurora</strong> — fondo con rayos animados.</li>
+<li><strong>Vidrio</strong> — superficies translúcidas con <em>blur</em>.</li>
+<li><strong>Contenido</strong> — tablas, métricas y formularios.</li>
+</ol>
+<blockquote>
+<p>La misma fuente <code>.md</code> alimenta ambas pistas (vanilla y react): cero divergencia de
+contenido entre ellas.</p>
+</blockquote>
+<h2>Token de ejemplo</h2>
+<p>Un bloque de código con lenguaje declarado se resalta de verdad:</p>
+<pre class="shiki github-dark" style="background-color:#24292e;color:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#B392F0">.panel</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  background-color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--bg-card</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">  border</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> solid</span><span style="color:#79B8FF"> var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--border-glass</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre><h2>Referencia rápida</h2>
+<table>
+<thead>
+<tr>
+<th>Vista</th>
+<th>Para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tabla</td>
+<td>Listado, detalle y edición</td>
+</tr>
+<tr>
+<td>Métricas</td>
+<td>Catálogo de gráficos</td>
+</tr>
+<tr>
+<td>Formulario</td>
+<td>Catálogo de tipos de campo</td>
+</tr>
+</tbody>
+</table>
+<p>Más detalle en la <a href="https://design-html.local/docs">documentación del catálogo</a>.</p>
+</div><!-- /md-content -->
                 </div>
             </section>
 

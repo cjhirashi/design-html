@@ -185,4 +185,16 @@ test.describe("RF-002 · el dashboard conmuta entre las vistas del catálogo", (
     await expect(panel.getByRole("tablist", { name: "Rango temporal" })).toBeVisible();
     await expect(panel.getByRole("region", { name: "Botones" })).toBeVisible();
   });
+
+  test("la Vista Markdown renderiza el documento con el componente Markdown", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/dashboard");
+    await page.getByRole("navigation", { name: "Vistas del panel" }).getByRole("button", { name: "Markdown", exact: true }).click();
+
+    const panel = page.locator("#dashboard-view-panel");
+    await expect(panel).toHaveAttribute("data-view", "markdown");
+    await expect(panel.getByRole("heading", { name: "Guía del panel Glass" })).toBeVisible();
+    // Resaltado real de Shiki: el bloque de código se pinta con spans de color inline.
+    await expect(panel.locator("pre code span[style*='color']").first()).toBeVisible();
+  });
 });

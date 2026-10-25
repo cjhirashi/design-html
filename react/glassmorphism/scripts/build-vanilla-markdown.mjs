@@ -35,32 +35,41 @@ register(pathToFileURL(join(SCRIPTS_DIR, "ts-extension-loader.mjs")).href, pathT
 
 const MD_BLOCK_RE = /(<div class="md-content"[^>]*>)([\s\S]*?)(<\/div>\s*<!--\s*\/md-content\s*-->)/;
 
+// Cada destino: la fuente `.md` (react) y el `.html` vanilla cuyo bloque md-content se
+// regenera con el MISMO renderer (RF-010). Blog Detalle (RF-004) y la Vista Markdown del
+// dashboard (RF-002 §6) comparten esta frontera; cero reimplementación del parser.
+const TARGETS = [
+  { md: "content/blog/estructura-catalogo.md", html: "blog-detalle.html" },
+  { md: "content/dashboard-doc.md", html: "dashboard.html" },
+];
+
 async function main() {
   const { renderMarkdownToHtml } = await import(
     pathToFileURL(join(REACT_ROOT, "components/markdown/render-markdown-core.ts")).href
   );
 
-  const postPath = join(REACT_ROOT, "content/blog/estructura-catalogo.md");
-  const source = readFileSync(postPath, "utf8");
-  const html = await renderMarkdownToHtml(source);
+  for (const target of TARGETS) {
+    const mdPath = join(REACT_ROOT, target.md);
+    const source = readFileSync(mdPath, "utf8");
+    const html = await renderMarkdownToHtml(source);
 
-  const targetPath = join(VANILLA_ROOT, "blog-detalle.html");
-  if (!existsSync(targetPath)) {
-    throw new Error(`No existe ${targetPath} — se esperaba la maqueta de T-018.`);
+    const targetPath = join(VANILLA_ROOT, target.html);
+    if (!existsSync(targetPath)) {
+      throw new Error(`No existe ${targetPath} — se esperaba la maqueta vanilla.`);
+    }
+
+    const vanillaHtml = readFileSync(targetPath, "utf8");
+    if (!MD_BLOCK_RE.test(vanillaHtml)) {
+      throw new Error(
+        `${targetPath} no contiene el bloque <div class="md-content">…<!-- /md-content --> esperado.`,
+      );
+    }
+
+    const updatedHtml = vanillaHtml.replace(MD_BLOCK_RE, `$1\n${html.trim()}\n$3`);
+    writeFileSync(targetPath, updatedHtml, "utf8");
+
+    console.log(`OK: bloque md-content de ${targetPath} regenerado desde ${mdPath}.`);
   }
-
-  const vanillaHtml = readFileSync(targetPath, "utf8");
-  const match = vanillaHtml.match(MD_BLOCK_RE);
-  if (!match) {
-    throw new Error(
-      `${targetPath} no contiene el bloque <div class="md-content">…<!-- /md-content --> esperado.`,
-    );
-  }
-
-  const updatedHtml = vanillaHtml.replace(MD_BLOCK_RE, `$1\n${html.trim()}\n$3`);
-  writeFileSync(targetPath, updatedHtml, "utf8");
-
-  console.log(`OK: bloque md-content de ${targetPath} regenerado desde ${postPath}.`);
 }
 
 main().catch((error) => {
