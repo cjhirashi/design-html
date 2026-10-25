@@ -17,9 +17,19 @@ import { chromium, type Browser } from "playwright";
 // `createRequire(import.meta.url)` en vez del global `require` (delta T-024,
 // mecánico): el `require` ambiental no existe bajo Node ESM puro — necesario para que
 // `scripts/build-vanilla-markdown.mjs` pueda importar este mismo módulo sin
-// reimplementarlo. Resuelve exactamente a la misma ruta bajo Vitest/Next (verificado:
-// mismo resultado que `require.resolve`), sin cambio de comportamiento observable.
-const MERMAID_UMD_PATH = createRequire(import.meta.url).resolve("mermaid/dist/mermaid.js");
+// reimplementarlo.
+//
+// Resolución de la ruta del UMD de mermaid, escapando el análisis estático de Turbopack
+// (`next build`): un `require.resolve("mermaid/dist/mermaid.js")` literal se reescribe a un
+// ID numérico de módulo del bundle (rompe `addScriptTag({ path })` con ERR_INVALID_ARG_TYPE
+// al prerenderizar `/blog/[slug]`), y con argumento dinámico Turbopack aborta ("expression
+// too dynamic") porque sigue reconociendo el acceso `.resolve`. Accediendo a ese método por
+// CLAVE COMPUTADA en runtime (`["re","solve"].join("")`), el analizador ya no lo trata como
+// una referencia de módulo y lo deja como llamada Node normal — resuelta en runtime a la
+// ruta real de `node_modules`, idéntico bajo Vitest y el script Node plano. Nunca hacemos
+// `require()` de mermaid: solo obtenemos su ruta para pasarla a Playwright.
+const nodeRequire = createRequire(import.meta.url) as unknown as Record<string, (id: string) => string>;
+const MERMAID_UMD_PATH = nodeRequire[["re", "solve"].join("")](["mermaid", "dist", "mermaid.js"].join("/"));
 
 let browserPromise: Promise<Browser> | null = null;
 
