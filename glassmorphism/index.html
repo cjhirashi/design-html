@@ -25,17 +25,17 @@
             <div class="theme-switch" id="themeSwitcher" data-theme-mode="system">
                 <div class="theme-switch-indicator"></div>
                 <button class="theme-switch-btn" data-theme-target="light" onclick="setThemeMode('light')" title="Modo Claro">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
                 </button>
                 <button class="theme-switch-btn" data-theme-target="system" onclick="setThemeMode('system')" title="Modo Sistema">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
                 </button>
                 <button class="theme-switch-btn" data-theme-target="dark" onclick="setThemeMode('dark')" title="Modo Oscuro">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
                 </button>
             </div>
             <button class="nav-toggle" onclick="toggleNav()" aria-label="Abrir menu" aria-expanded="false" id="navToggleBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
             </button>
         </div>
     </nav>
@@ -81,7 +81,7 @@
     <section class="section-alt" style="padding: 6rem 0;" id="features">
         <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 2.5rem;">
             <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Validaciones</span>
-            <h2 style="font-size: 2.25rem; font-weight: 700;">Capas y Retroalertas Glass</h2>
+            <h2 style="font-size: clamp(1.5rem, 6vw, 2.25rem); font-weight: 700;">Capas y Retroalertas Glass</h2>
         </div>
         
         <div class="grid">
@@ -106,7 +106,7 @@
     <section style="padding: 6rem 0;" id="galeria">
         <div style="max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; margin-bottom: 1.5rem;">
             <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Galería Visual</span>
-            <h2 style="font-size: 2.25rem; font-weight: 700;">Carrusel Glassmorphism</h2>
+            <h2 style="font-size: clamp(1.5rem, 6vw, 2.25rem); font-weight: 700;">Carrusel Glassmorphism</h2>
         </div>
 
         <div class="image-carousel-wrapper">
@@ -115,7 +115,7 @@
                 <div class="carousel-image-card">
                     <div class="carousel-img-container">
                         <span class="carousel-img-tag mono">Glass 01</span>
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Glass 1">
+                        <img src="assets/vidrio-01.jpg" alt="Superficie de vidrio translúcido con reflejos cian y geometría angular">
                     </div>
                     <div class="carousel-content-body">
                         <h3>Geometría Translúcida</h3>
@@ -126,7 +126,7 @@
                 <div class="carousel-image-card">
                     <div class="carousel-img-container">
                         <span class="carousel-img-tag mono">Glass 02</span>
-                        <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Glass 2">
+                        <img src="assets/vidrio-02.jpg" alt="Panel de vidrio esmerilado con acentos rosa y textura difusa">
                     </div>
                     <div class="carousel-content-body">
                         <h3>Paneles Atmosféricos</h3>
@@ -137,7 +137,7 @@
                 <div class="carousel-image-card">
                     <div class="carousel-img-container">
                         <span class="carousel-img-tag mono">Glass 03</span>
-                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Glass 3">
+                        <img src="assets/vidrio-03.jpg" alt="Capas de vidrio apiladas con desenfoque atmosférico y bordes luminosos">
                     </div>
                     <div class="carousel-content-body">
                         <h3>Agentes en Capas</h3>

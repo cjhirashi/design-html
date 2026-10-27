@@ -1,7 +1,18 @@
 // RNF-002 · equivalente P5 (ADR-001): ningún recurso de hosts externos en runtime.
+// T-030: cobertura de las 7 vistas del catálogo (listados + detalles), no solo landing/dash.
 import { expect, test } from "@playwright/test";
 
-for (const route of ["/", "/dashboard"]) {
+const ROUTES = [
+  "/",
+  "/dashboard",
+  "/blog",
+  "/blog/tokens-de-vidrio",
+  "/productos",
+  "/productos/panel-vidrio-esmerilado",
+  "/contacto",
+];
+
+for (const route of ROUTES) {
   test(`${route} sólo pide recursos al propio origen`, async ({ page, baseURL }) => {
     const origin = new URL(baseURL!).origin;
     const external: string[] = [];

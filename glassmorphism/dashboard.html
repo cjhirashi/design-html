@@ -5,6 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glassmorphism - Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Catálogo de vistas (RF-002): el view-nav reusa el aspecto de .sidebar-item sobre
+           <button> (reset de botón, sin color propio — RNF-003). Un solo panel visible. */
+        .sidebar-menu button.sidebar-item { width: 100%; text-align: left; background: none; border: none; font: inherit; cursor: pointer; }
+        .dash-view[hidden] { display: none !important; }
+        .dash-view { display: flex; flex-direction: column; gap: 1.5rem; }
+        .dash-placeholder { padding: 2rem; }
+        .dash-placeholder h3 { margin: 0.75rem 0 0.5rem; }
+        .dash-placeholder p { color: var(--text-secondary); font-size: 0.9rem; max-width: 60ch; }
+        /* Sub-pestañas (Tabla → Tabla/Vista/Editar). Activo en --text-primary sobre
+           --primary-light: AA seguro en claro y oscuro (no usa --primary-color como texto). */
+        .subtab-nav { display: flex; gap: 0.25rem; flex-wrap: wrap; width: fit-content; padding: 0.25rem; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: var(--radius-md); }
+        .subtab-nav button { background: none; border: none; font: inherit; cursor: pointer; padding: 0.375rem 1rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+        .subtab-nav button[aria-selected="true"] { background-color: var(--primary-light); color: var(--text-primary); }
+        .dash-subpanel { display: flex; flex-direction: column; gap: 1.5rem; }
+        .dash-subpanel[hidden] { display: none !important; }
+        .dash-record { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem 1.5rem; margin: 0; }
+        .dash-record dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-secondary); }
+        .dash-record dd { margin: 0.25rem 0 0; color: var(--text-primary); font-size: 0.9rem; }
+        /* Catálogo de gráficos (SVG inline, sin librería; color vía currentColor + opacidad). */
+        .dash-metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
+        .dash-metrics-grid figure { margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+        .dash-metrics-grid figcaption .chart-title { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+        .dash-metrics-grid figcaption .chart-sub { display: block; font-size: 0.75rem; color: var(--text-secondary); }
+        .dash-chart { color: var(--primary-color); width: 100%; }
+        .dash-chart.tall { height: 7rem; }
+        /* Catálogo de campos (Vista Formulario). Chips con --text-primary sobre
+           --primary-light (AA seguro); hints en --text-secondary (AA), no --text-muted. */
+        .form-grid { display: grid; gap: 1.25rem; }
+        .form-field-hint { font-size: 0.75rem; color: var(--text-secondary); margin: 0.1rem 0 0; }
+        .chipbox { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0.5rem 0.625rem; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: var(--radius-sm); }
+        .chip { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; font-size: 0.75rem; font-weight: 500; border-radius: var(--radius-sm); background-color: var(--primary-light); color: var(--text-primary); }
+        .chip-placeholder { font-size: 0.75rem; color: var(--text-secondary); }
+        .json-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .mono-input { font-family: var(--font-mono, ui-monospace, monospace); }
+        @media (min-width: 640px) { .form-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
+        /* Vista Tareas (kanban) y Vista Controles. */
+        .kanban { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+        @media (min-width: 640px) { .kanban { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1280px) { .kanban { grid-template-columns: repeat(3, 1fr); } }
+        .kanban-col { display: flex; flex-direction: column; gap: 0.75rem; }
+        .kanban-col-head { display: flex; align-items: center; justify-content: space-between; }
+        .kanban-count { border-radius: 999px; background-color: var(--primary-light); color: var(--text-primary); font-size: 0.75rem; font-weight: 600; padding: 0.1rem 0.5rem; }
+        .task-card { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.75rem; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: var(--radius-sm); }
+        .task-card p { margin: 0; font-size: 0.875rem; color: var(--text-primary); }
+        .controls-grid { display: grid; gap: 1.5rem; }
+        @media (min-width: 640px) { .controls-grid { grid-template-columns: 1fr 1fr; } }
+        .control-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+        .toggle { position: relative; display: inline-block; width: 2.75rem; height: 1.5rem; }
+        .toggle input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+        .toggle .track { position: absolute; inset: 0; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: 999px; transition: background-color 0.2s; }
+        .toggle .track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 1.1rem; height: 1.1rem; border-radius: 999px; background-color: var(--text-primary); transition: transform 0.2s; }
+        .toggle input:checked + .track { background-color: var(--primary-light); }
+        .toggle input:checked + .track::after { transform: translateX(1.25rem); }
+        .segmented { display: inline-flex; gap: 0.25rem; padding: 0.25rem; border: 1px solid var(--border-glass); background-color: var(--bg-card); border-radius: var(--radius-md); }
+        .segmented button { background: none; border: none; font: inherit; cursor: pointer; padding: 0.375rem 1rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+        .segmented button[aria-selected="true"] { background-color: var(--primary-light); color: var(--text-primary); }
+    </style>
 </head>
 <body>
     <div class="dash-wrapper">
@@ -41,14 +99,15 @@
 
         <div class="dash-body">
         <aside class="sidebar-left">
-            <div class="sidebar-menu">
-                <span class="sidebar-section-label">General</span>
-                <a href="#" class="sidebar-item active">Panel Principal</a>
-                <a href="#" class="sidebar-item">Monitoreo Glass</a>
-                <span class="sidebar-section-label">Sistema</span>
-                <a href="#" class="sidebar-item">Tokens CSS</a>
-                <a href="#" class="sidebar-item">Configuración</a>
-            </div>
+            <nav class="sidebar-menu" aria-label="Vistas del panel">
+                <span class="sidebar-section-label">Catálogo de vistas</span>
+                <button type="button" class="sidebar-item active" data-view-target="tabla" aria-current="page" aria-controls="dash-view-panel">Tabla</button>
+                <button type="button" class="sidebar-item" data-view-target="metricas" aria-controls="dash-view-panel">Métricas</button>
+                <button type="button" class="sidebar-item" data-view-target="markdown" aria-controls="dash-view-panel">Markdown</button>
+                <button type="button" class="sidebar-item" data-view-target="tareas" aria-controls="dash-view-panel">Tareas</button>
+                <button type="button" class="sidebar-item" data-view-target="formulario" aria-controls="dash-view-panel">Formulario</button>
+                <button type="button" class="sidebar-item" data-view-target="controles" aria-controls="dash-view-panel">Controles</button>
+            </nav>
 
             <div style="margin-top: auto; display: flex; flex-direction: column; gap: 1rem;">
                 <div class="sidebar-profile">
@@ -81,7 +140,7 @@
             <header class="dashboard-header">
                 <div>
                     <h2>Panel de Control Atmosférico</h2>
-                    <p style="color: var(--text-secondary); font-size: 0.85rem;">Glass Layer Telemetry & Metrics</p>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem;">Glass Layer Telemetry &amp; Metrics</p>
                 </div>
                 <div style="display: flex; gap: 0.75rem;">
                     <button class="btn btn-secondary">Exportar Logs</button>
@@ -89,71 +148,487 @@
                 </div>
             </header>
 
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-card-head">
-                        <span>Nodos Activos</span>
-                        <span class="stat-trend up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 10 10 14 14 20 6"/><path d="M15 6h5v5"/></svg>1.8%</span>
-                    </div>
-                    <h4 class="mono">12 / 12</h4>
-                    <span class="badge badge-success" style="width: fit-content;">100% Operational</span>
+            <div id="dash-view-panel">
+            <!-- Vista Tabla -->
+            <section class="dash-view" data-view="tabla" aria-label="Tabla" data-subtabs>
+                <div class="subtab-nav" role="tablist" aria-label="Sub-vistas de la tabla">
+                    <button type="button" role="tab" data-subtab-target="tabla" aria-selected="true">Tabla</button>
+                    <button type="button" role="tab" data-subtab-target="vista" aria-selected="false">Vista</button>
+                    <button type="button" role="tab" data-subtab-target="editar" aria-selected="false">Editar</button>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-card-head">
-                        <span>Latencia de Capa</span>
-                        <span class="stat-trend down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 10 14 14 10 20 18"/><path d="M15 18h5v-5"/></svg>6.1%</span>
+
+                <div class="dash-subpanel" data-subtab="tabla">
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-head">
+                            <span>Nodos Activos</span>
+                            <span class="stat-trend up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 10 10 14 14 20 6"/><path d="M15 6h5v5"/></svg>1.8%</span>
+                        </div>
+                        <h4 class="mono">12 / 12</h4>
+                        <span class="badge badge-success" style="width: fit-content;">100% Operational</span>
                     </div>
-                    <h4 class="mono">18.2 ms</h4>
-                    <span class="badge badge-warning" style="width: fit-content;">Normal Range</span>
+                    <div class="stat-card">
+                        <div class="stat-card-head">
+                            <span>Latencia de Capa</span>
+                            <span class="stat-trend down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8 10 14 14 10 20 18"/><path d="M15 18h5v-5"/></svg>6.1%</span>
+                        </div>
+                        <h4 class="mono">18.2 ms</h4>
+                        <span class="badge badge-warning" style="width: fit-content;">Normal Range</span>
+                    </div>
+                    <div class="stat-card">
+                        <span>Faltas Críticas</span>
+                        <h4 class="mono">1 Alerta</h4>
+                        <span class="badge badge-error" style="width: fit-content;">Action Needed</span>
+                    </div>
+                </section>
+
+                <!-- Banner de Alerta Glass -->
+                <div style="background-color: var(--error-bg); backdrop-filter: blur(12px); border: 1px solid var(--error-border); border-radius: var(--radius-md); padding: 1.15rem 1.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-glass);">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <span class="badge badge-error">CRITICAL ERROR</span>
+                        <span style="color: var(--text-primary); font-size: 0.85rem;">Fallo de renderizado en la capa translúcida #4. Se requiere optimización de blur.</span>
+                    </div>
+                    <button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Resolver</button>
                 </div>
-                <div class="stat-card">
-                    <span>Faltas Críticas</span>
-                    <h4 class="mono">1 Alerta</h4>
-                    <span class="badge badge-error" style="width: fit-content;">Action Needed</span>
+
+                <section class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Servicio / Capa</th>
+                                <th>Estado Actual</th>
+                                <th>Token Asignado</th>
+                                <th>Último Check</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Motor Glassmorphism</strong></td>
+                                <td><span class="badge badge-success">Operational</span></td>
+                                <td><span class="badge badge-primary">Cyan Core</span></td>
+                                <td class="mono" style="color: var(--text-muted);">Hace 1 min</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Blur Synchronizer</strong></td>
+                                <td><span class="badge badge-warning">High Load</span></td>
+                                <td><span class="badge badge-secondary">Pink Accent</span></td>
+                                <td class="mono" style="color: var(--text-muted);">Hace 5 mins</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Atmosphere Buffer</strong></td>
+                                <td><span class="badge badge-error">Overflow</span></td>
+                                <td><span class="badge badge-primary">Cyan Core</span></td>
+                                <td class="mono" style="color: var(--text-muted);">Hace 12 mins</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                </div>
+
+                <div class="dash-subpanel" data-subtab="vista" hidden>
+                    <div class="card" style="padding: 1.5rem;">
+                        <h3 style="font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 1rem;">Detalle del nodo seleccionado</h3>
+                        <dl class="dash-record">
+                            <div><dt>Identificador</dt><dd class="mono">nodo-07</dd></div>
+                            <div><dt>Nombre</dt><dd>Motor Glassmorphism</dd></div>
+                            <div><dt>Estado</dt><dd><span class="badge badge-success">Operativo</span></dd></div>
+                            <div><dt>Región</dt><dd>mx-central-1</dd></div>
+                            <div><dt>Responsable</dt><dd>Charlie H.</dd></div>
+                            <div><dt>Última verificación</dt><dd class="mono">Hace 1 min</dd></div>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="dash-subpanel" data-subtab="editar" hidden>
+                    <div class="card" style="padding: 2rem; max-width: 560px;">
+                        <form novalidate>
+                            <h3 style="font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 1.25rem;">Editar Motor Glassmorphism</h3>
+                            <div class="field">
+                                <label for="edit-id">Identificador</label>
+                                <input type="text" id="edit-id" name="id" value="nodo-07" readonly>
+                            </div>
+                            <div class="field">
+                                <label for="edit-nombre">Nombre</label>
+                                <input type="text" id="edit-nombre" name="nombre" value="Motor Glassmorphism">
+                            </div>
+                            <div class="field">
+                                <label for="edit-estado">Estado</label>
+                                <select id="edit-estado" name="estado">
+                                    <option value="operativo" selected>Operativo</option>
+                                    <option value="degradado">Degradado</option>
+                                    <option value="caido">Caído</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="edit-region">Región</label>
+                                <select id="edit-region" name="region">
+                                    <option value="mx-central-1" selected>México central</option>
+                                    <option value="us-east-1">EE. UU. este</option>
+                                    <option value="eu-west-1">Europa oeste</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="activo" style="width: auto;" checked> Activo
+                                </label>
+                            </div>
+                            <button type="submit" class="btn">Guardar cambios</button>
+                        </form>
+                    </div>
                 </div>
             </section>
 
-            <!-- Banner de Alerta Glass -->
-            <div style="background-color: var(--error-bg); backdrop-filter: blur(12px); border: 1px solid var(--error-border); border-radius: var(--radius-md); padding: 1.15rem 1.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-glass);">
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                    <span class="badge badge-error">CRITICAL ERROR</span>
-                    <span style="color: var(--text-primary); font-size: 0.85rem;">Fallo de renderizado en la capa translúcida #4. Se requiere optimización de blur.</span>
+            <!-- Vista Métricas -->
+            <section class="dash-view" data-view="metricas" aria-label="Métricas" hidden>
+                <div class="dash-metrics-grid">
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Línea</span><span class="chart-sub">Latencia de capa (7 muestras)</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 280 96" role="img" aria-label="Gráfico de líneas: 7 muestras">
+                                <path d="M8.0,72.0 L52.0,40.0 L96.0,56.0 L140.0,8.0 L184.0,32.0 L228.0,64.0 L272.0,88.0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Barras</span><span class="chart-sub">Peticiones por nodo</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 280 96" role="img" aria-label="Gráfico de barras: 7 categorías">
+                                <rect x="10.5" y="62.4" width="28" height="33.6" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="49.0" y="37.2" width="28" height="58.8" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="87.5" y="49.8" width="28" height="46.2" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="126.0" y="20.4" width="28" height="75.6" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="164.5" y="41.4" width="28" height="54.6" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="203.0" y="28.8" width="28" height="67.2" rx="3" fill="currentColor" fill-opacity="0.5"/>
+                                <rect x="241.5" y="12.0" width="28" height="84.0" rx="3" fill="currentColor" fill-opacity="1"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Área</span><span class="chart-sub">Carga acumulada</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 280 96" role="img" aria-label="Gráfico de área: 7 muestras">
+                                <path d="M8.0,72.0 L52.0,40.0 L96.0,56.0 L140.0,8.0 L184.0,32.0 L228.0,64.0 L272.0,88.0 L272,88 L8,88 Z" fill="currentColor" fill-opacity="0.15" stroke="none"/>
+                                <path d="M8.0,72.0 L52.0,40.0 L96.0,56.0 L140.0,8.0 L184.0,32.0 L228.0,64.0 L272.0,88.0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Pie</span><span class="chart-sub">Distribución de tokens</span></figcaption>
+                            <svg class="dash-chart" style="height: 8rem; width: auto; align-self: center;" viewBox="0 0 120 120" role="img" aria-label="Gráfico de pie: 3 segmentos">
+                                <g transform="rotate(-90 60 60)">
+                                    <circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-opacity="1" stroke-width="56" stroke-dasharray="70.37 105.56" stroke-dashoffset="0"/>
+                                    <circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="56" stroke-dasharray="61.58 114.35" stroke-dashoffset="-70.37"/>
+                                    <circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="56" stroke-dasharray="43.98 131.95" stroke-dashoffset="-131.95"/>
+                                </g>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Dona</span><span class="chart-sub">Uso por región</span></figcaption>
+                            <svg class="dash-chart" style="height: 8rem; width: auto; align-self: center;" viewBox="0 0 120 120" role="img" aria-label="Gráfico de dona: 3 segmentos">
+                                <g transform="rotate(-90 60 60)">
+                                    <circle cx="60" cy="60" r="42" fill="none" stroke="currentColor" stroke-opacity="1" stroke-width="16" stroke-dasharray="105.56 158.34" stroke-dashoffset="0"/>
+                                    <circle cx="60" cy="60" r="42" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="16" stroke-dasharray="92.36 171.53" stroke-dashoffset="-105.56"/>
+                                    <circle cx="60" cy="60" r="42" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="16" stroke-dasharray="65.97 197.92" stroke-dashoffset="-197.92"/>
+                                </g>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Radar</span><span class="chart-sub">Perfil de capacidades</span></figcaption>
+                            <svg class="dash-chart" style="height: 8rem; width: auto; align-self: center;" viewBox="0 0 120 120" role="img" aria-label="Gráfico de radar: 5 ejes">
+                                <polygon points="60.0,12.0 105.7,45.2 88.2,98.8 31.8,98.8 14.3,45.2" fill="none" stroke="currentColor" stroke-opacity="0.25" stroke-width="1"/>
+                                <polygon points="60.0,16.8 87.4,51.1 81.2,89.1 45.9,79.4 23.5,48.1" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                        </figure>
+                    </div>
+                    <div class="card" style="padding: 1.5rem;">
+                        <figure>
+                            <figcaption><span class="chart-title">Gauge</span><span class="chart-sub">Disponibilidad objetivo</span></figcaption>
+                            <svg class="dash-chart" style="height: 5rem;" viewBox="0 0 120 74" role="img" aria-label="Gauge radial: 70%">
+                                <path d="M12,60 A48,48 0 0 1 108,60" fill="none" stroke="currentColor" stroke-opacity="0.2" stroke-width="10" stroke-linecap="round"/>
+                                <path d="M12,60 A48,48 0 0 1 88.2,21.2" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+                                <text x="60" y="58" text-anchor="middle" class="mono" style="fill: var(--text-primary); font-size: 18px; font-weight: 700;">70%</text>
+                            </svg>
+                        </figure>
+                    </div>
                 </div>
-                <button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Resolver</button>
+            </section>
+
+            <!-- Vista Markdown -->
+            <section class="dash-view" data-view="markdown" aria-label="Markdown" hidden>
+                <div class="card" style="padding: 2rem;">
+                    <div class="md-content">
+<h1>Guía del panel Glass</h1>
+<p>Esta vista reutiliza el <strong>mismo</strong> componente Markdown que el blog (RF-004): el resaltado
+de sintaxis y el resto del render ocurren en build/servidor, sin cargar nada por red.</p>
+<h2>Capas del sistema</h2>
+<p>El panel se compone de tres capas atmosféricas:</p>
+<ol>
+<li><strong>Aurora</strong> — fondo con rayos animados.</li>
+<li><strong>Vidrio</strong> — superficies translúcidas con <em>blur</em>.</li>
+<li><strong>Contenido</strong> — tablas, métricas y formularios.</li>
+</ol>
+<blockquote>
+<p>La misma fuente <code>.md</code> alimenta ambas pistas (vanilla y react): cero divergencia de
+contenido entre ellas.</p>
+</blockquote>
+<h2>Token de ejemplo</h2>
+<p>Un bloque de código con lenguaje declarado se resalta de verdad:</p>
+<pre class="shiki github-dark" style="background-color:#24292e;color:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#B392F0">.panel</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  background-color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--bg-card</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">  border</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> solid</span><span style="color:#79B8FF"> var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--border-glass</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre><h2>Referencia rápida</h2>
+<table>
+<thead>
+<tr>
+<th>Vista</th>
+<th>Para qué sirve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tabla</td>
+<td>Listado, detalle y edición</td>
+</tr>
+<tr>
+<td>Métricas</td>
+<td>Catálogo de gráficos</td>
+</tr>
+<tr>
+<td>Formulario</td>
+<td>Catálogo de tipos de campo</td>
+</tr>
+</tbody>
+</table>
+<p>Más detalle en la <a href="https://design-html.local/docs">documentación del catálogo</a>.</p>
+</div><!-- /md-content -->
+                </div>
+            </section>
+
+            <!-- Vista Tareas -->
+            <section class="dash-view" data-view="tareas" aria-label="Tareas" hidden>
+                <div class="kanban">
+                    <section class="card kanban-col" aria-label="Pendiente" style="padding: 1.25rem;">
+                        <div class="kanban-col-head"><h3 style="font-size:0.9rem;margin:0;">Pendiente</h3><span class="kanban-count">2</span></div>
+                        <div class="task-card"><p>Optimizar el blur de la capa translúcida #4</p><span class="badge badge-warning" style="width:fit-content;">UI</span></div>
+                        <div class="task-card"><p>Documentar la familia de tokens P3</p><span class="badge badge-primary" style="width:fit-content;">Docs</span></div>
+                    </section>
+                    <section class="card kanban-col" aria-label="En curso" style="padding: 1.25rem;">
+                        <div class="kanban-col-head"><h3 style="font-size:0.9rem;margin:0;">En curso</h3><span class="kanban-count">1</span></div>
+                        <div class="task-card"><p>Reescribir el sincronizador de blur</p><span class="badge badge-primary" style="width:fit-content;">Core</span></div>
+                    </section>
+                    <section class="card kanban-col" aria-label="Hecho" style="padding: 1.25rem;">
+                        <div class="kanban-col-head"><h3 style="font-size:0.9rem;margin:0;">Hecho</h3><span class="kanban-count">2</span></div>
+                        <div class="task-card"><p>Carrusel del landing con imágenes locales</p><span class="badge badge-success" style="width:fit-content;">UI</span></div>
+                        <div class="task-card"><p>Tema claro/sistema/oscuro sin FOUC</p><span class="badge badge-success" style="width:fit-content;">UI</span></div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- Vista Formulario -->
+            <section class="dash-view" data-view="formulario" aria-label="Formulario" hidden>
+                <div class="card" style="padding: 2rem;">
+                    <form novalidate aria-label="Catálogo de tipos de campo">
+                        <div class="form-grid cols-2">
+                            <div class="field">
+                                <label for="f-texto">Texto</label>
+                                <input type="text" id="f-texto" name="f-texto" value="Motor Glassmorphism" placeholder="p. ej. nodo-08">
+                            </div>
+                            <div class="field">
+                                <label for="f-numero">Número</label>
+                                <input type="number" id="f-numero" name="f-numero" value="12">
+                            </div>
+                            <div class="field">
+                                <label for="f-textarea">Textarea</label>
+                                <textarea id="f-textarea" name="f-textarea" rows="4">Descripción larga del nodo…</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="f-codigo">Código</label>
+                                <textarea id="f-codigo" name="f-codigo" rows="4" class="mono-input">transition: transform 0.3s ease;</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="f-fecha">Fecha</label>
+                                <input type="date" id="f-fecha" name="f-fecha" value="2026-10-25">
+                            </div>
+                            <div class="field">
+                                <label for="f-fechahora">Fecha y hora</label>
+                                <input type="datetime-local" id="f-fechahora" name="f-fechahora" value="2026-10-25T09:30">
+                            </div>
+                            <div class="field">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input type="checkbox" name="f-bool" style="width: auto;" checked> Boolean / toggle
+                                </label>
+                            </div>
+                            <div class="field">
+                                <label for="f-estado">Estado (select pintado con badge)</label>
+                                <select id="f-estado" name="f-estado">
+                                    <option value="operativo" selected>Operativo</option>
+                                    <option value="degradado">Degradado</option>
+                                    <option value="caido">Caído</option>
+                                </select>
+                                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <span class="badge badge-success">Operativo</span>
+                                    <span class="badge badge-warning">Degradado</span>
+                                    <span class="badge badge-error">Caído</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid cols-2" style="margin-top: 1.25rem;">
+                            <div class="field">
+                                <label>Multi-select (opciones fijas)</label>
+                                <div class="chipbox">
+                                    <span class="chip">translúcido</span>
+                                    <span class="chip">blur</span>
+                                    <span class="chip-placeholder">Añadir etiqueta…</span>
+                                </div>
+                                <p class="form-field-hint">Opciones: atmosférico, translúcido, blur, aurora</p>
+                            </div>
+                            <div class="field">
+                                <label>Creatable-select</label>
+                                <div class="chipbox">
+                                    <span class="chip">violeta</span>
+                                    <span class="chip">rosa</span>
+                                    <span class="chip-placeholder">Crear o elegir (escribe y Enter)</span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="f-fk">Select-FK (dataset de ejemplo)</label>
+                                <select id="f-fk" name="f-fk">
+                                    <option value="nodo-07" selected>nodo-07 · Motor Glassmorphism</option>
+                                    <option value="nodo-04">nodo-04 · Búfer atmosférico</option>
+                                    <option value="nodo-02">nodo-02 · Sincronizador de blur</option>
+                                </select>
+                                <p class="form-field-hint">Referencia a otro registro — sin backend real</p>
+                            </div>
+                            <div class="field">
+                                <label>Multi-select-FK</label>
+                                <div class="chipbox">
+                                    <span class="chip">nodo-07 · Motor Glassmorphism</span>
+                                    <span class="chip">nodo-02 · Sincronizador de blur</span>
+                                    <span class="chip-placeholder">Añadir referencia…</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid cols-2" style="margin-top: 1.25rem;">
+                            <div class="field">
+                                <label for="f-lista-texto">Lista-texto (una por línea)</label>
+                                <textarea id="f-lista-texto" name="f-lista-texto" rows="4" class="mono-input">Capa de aurora
+Capa de vidrio
+Capa de contenido</textarea>
+                                <p class="form-field-hint">Cada línea es un elemento del array</p>
+                            </div>
+                            <div class="field">
+                                <label for="f-lista-num">Lista-número (separados por coma)</label>
+                                <input type="text" id="f-lista-num" name="f-lista-num" value="14, 18, 16, 22, 19">
+                                <p class="form-field-hint">Se divide por coma en un array de números</p>
+                            </div>
+                        </div>
+
+                        <div class="field" style="margin-top: 1.25rem;">
+                            <label>JSON-list · clave-valor</label>
+                            <div class="json-row">
+                                <input class="mono-input" value="region" aria-label="clave 1">
+                                <input class="mono-input" value="mx-central-1" aria-label="valor 1">
+                            </div>
+                            <div class="json-row">
+                                <input class="mono-input" value="blur" aria-label="clave 2">
+                                <input class="mono-input" value="16px" aria-label="valor 2">
+                            </div>
+                            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">+ Añadir par</button>
+                        </div>
+
+                        <div class="form-grid cols-2" style="margin-top: 1.25rem;">
+                            <div class="field">
+                                <label>JSON-list · lista de strings</label>
+                                <input class="mono-input" value="--primary-color" aria-label="cadena 1" style="margin-bottom: 0.5rem;">
+                                <input class="mono-input" value="--bg-card" aria-label="cadena 2" style="margin-bottom: 0.5rem;">
+                                <input class="mono-input" value="--border-glass" aria-label="cadena 3">
+                            </div>
+                            <div class="field">
+                                <label for="f-json-obj">JSON-list · lista de objetos</label>
+                                <textarea id="f-json-obj" name="f-json-obj" rows="5" class="mono-input">[
+  { "capa": 4, "blur": "16px" },
+  { "capa": 2, "blur": "8px" }
+]</textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn" style="margin-top: 1.5rem;">Guardar</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Vista Controles -->
+            <section class="dash-view" data-view="controles" aria-label="Controles" hidden>
+                <div class="controls-grid">
+                    <section class="card" aria-label="Botones" style="padding: 1.5rem;">
+                        <h3 style="font-size:0.9rem;margin:0 0 1rem;">Botones</h3>
+                        <div class="control-row">
+                            <button class="btn">Primario</button>
+                            <button class="btn btn-secondary">Secundario</button>
+                            <button class="btn" style="padding:0.4rem 0.8rem;font-size:0.8rem;">Pequeño</button>
+                        </div>
+                    </section>
+                    <section class="card" aria-label="Badges" style="padding: 1.5rem;">
+                        <h3 style="font-size:0.9rem;margin:0 0 1rem;">Badges</h3>
+                        <div class="control-row">
+                            <span class="badge badge-primary">primary</span>
+                            <span class="badge badge-secondary">secondary</span>
+                            <span class="badge badge-success">success</span>
+                            <span class="badge badge-warning">warning</span>
+                            <span class="badge badge-error">error</span>
+                        </div>
+                    </section>
+                    <section class="card" aria-label="Toggle" style="padding: 1.5rem;">
+                        <h3 style="font-size:0.9rem;margin:0 0 1rem;">Toggle</h3>
+                        <label style="display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;color:var(--text-primary);">
+                            <span class="toggle"><input type="checkbox" checked aria-label="Capa atmosférica activa"><span class="track"></span></span>
+                            Capa atmosférica activa
+                        </label>
+                    </section>
+                    <section class="card" aria-label="Checkbox y radios" style="padding: 1.5rem;">
+                        <h3 style="font-size:0.9rem;margin:0 0 1rem;">Checkbox y radios</h3>
+                        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;margin-bottom:0.75rem;">
+                            <input type="checkbox" checked style="width:auto;"> Activar notificaciones
+                        </label>
+                        <fieldset style="border:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+                            <legend style="font-size:0.875rem;font-weight:500;padding:0;">Densidad</legend>
+                            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;color:var(--text-secondary);"><input type="radio" name="c-radio"> Compacta</label>
+                            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;color:var(--text-secondary);"><input type="radio" name="c-radio" checked> Cómoda</label>
+                            <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;color:var(--text-secondary);"><input type="radio" name="c-radio"> Amplia</label>
+                        </fieldset>
+                    </section>
+                    <section class="card" aria-label="Select y slider" style="padding: 1.5rem;">
+                        <h3 style="font-size:0.9rem;margin:0 0 1rem;">Select y slider</h3>
+                        <div class="field">
+                            <label for="c-select">Región</label>
+                            <select id="c-select" name="c-select">
+                                <option value="mx">México central</option>
+                                <option value="us">EE. UU. este</option>
+                            </select>
+                        </div>
+                        <label style="display:flex;flex-direction:column;gap:0.375rem;font-size:0.875rem;font-weight:500;">
+                            Intensidad del blur
+                            <input type="range" min="0" max="100" value="64" style="accent-color:var(--primary-color);">
+                        </label>
+                    </section>
+                    <section class="card" aria-label="Segmented control" style="padding: 1.5rem;">
+                        <h3 style="font-size:0.9rem;margin:0 0 1rem;">Segmented control</h3>
+                        <div class="segmented" role="tablist" aria-label="Rango temporal">
+                            <button type="button" role="tab" aria-selected="true">Día</button>
+                            <button type="button" role="tab" aria-selected="false">Semana</button>
+                            <button type="button" role="tab" aria-selected="false">Mes</button>
+                        </div>
+                    </section>
+                </div>
+            </section>
             </div>
-
-            <section class="data-table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Servicio / Capa</th>
-                            <th>Estado Actual</th>
-                            <th>Token Asignado</th>
-                            <th>Último Check</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Motor Glassmorphism</strong></td>
-                            <td><span class="badge badge-success">Operational</span></td>
-                            <td><span class="badge badge-primary">Cyan Core</span></td>
-                            <td class="mono" style="color: var(--text-muted);">Hace 1 min</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Blur Synchronizer</strong></td>
-                            <td><span class="badge badge-warning">High Load</span></td>
-                            <td><span class="badge badge-secondary">Pink Accent</span></td>
-                            <td class="mono" style="color: var(--text-muted);">Hace 5 mins</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Atmosphere Buffer</strong></td>
-                            <td><span class="badge badge-error">Overflow</span></td>
-                            <td><span class="badge badge-primary">Cyan Core</span></td>
-                            <td class="mono" style="color: var(--text-muted);">Hace 12 mins</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
         </main>
 
         <aside class="sidebar-right">
@@ -178,5 +653,6 @@
 
     <script src="../js/theme-manager.js"></script>
     <script src="../js/nav-toggle.js"></script>
+    <script src="../js/dashboard-views.js"></script>
 </body>
 </html>

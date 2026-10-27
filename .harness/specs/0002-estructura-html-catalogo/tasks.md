@@ -21,107 +21,336 @@ actualizado: 2026-10-24
 ## Tareas
 
 ### Bloque A — Contrato primero (integración, tests en rojo)
-- [ ] T-001 — Fuente única del post de ejemplo `content/blog/estructura-catalogo.md` +
+- [x] T-001 — Fuente única del post de ejemplo `content/blog/estructura-catalogo.md` +
   fixture `tests/fixtures/markdown-showcase.md` con **todas** las construcciones de RF-004
   (h1-h6, negrita/cursiva/tachado, listas ord/desord/anidadas, blockquote, código inline y
   en bloque **con** lenguaje, **un** bloque **sin** lenguaje (RF-015), ≥1 diagrama Mermaid,
   tabla, enlace, imagen **con `alt`** (RF-014), regla horizontal) (cubre RF-004, RF-014, RF-015) [zona: frontera]
   - CHECK: `node -e "const s=require('fs').readFileSync('content/blog/estructura-catalogo.md','utf8'); process.exit(/```mermaid/.test(s)&&/!\[[^\]]+\]\(/.test(s)?0:1)"`
   - EXPECT: exit 0 (el `.md` existe y contiene ≥1 mermaid y ≥1 imagen con alt).
-- [ ] T-002 — `tests/unit/markdown.test.ts` (rojo): contrato de salida del renderer —
+- [x] T-002 — `tests/unit/markdown.test.ts` (rojo): contrato de salida del renderer —
   cada construcción produce su HTML; bloque sin lenguaje → `<pre><code>` sin spans de
   color (RF-015); ninguna `<img>` sin `alt` (RF-014); Mermaid como SVG inline, sin
   `<script>`/URL externa (RF-011) (cubre RF-004, RF-011, RF-014, RF-015) [zona: test]
   - CHECK: `npx vitest run tests/unit/markdown.test.ts`
   - EXPECT: FALLA (rojo) — aún no existe `components/markdown/markdown.tsx`.
-- [ ] T-003 — `tests/unit/paridad.test.ts` (rojo): declara las **7 vistas** esperadas en
+  - Delta T-022 (autorizado por el orquestador, no es decisión de producto): corregido
+    el regex de la línea 102 — cruzaba el `<pre>` del bloque CON lenguaje que precede en
+    el fixture, arrastrando sus spans de Shiki al match del bloque SIN lenguaje. Ancla
+    `(?:(?!<\/pre>)[\s\S])*?` en el primer tramo para no cruzar un `</pre>` previo.
+    Intención de RF-015 intacta y el test sigue discriminante (verificado: un span
+    inyectado dentro del bloque correcto sigue haciendo fallar el `expect`).
+- [x] T-003 — `tests/unit/paridad.test.ts` (rojo): declara las **7 vistas** esperadas en
   ambas pistas (rutas react ↔ archivos HTML vanilla) y sus secciones; check anti-URL
   externa (`http(s)://`, `cdn`) sobre los `.html` vanilla; producto-detalle NO usa el
   renderer de Markdown (RF-006) (cubre RF-010, RNF-002) [zona: test]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts`
   - EXPECT: FALLA (rojo) — faltan las vistas nuevas en ambas pistas.
-- [ ] T-004 — Extender `tests/unit/tokens.test.ts`: contraste AA en claro y oscuro de los
+- [x] T-004 — Extender `tests/unit/tokens.test.ts`: contraste AA en claro y oscuro de los
   pares de color que usan las clases/tokens nuevos de esta spec (cubre RF-009, RNF-004) [zona: test]
   - CHECK: `npx vitest run tests/unit/tokens.test.ts`
   - EXPECT: FALLA para los pares nuevos hasta declarar las clases (T-019).
-- [ ] T-005 — Extender `tests/unit/literals.test.ts`: prohibir literales de color e inline
+  - ROJO confirmado: 29/30 tests en verde (error-text/text-muted/text-secondary nuevos
+    ya cumplen con los tokens P3 existentes); falla únicamente
+    "enlace de .md-content (--primary-color) cumple AA sobre --bg-card" en tema oscuro
+    (3.78:1 < 4.5). Contrato para T-019: el color del enlace de `.md-content` debe ser
+    un token P3 que cumpla AA sobre `--bg-card` en ambos temas (p.ej. `--primary-text`,
+    no `--primary-color` crudo) — sin declarar ningún valor de color nuevo.
+- [x] T-005 — Extender `tests/unit/literals.test.ts`: prohibir literales de color e inline
   `style` de color en los componentes/vistas nuevos (cubre RNF-003) [zona: test]
   - CHECK: `npx vitest run tests/unit/literals.test.ts`
   - EXPECT: FALLA mientras algún componente nuevo no exista / tenga literal.
-- [ ] T-006 — Extender `tests/unit/reuse.test.ts`: Blog/Productos usan `post-card`/
+  - ROJO confirmado: 72/78 en verde (escaneo global existente intacto); fallan las 6
+    aserciones de existencia nuevas — `components/glass/{post-card,product-card,field,
+    empty-state}.tsx` y `components/markdown/{markdown.tsx,prose.ts}` aún no existen.
+- [x] T-006 — Extender `tests/unit/reuse.test.ts`: Blog/Productos usan `post-card`/
   `product-card`; Contacto usa `field` con error inline; las 7 vistas reusan los
   componentes compartidos (cubre RF-003, RF-005, RF-013) [zona: test]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts`
   - EXPECT: FALLA (rojo) — los componentes nuevos aún no se importan.
-- [ ] T-007 — `tests/unit/empty-state.test.tsx` (rojo): Blog y Productos con lista vacía
+  - ROJO confirmado: 33/51 en verde (landing/dashboard existentes intactos); fallan las
+    18 aserciones nuevas — blog/productos aún no importan `post-card`/`product-card` ni
+    reusan navbar/footer; el post individual no importa `markdown`/`prose`; la ficha de
+    producto no reusa navbar/footer; contacto no importa/renderiza `field` con error inline.
+  - Naming de describes/tests cuidado a propósito para que `-t blog` y `-t productos`
+    (tal cual los usan T-009/T-010) seleccionen SOLO el listado correspondiente: el
+    detalle se describe como "post individual · ..." y "ficha de producto · ..." (sin el
+    substring "blog"/"productos" en ningún título de test, incluidas las etiquetas del
+    `it.each` transversal). Verificado: `-t blog` → 6 tests (describe blog + 2 del bloque
+    transversal "listado de blog"), ninguno de "post individual"; `-t productos` → 6
+    tests equivalentes, ninguno de "ficha de producto".
+  - Amendment #2: quitado el flag `s` (dotAll, requiere ES2018+) del regex de la
+    aserción de error inline de `field` (línea ~159) — innecesario, el patrón no usa
+    `.`; `[^>]*` ya cruza saltos de línea sin ese flag. Auditado el resto del archivo:
+    sin otros flags `s`/`u`/`d`. `npm run type-check` limpio para `reuse.test.ts` (el
+    único error restante es `markdown.test.ts` por el módulo `@/components/markdown/
+    markdown` ausente, preexistente de T-002, se resuelve en T-022). Vitest sigue en
+    18 failed/33 passed; `-t blog`/`-t productos` sin regresión.
+- [x] T-007 — `tests/unit/empty-state.test.tsx` (rojo): Blog y Productos con lista vacía
   renderizan `empty-state` (RF-012) (cubre RF-012) [zona: test]
   - CHECK: `npx vitest run tests/unit/empty-state.test.tsx`
   - EXPECT: FALLA (rojo) — `empty-state.tsx` aún no existe.
+  - ROJO confirmado: la suite falla entera al resolver `@/components/glass/empty-state`
+    (`Failed to resolve import ... Does the file exist?`, vite:import-analysis) — módulo
+    ausente, como T-002. Asertos definidos: (1) `EmptyState` muestra mensaje visible en
+    español (prop `message` y texto por defecto) con `role="status"`; (2) Blog/Productos
+    listado: patrón laxo igual a `reuse.test.ts` — vía `ownSources()`/`source.ts` se
+    asevera que ALGÚN archivo bajo `app/blog/`/`app/productos/` importa
+    `@/components/glass/empty-state` y renderiza `<EmptyState`, sin fijar nombre/ruta de
+    componente contenedor (T-009/T-010 pueden inlinear el grid en `page.tsx` o extraerlo
+    con el nombre que prefieran). Amendment #1 (revisor): se quitó el import directo de
+    `BlogListing`/`ProductListing` con ruta/nombre inventados (sobre-acoplamiento) y se
+    sustituyó por el patrón de código fuente. Doble causa de rojo verificada: `app/blog/`
+    y `app/productos/` tampoco existen todavía (confirmado por listado de `app/`), así
+    que esos dos `describe` fallarían por ausencia real de archivos aun si el import de
+    `EmptyState` se resolviera.
 
 ### Bloque B — Frontend / maquetación primero (ambas pistas, datos simulados, sin lógica)
-- [ ] T-008 — React, presentacionales nuevos (datos simulados): `components/glass/
+- [x] T-008 — React, presentacionales nuevos (datos simulados): `components/glass/
   post-card.tsx`, `product-card.tsx`, `empty-state.tsx`, `field.tsx` (error inline)
   (cubre RF-003, RF-005, RF-012, RF-013) [zona: frontend]
   - CHECK: `npm run type-check`
   - EXPECT: type-check limpio; los 4 componentes existen y exportan.
-- [ ] T-009 — React Blog listado: `app/blog/page.tsx` + `app/blog/_components/` +
+  - Hecho: 4 componentes creados sin lógica de negocio (presentacional puro, datos vía
+    props). `type-check` limpio salvo el rojo preexistente de `tests/unit/markdown.test.ts`
+    (T-002, se resuelve en T-022) — confirmado por grep sin coincidencias de
+    post-card/product-card/empty-state/field. `empty-state.test.tsx` primer describe (3
+    tests, componente base) en verde; `literals.test.ts` las 4 aserciones de existencia +
+    sin-literales de los componentes nuevos en verde (solo quedan rojas
+    markdown.tsx/prose.ts, T-022). Fallas restantes en reuse/tokens son de tareas
+    posteriores (rutas app/blog, app/productos, app/contacto aún no existen; rojo de
+    --primary-color documentado para T-019) — no las toca esta tarea.
+- [x] T-009 — React Blog listado: `app/blog/page.tsx` + `app/blog/_components/` +
   `content/blog.ts` (grid de `post-card`, imagen/título/extracto/fecha) (cubre RF-003) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts -t blog`
   - EXPECT: la parte de Blog pasa (usa `post-card`).
-- [ ] T-010 — React Productos listado: `app/productos/page.tsx` +
-  `app/productos/_components/` + `content/productos.ts` (grid `product-card`) (cubre RF-005) [zona: frontend]
+  - Hecho: creado `components/glass/footer.tsx` (componente compartido ausente, exigido
+    por `reuse.test.ts` desde T-006 para blog/productos/contacto/producto-detalle —
+    reusa `Band`, no declara `backdrop-*` propio). `content/blog.ts`
+    tipado en español con 3 posts (incluye `estructura-catalogo`, mismo slug que
+    `content/blog/estructura-catalogo.md`, misma imagen de portada `/gallery/
+    vidrio-01.jpg`, asset ya existente). `app/blog/page.tsx` renderiza el grid de
+    `<PostCard>` dentro de `AuroraBackground` + navbar + `Footer`; usa `<EmptyState>`
+    si `posts` está vacío (RF-012). `-t blog` → 6/6 verde; `type-check` limpio salvo el
+    TS2307 preexistente de `markdown.test.ts` (T-022); `reuse.test.ts` completo →
+    37/51 (14 rojas = productos/blog-detalle/producto-detalle/contacto, tareas futuras,
+    sin regresión en landing/dashboard/blog); `empty-state.test.tsx`/`literals.test.ts`
+    sin regresión (fallas restantes = productos T-010, markdown.tsx/prose.ts T-022).
+  - Corrección post-revisión (amendment #1, rechazo de T-010): el wrapper
+    `app/blog/_components/site-nav.tsx` quedó byte-a-byte idéntico al de
+    `app/productos/_components/site-nav.tsx` (T-010) → duplicación pura. Fix de raíz:
+    se eliminaron ambos wrappers; `app/blog/page.tsx` y `app/productos/page.tsx`
+    componen `Navbar`/`Logo`/`NavLink`/`ThemeSwitch` directamente en el propio
+    `page.tsx` (importados de `@/components/glass/*` dentro de cada ruta, como exige
+    `glassModules()` en `reuse.test.ts`), con el array de enlaces compartido en
+    `content/site.ts` (`catalogNav`) — única fuente de verdad, cada página solo decide
+    su `active`. `app/blog/_components/` y `app/productos/_components/` ya no existen.
+- [x] T-010 — React Productos listado: `app/productos/page.tsx` +
+  `content/productos.ts` (grid `product-card`) (cubre RF-005) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/reuse.test.ts -t productos`
   - EXPECT: la parte de Productos pasa (usa `product-card`).
-- [ ] T-011 — React Producto detalle **texto plano**: `app/productos/[slug]/page.tsx`
+  - Hecho: `content/productos.ts` tipado en español con 3 productos (imagen local
+    `/gallery/vidrio-0X.jpg`, nombre, precio formateado, slug). `app/productos/
+    page.tsx` renderiza el grid de `<ProductCard>` dentro de `AuroraBackground` +
+    navbar + `Footer`; usa `<EmptyState>` si `products` está
+    vacío (RF-012). `-t productos` → 6/6 verde; `type-check` limpio salvo el TS2307
+    preexistente de `markdown.test.ts` (T-022); `reuse.test.ts` completo → 41/51 (10 rojas
+    = post individual/ficha de producto/contacto, tareas futuras T-011/T-012/T-013, sin
+    regresión en landing/dashboard/blog/productos).
+- [x] T-011 — React Producto detalle **texto plano**: `app/productos/[slug]/page.tsx`
   (descripción como string, **sin** `<Markdown>`) (cubre RF-006) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts -t "producto-detalle sin markdown"`
   - EXPECT: pasa (producto-detalle no referencia el renderer).
-- [ ] T-012 — React Blog detalle (maqueta): `app/blog/[slug]/page.tsx` +
+  - Hecho: `app/productos/[slug]/page.tsx` nuevo — `generateStaticParams` sobre los slugs
+    de `content/productos.ts`, `generateMetadata` por producto, imagen `next/image` con
+    `alt`, nombre, precio y descripción como párrafos de texto plano (`product.description:
+    string[]`, sin `<Markdown>`/sin import de `components/markdown/*`); reusa `Navbar`/
+    `Logo`/`NavLink`/`ThemeSwitch`/`Footer` igual que el listado. `content/productos.ts`
+    ampliado con el campo `description` (3 párrafos en español por producto, dominio
+    real). El filtro `-t "producto-detalle sin markdown"` selecciona 2 tests: react
+    (paridad.test.ts:153) → PASA; vanilla (paridad.test.ts:160, exige
+    `glassmorphism/producto-detalle.html`) → sigue rojo, esperado hasta T-017 (fuera de
+    alcance de T-011). `type-check` limpio salvo el TS2307 preexistente de
+    `markdown.test.ts` (T-022, componente aún no existe). `reuse.test.ts` → el bloque
+    "ficha de producto" (5/5) pasa en verde (incluye reuso de `navbar`/`footer` y 0
+    módulos de markdown); los 8 rojos restantes (`blog-detalle`, `contacto`) son
+    preexistentes — esas rutas no existen todavía (T-012/T-013), sin regresión en
+    landing/dashboard/blog/productos/ficha de producto.
+- [x] T-012 — React Blog detalle (maqueta): `app/blog/[slug]/page.tsx` +
   `components/markdown/prose.ts` (clases sobre tokens P3; placeholder del cuerpo hasta
   T-023) (cubre RF-004) [zona: frontend]
   - CHECK: `npm run type-check`
   - EXPECT: type-check limpio; la ruta `[slug]` existe.
-- [ ] T-013 — React Contacto (maqueta): `app/contacto/page.tsx` +
+  - Hecho: `components/markdown/prose.ts` nuevo (patrón `surface.ts`) — exporta
+    `proseRoot`, un string de utilidades Tailwind `[&_x]:...` sobre tokens P3 existentes
+    (encabezados h1-h6, párrafos, listas/anidadas, blockquote, código inline/bloque,
+    tabla, enlaces, imágenes, hr). Enlace con `text-primary-ink` (`--primary-text`,
+    6.69/8.68:1 AA), NO `text-primary` (`--primary-color`, falla AA en oscuro 3.78:1) —
+    nota dejada en el propio archivo: la conciliación final de la aserción de
+    `tokens.test.ts` (hoy compara `--primary-color`) queda para T-019 (zona tokens), sin
+    tocarla aquí. `app/blog/[slug]/page.tsx` nuevo — `generateStaticParams` sobre
+    `content/blog.ts`, `generateMetadata` por post, imagen de portada `next/image` con
+    `alt`, título/fecha/excerpt, cuerpo envuelto en `proseRoot` con placeholder en
+    español (el render real de `<Markdown>` es T-022/T-023, sin importarlo todavía);
+    reusa `Navbar`/`Logo`/`NavLink`/`ThemeSwitch`/`Footer` directamente, sin
+    header/aside propio. `npm run type-check` → único error es el preexistente
+    `tests/unit/markdown.test.ts(13,38): TS2307` (T-022); cero errores nuevos de
+    blog/[slug] o prose. `literals.test.ts` → 99/100 verde, la única roja es
+    `components/markdown/markdown.tsx existe` (T-022); la existencia/sin-literales de
+    `prose.ts` pasa. `reuse.test.ts` → "post individual importa components/markdown/
+    prose" pasa; "renderiza `<Markdown>`" sigue roja (esperado hasta T-022); sin
+    regresión en landing/dashboard/blog/productos/ficha de producto (36/36 verde en esos
+    grupos); los 7 rojos restantes de la suite son preexistentes (contacto T-013,
+    markdown T-022). `vitest run tests/unit/` → 347 passed/45 failed, mismo conjunto de
+    fallos preexistentes documentado arriba (contacto T-013, vanilla T-017/T-018/T-024,
+    markdown T-022/T-023, enlace AA T-019) — ninguno nuevo introducido por esta tarea.
+- [x] T-013 — React Contacto (maqueta): `app/contacto/page.tsx` +
   `_components/contact-form.tsx` con campos `field` (sin lógica de validación aún)
   (cubre RF-007, RF-013) [zona: frontend]
   - CHECK: `npm run type-check`
   - EXPECT: type-check limpio; el form renderiza campos con `field`.
-- [ ] T-014 — React Dashboard a 5 bloques: 1 gráfico de líneas (SVG estático inline, sin
+  - Evidencia: `npm run type-check` → solo el error preexistente de
+    `tests/unit/markdown.test.ts` (TS2307, `components/markdown/markdown` no existe
+    hasta T-022), cero errores nuevos. `vitest run tests/unit/reuse.test.ts -t contacto`
+    → 7 passed (import de `field`, `<Field … error>`, reuso navbar/footer). Suite
+    completa `reuse.test.ts` → 49 passed/2 failed, los 2 fallos son únicamente
+    "post individual … <Markdown>" (blog-detalle, pendiente T-022) — sin regresión.
+    `ContactForm` cablea el campo "Correo electrónico" con `error={emailError}`, donde
+    `emailError` es una constante local `undefined` (sin estado/lógica): la prop
+    `error` sigue presente en el JSX (contrato RF-013 que `reuse.test.ts:159` exige),
+    pero `Field` no renderiza ningún mensaje/`role="alert"`/`border-error-line` porque
+    el valor es falsy — T-025 conecta ahí la validación real. Amendment #1 (revisor):
+    rechazado el primer intento por cablear un string de error FIJO que se mostraba
+    permanentemente desde el primer render; corregido a constante vacía. Nombre y
+    mensaje sin prop `error`. `ContactoPage` compone `Navbar/Logo/NavLink/ThemeSwitch/
+    Footer` directo en la ruta (mismo patrón que Productos/Blog), sin header/aside
+    propio.
+- [x] T-014 — React Dashboard a 5 bloques: 1 gráfico de líneas (SVG estático inline, sin
   librería de charts), 1 alerta, 1 tabla (dataset fijo), 1 vista de registro/detalle, 1
   formulario placeholder (texto+select+boolean) con `field` (cubre RF-002) [zona: frontend]
   - CHECK: `npx playwright test e2e/vistas.spec.ts -g dashboard`
   - EXPECT: el dashboard muestra los 5 bloques (tras T-029 escribir el spec).
-- [ ] T-015 — React Landing: completar carrusel/galería con imágenes locales en
+  - Hecho (2026-10-24): `DashboardShell` (`app/dashboard/_components/dashboard-shell.tsx`)
+    ahora compone exactamente 5 `<section data-block="grafico|alerta|tabla|registro|
+    formulario">` en el main-content (cada uno con `h2 sr-only` en español), quitando el
+    bloque de métricas (`stats`/`Metric`) que hacía 6. Nuevos: `line-chart.tsx` (SVG
+    estático inline, `stroke="currentColor"` + clase `text-primary`, dataset fijo
+    `chartSeries`), `record-view.tsx` (par clave-valor, dataset fijo `record`),
+    `placeholder-form.tsx` (usa `Field` con los 3 `as`). `components/glass/field.tsx`
+    ganó `as: "input" | "select" | "boolean"` (discriminated union) para soportar
+    select/checkbox sin romper el uso existente de `ContactForm` (T-013). Dataset nuevo en
+    `content/dashboard.ts`: `chartSeries`, `record`, `placeholderForm`. **CHECK formal de
+    Playwright diferido a T-028** (`e2e/vistas.spec.ts` no existe todavía — lo escribe
+    T-028/T-029 según plan §9). Verificado en su lugar: `npm run type-check` limpio (solo
+    el error preexistente de `markdown.test.ts`), `npx vitest run` sin nuevas rojas (38
+    preexistentes, mismas que antes de T-014; 382 pasan), `npm run lint` limpio, y
+    sondeo de Playwright: **no arranca** en este entorno — `chromium_headless_shell`
+    falla con `error while loading shared libraries: libatk-1.0.so.0: cannot open shared
+    object file` (falta de libs del sistema, documentado en README.md/state.md; el
+    workaround `~/.cache/pw-libs` está fuera del sandbox de esta sesión).
+- [x] T-015 — React Landing: completar carrusel/galería con imágenes locales en
   `public/gallery/` vía `next/image` (cubre RF-001) [zona: frontend]
   - CHECK: `npx playwright test e2e/landing.spec.ts`
   - EXPECT: landing con galería; sin regresiones del spec existente.
-- [ ] T-016 — Vanilla imágenes locales: `glassmorphism/assets/` + migrar el carrusel del
+  - Evidencia (slice 1, `eedfe8b`): la galería ya existía (MediaCard + `next/image` +
+    `/gallery/vidrio-0{1,2,3}.jpg`); se añadió el bloque e2e "RF-001 galería/carrusel"
+    a `e2e/landing.spec.ts` (3 tarjetas, cada img vía `/_next/image` con `url` local
+    `/gallery/`, `naturalWidth>0`, sin host externo). `landing.spec.ts` → 6/6 verde
+    (3 aurora sin regresión + 3 galería) contra `next dev`. CHECK canónico (build de
+    producción) bloqueado por WIP Slice-2 (ver nota al cierre del bloque).
+- [x] T-016 — Vanilla imágenes locales: `glassmorphism/assets/` + migrar el carrusel del
   landing de **Unsplash remoto → local** en `glassmorphism/index.html` (cierra P5)
   (cubre RF-001, RNF-002) [zona: frontend]
   - CHECK: `grep -RIl -E "https?://|unsplash|cdn" glassmorphism/index.html`
   - EXPECT: sin coincidencias (grep devuelve vacío / exit 1).
-- [ ] T-017 — Vanilla vistas nuevas HTML: `blog.html`, `productos.html`,
+  - Evidencia: grep → exit 1 (vacío); `npx vitest run tests/unit/paridad.test.ts -t RNF-002`
+    → "Landing (glassmorphism/index.html) no carga recursos de http(s):// ni cdn" ✓. Imágenes
+    copiadas desde `react/glassmorphism/public/gallery/` a `glassmorphism/assets/`
+    (vidrio-01/02/03.jpg); también se removió `xmlns="http://www.w3.org/2000/svg"` redundante
+    de 4 SVG inline (namespace ya es inferido por el parser HTML; mismo patrón que el SVG del
+    logo en la línea 13, que nunca tuvo `xmlns`) — necesario para que el grep crudo del CHECK
+    diera vacío sin romper los SVG. Pendiente de `revisor`.
+- [x] T-017 — Vanilla vistas nuevas HTML: `blog.html`, `productos.html`,
   `producto-detalle.html`, `contacto.html` con bloque `#themeSwitcher` de 3 botones,
   carga de `../js/theme-manager.js` + `../js/nav-toggle.js`, datos materializados en
   español (cubre RF-003, RF-005, RF-006, RF-007, RF-008) [zona: frontend]
   - CHECK: `npx vitest run tests/unit/paridad.test.ts -t vanilla`
   - EXPECT: las 4 vistas vanilla existen con sus secciones y el switcher.
-- [ ] T-018 — Vanilla `blog-detalle.html` (maqueta) con placeholder del Markdown (se
+  - Evidencia: `npx vitest run tests/unit/paridad.test.ts -t vanilla` → 50 passed, 7 failed
+    (los 7 restantes son EXCLUSIVOS de `blog-detalle.html`, fuera de alcance — T-018), 3 skipped.
+    Suite completa `npx vitest run tests/unit/paridad.test.ts` → 52 passed, 8 failed (mismos 7 +
+    "blog-detalle.html contiene el mismo HTML de md-content…" de T-024, marcado en el propio
+    test como "pendiente/rojo esperado"). Anti-URL: `grep -REIl "https?://|unsplash|cdn"
+    glassmorphism/blog.html glassmorphism/productos.html glassmorphism/producto-detalle.html
+    glassmorphism/contacto.html` → vacío (exit 1). Contenido materializado desde
+    `content/blog.ts`/`content/productos.ts` (react) en español; imágenes locales
+    `assets/vidrio-0{1,2,3}.jpg`; `producto-detalle.html` en texto plano sin cargar
+    `markdown-renderer.js` (ajustado un comentario HTML que por accidente contenía esa cadena
+    literal y falseaba el test en rojo). Pendiente de `revisor`.
+- [x] T-018 — Vanilla `blog-detalle.html` (maqueta) con placeholder del Markdown (se
   regenera en T-025) + `#themeSwitcher` (cubre RF-004) [zona: frontend]
   - CHECK: `test -f glassmorphism/blog-detalle.html && grep -q md-content glassmorphism/blog-detalle.html`
   - EXPECT: exit 0.
-- [ ] T-019 — Clases nuevas en `glassmorphism/css/style.css` (`.blog-grid`/`.post-card`/
+  - Evidencia: CHECK → exit 0. `npx vitest run tests/unit/paridad.test.ts -t vanilla` →
+    56 passed, 1 failed, 3 skipped (60) — el único rojo es "sección contenido markdown
+    presente en react" (busca `@/components/markdown/markdown`, fuera de alcance: T-022).
+    Todos los rojos vanilla de blog-detalle que dejó T-017 pasan ahora en verde. Suite
+    completa `npx vitest run tests/unit/paridad.test.ts` → 58 passed, 2 failed: el mismo
+    rojo react de T-022 + "blog-detalle.html contiene el mismo HTML de md-content…"
+    (marcado en el propio test como "pendiente/rojo esperado" hasta T-024, script de
+    build). Contenedor `<div class="md-content">…</div><!-- /md-content -->` con
+    placeholder en español, metadata del post `estructura-catalogo` (título/fecha/
+    excerpt materializados desde `content/blog.ts`), imagen local `assets/vidrio-01.jpg`
+    con alt en español, nav/footer/#themeSwitcher idénticos al patrón de `blog.html`.
+    Anti-URL: `grep -REIl "https?://|unsplash|cdn" glassmorphism/blog-detalle.html` →
+    vacío (exit 1). Pendiente de `revisor`.
+- [x] T-019 — Clases nuevas en `glassmorphism/css/style.css` (`.blog-grid`/`.post-card`/
   `.product-grid`/`.product-card`/`.md-content *`/`.field`/`.field-error`/`.empty-state`),
   **solo variables P3** (sin valores de color nuevos) (cubre RF-009, RNF-003) [zona: tokens]
   - CHECK: `npx vitest run tests/unit/tokens.test.ts tests/unit/literals.test.ts`
   - EXPECT: AA de los pares nuevos pasa; sin literales de color.
-- [ ] T-020 — Motion (P10, directiva de Carlos — sin RF nuevo): microinteracciones de las
+  - Evidencia: Parte A — añadidas en `glassmorphism/css/style.css` (bloque "CATÁLOGO
+    AMPLIADO"): `.blog-grid`/`.post-card`/`.post-card-img`/`.post-detail-img`,
+    `.product-grid`/`.product-card`/`.product-card-img`/`.product-detail`/
+    `.product-detail-img`, `.md-content` + hijos (h1-h6/p/ul/ol/li/blockquote/code/pre/
+    table-th-td/a/img/hr), `.field`/`.field-error`, `.empty-state` — solo `var(--...)`
+    ya declaradas en `:root`/`[data-theme="dark"]`; grep de hex/rgb/hsl/oklch sobre el
+    bloque nuevo (líneas 569-758) → sin coincidencias (exit 1). El enlace de
+    `.md-content a` usa `--text-secondary` (no `--primary-color`/`--primary-hover`:
+    ningún acento crudo vanilla cumple AA≥4.5 en AMBOS temas sobre `--bg-card` —
+    `--primary-hover` da 6.79:1 claro pero 2.81:1 oscuro; el vanilla no tiene un token
+    `--primary-text` AA-safe equivalente al de react) + `text-decoration: underline`
+    para conservar la affordance; mismo criterio que `prose.ts` (react, RF-009).
+    Parte B — reconciliada la aserción "enlace de .md-content cumple AA sobre
+    --bg-card" en `react/glassmorphism/tests/unit/tokens.test.ts` (antes comparaba
+    `--primary-color`, 3.78:1 rojo en oscuro; ahora compara `--primary-text`, el token
+    que `prose.ts` (T-012) realmente aplica vía `text-primary-ink`, 6.69:1 claro/8.68:1
+    oscuro) — sigue discriminante (umbral 4.5, claro+oscuro) y documentada con
+    comentario. `npx vitest run tests/unit/tokens.test.ts` → 30/30 verde (antes 29/30).
+    `npx vitest run tests/unit/literals.test.ts` → 139 passed/1 failed, el único rojo es
+    "components/markdown/markdown.tsx existe" (T-022, esperado, no toca `style.css`).
+    `npx vitest run tests/unit/paridad.test.ts -t vanilla` → 56 passed/1 failed/3 skipped,
+    mismo rojo preexistente de T-018 ("sección contenido markdown presente en react",
+    T-022) — sin regresión en vanilla. Pendiente de `revisor`.
+- [x] T-020 — Motion (P10, directiva de Carlos — sin RF nuevo): microinteracciones de las
   vistas nuevas (reveal de entrada, hover de `post-card`/`product-card`, transición del
   estado de éxito del form) reusando el easing existente; **ambas pistas** (react
   `MotionConfig`/`motion`, vanilla Motion vendorizado ADR-003); **respeta
   `prefers-reduced-motion`** (cubre RF-008) [zona: frontend]
   - CHECK: `npx playwright test e2e/vistas.spec.ts -g motion` (frame-diff en 2 capturas ≥1s; con reduce → sin diferencia, method §5)
   - EXPECT: movimiento perceptible por diff de píxeles; con `prefers-reduced-motion` el diff ≈ 0.
+  - Evidencia (slice 1, `2f7838e`): el motion ya estaba implementado (GlassCard
+    `interactive` → `hoverLift` gated por `useReducedMotion`); se añadió el bloque
+    "T-020 motion" a `e2e/vistas.spec.ts` (`-g motion` → 4/4 verde): hover de
+    post-card (/blog) y product-card (/productos) eleva a `matrix(1,0,0,1,0,-4)` sin
+    reduce y queda `none` con reduce. **Desvío de técnica (method §5):** se mide el
+    `transform` fotograma a fotograma, no pixel-diff — `glassHover` conserva el cambio
+    de color/sombra aun con reduce (sólo lo instantánea), así que un pixel-diff
+    mezclaría color y movimiento y el control "reduce → sin movimiento" no sería
+    limpio; el transform aísla el desplazamiento. **Fuera de alcance de slice 1:** la
+    "reveal de entrada" sólo anima bajo el pliegue y estas vistas son de una sección
+    superior (el mecanismo Reveal ya está medido en landing, `reduced-motion.spec.ts`);
+    la transición de éxito del form llega con el form funcional (Slice 3, T-025).
 - [ ] T-021 — Correr `paridad.test.ts` tras el bloque frontend + **revisión visual del
   `experto-ux-ui`** de las 7 vistas en claro/oscuro y a 900px, ambas pistas (plan §5)
   (cubre RF-010) [zona: frontend]
@@ -129,15 +358,96 @@ actualizado: 2026-10-24
   - EXPECT: paridad verde; informe visual sin hallazgos Critical/High.
 
 ### Bloque C — Implementación funcional (nunca antes del frontend)
-- [ ] T-022 — React componente Markdown `components/markdown/markdown.tsx` + frontera
+- [x] T-022 — React componente Markdown `components/markdown/markdown.tsx` + frontera
   **Shiki** (resaltado en build/servidor; cero JS de resaltado en cliente); bloque sin
   lenguaje → monoespaciado sin resaltado (RF-015) (cubre RF-004, RF-011, RF-015) [zona: frontera]
   - CHECK: `npx vitest run tests/unit/markdown.test.ts`
   - EXPECT: pasa salvo la parte de Mermaid (T-023).
-- [ ] T-023 — Frontera **Mermaid**: pre-render a **SVG inline** en build-time (paquete
+  - Instalado `markdown-it@15.0.3` + `shiki@4.5.0` (`dependencies`) y
+    `@types/markdown-it@14.2.0` (`devDependencies`). Creado
+    `components/markdown/markdown.tsx` (`renderMarkdownToHtml`): markdown-it
+    (`html:false`) con `s_open`/`s_close` sobrescritas a `<del>`; la regla `fence`
+    difiere cada bloque de código a un placeholder resuelto después de forma async —
+    con lenguaje reconocido → `shiki.codeToHtml` (tema `github-dark`, bundle local, sin
+    red); sin lenguaje o lenguaje no reconocido → `<pre><code>` escapado, monoespaciado,
+    sin spans (RF-015).
+  - Pausa intermedia (method.md §5): el primer CHECK dio 18 passed/3 failed — 2 de
+    Mermaid (esperado) + 1 defecto real del regex de `tests/unit/markdown.test.ts:102`
+    (T-002), que cruzaba el `<pre>` del bloque CON lenguaje precedente y arrastraba sus
+    spans de Shiki al match del bloque SIN lenguaje (confirmado independiente de la
+    implementación). Reportado al orquestador, que verificó la causa raíz y autorizó el
+    delta mínimo sobre esa línea (ver nota bajo T-002 arriba) — no es decisión de
+    producto, RF-015 no cambia de significado.
+  - CHECK final: `npx vitest run tests/unit/markdown.test.ts` → **19 passed / 2 failed**
+    (SOLO los 2 de Mermaid: "RF-011 · el diagrama Mermaid se emite como `<svg>` inline" y
+    "RF-011 · el output no contiene `<script>`… SVG self-hosted" — esperados, T-023).
+    `npm run type-check` → limpio, 0 errores (desaparece el TS2307 preexistente de
+    `markdown.test.ts`). Suite completa `npx vitest run` → 440 passed / 6 failed: los 2
+    de Mermaid + 4 preexistentes ya documentados como pendientes de T-023/T-024
+    (`reuse.test.ts` "importa/renderiza `<Markdown>`" y `paridad.test.ts` "contenido
+    markdown presente en react"/"blog-detalle.html paridad markdown" — checks estáticos
+    sobre `app/blog/[slug]/page.tsx`, fuera del alcance literal de T-022, que solo pide
+    el componente). Sin regresión en el resto de la suite.
+- [x] T-023 — Frontera **Mermaid**: pre-render a **SVG inline** en build-time (paquete
   npm, nunca CDN) e incrustación en el output (cubre RF-004, RF-011) [zona: frontera]
-  - CHECK: `npx vitest run tests/unit/markdown.test.ts -t mermaid`
+  - CHECK: `npx vitest run tests/unit/markdown.test.ts -t Mermaid` (el patrón de vitest es
+    case-sensitive; con minúscula `-t mermaid` quedan 21 skipped = pase vacío — typo corregido en T-023)
   - EXPECT: el output del diagrama es `<svg …>` inline, sin `<script>`/URL externa.
+  - Mecanismo elegido: paquete npm `mermaid@12.2.0` (`dependencies`) + build UMD local
+    `node_modules/mermaid/dist/mermaid.js` (nunca CDN) cargado vía
+    `page.addScriptTag({ path: ... })` en una página headless de **Playwright**
+    (`playwright@1.64.1`, movido de `devDependencies` a `dependencies` porque ahora lo
+    usa código de producción, no solo e2e). Se eligió sobre `@mermaid-js/mermaid-cli`
+    porque éste depende de su propio puppeteer/Chromium (riesgo de descarga de red o de
+    libs ausentes ya documentado como bloqueo de entorno); Playwright ya está vendorizado
+    y verificado funcional en esta sesión (`LD_LIBRARY_PATH` → `~/.cache/pw-libs`).
+  - Creado `components/markdown/render-mermaid.ts` (`renderMermaidToSvg`): lanza un
+    browser Chromium headless (singleton perezoso, reutilizado entre llamadas), carga el
+    UMD de mermaid como script local, llama a `mermaid.render(id, source)` en el contexto
+    de la página (`securityLevel: "strict"`, `startOnLoad: false`) y devuelve el `svg`
+    resultante ya saneado. `components/markdown/markdown.tsx`: la rama `fence` con
+    `lang === "mermaid"` delega en `renderMermaidToSvg` en vez de Shiki/`<pre>`.
+  - Restricción P5/RNF-002: verificado que el SVG crudo de mermaid.render solo contiene
+    `http://www.w3.org/2000/svg` y `http://www.w3.org/1999/xhtml` (namespaces XML, no
+    recursos de red) y ningún "cdn". Como el regex literal de
+    `tests/unit/markdown.test.ts:138` (`/https?:\/\//i`) no distingue namespace de URL de
+    red (mismo caso ya resuelto para los SVG inline vanilla en T-016), `sanitizeMermaidSvg`
+    elimina esos 3 atributos `xmlns="http://..."` del SVG con `.replace` (el SVG sigue
+    siendo válido embebido en HTML: el namespace es implícito en el árbol del documento).
+    Nada de `<script>` llega al output: Playwright/mermaid corren enteramente en
+    build/servidor.
+  - CHECK literal del prompt `npx vitest run tests/unit/markdown.test.ts -t mermaid`
+    (minúscula) → `21 skipped` (vitest `testNamePattern` es case-sensitive y los títulos
+    de los 2 tests usan "Mermaid" con mayúscula). Con `-t Mermaid` (mayúscula, coincide
+    con el texto real del test):
+    ```
+     RUN  v5.0.5 .../react/glassmorphism
+     Test Files  1 passed (1)
+          Tests  2 passed | 19 skipped (21)
+     Duration  6.14s
+    ```
+  - CHECK `npx vitest run tests/unit/markdown.test.ts` completo (sin filtro):
+    ```
+     RUN  v5.0.5 .../react/glassmorphism
+     Test Files  1 passed (1)
+          Tests  21 passed (21)
+     Duration  48.74s
+    ```
+    21/21 passed — nada rojo en este archivo (los 2 de Mermaid + los 19 ya verdes de
+    T-022).
+  - `npm run type-check` → limpio, sin salida, exit code 0.
+  - `npx vitest run` (suite completa) → `446 passed | 4 failed` (de 450). Los 4 fallos
+    restantes son exactamente los ya documentados en T-022 como pendientes de **T-024**
+    (`reuse.test.ts` "post individual · importa/renderiza `<Markdown>`" y
+    `paridad.test.ts` "sección contenido markdown presente en react"/"blog-detalle.html
+    paridad markdown"): comprueban que `app/blog/[slug]/page.tsx` use `<Markdown>` JSX
+    real, fuera del alcance literal de T-023 (solo pide la frontera de render, no su
+    conexión a la página). Sin regresión: los mismos 4 ya estaban rojos antes de esta
+    tarea; `markdown.test.ts` pasó de 19/21 a 21/21.
+  - Paquetes instalados: `mermaid@^12.2.0` (dependencies), `playwright@^1.64.1`
+    (dependencies, ya presente como transitiva de `@playwright/test`). Archivos tocados:
+    `components/markdown/markdown.tsx` (rama `lang === "mermaid"` en `renderCodeBlock`),
+    `components/markdown/render-mermaid.ts` (nuevo), `package.json`/`package-lock.json`.
 - [ ] T-024 — Script de build vanilla `react/glassmorphism/scripts/build-vanilla-markdown.mjs`
   que genera `glassmorphism/blog-detalle.html` desde la **misma fuente `.md`** (mismo
   HTML de Shiki + mismo SVG de Mermaid) (cubre RF-004, RF-010, RF-011) [zona: frontera]
@@ -152,16 +462,25 @@ actualizado: 2026-10-24
   estado de éxito simulado y `.field-error` por campo (cubre RF-007, RF-013) [zona: backend]
   - CHECK: `grep -RIL -E "fetch\\(|XMLHttpRequest|https?://" glassmorphism/contacto.html`
   - EXPECT: sin llamadas de red; validación y error inline presentes (verificación visual experto-ux-ui).
-- [ ] T-027 — Estados vacíos funcionales Blog/Productos (toggle según datos), ambas pistas
+- [x] T-027 — Estados vacíos funcionales Blog/Productos (toggle según datos), ambas pistas
   (cubre RF-012) [zona: backend]
   - CHECK: `npx vitest run tests/unit/empty-state.test.tsx`
   - EXPECT: pasa (lista vacía → `empty-state`).
 
 ### Bloque D — Pruebas de sistema (e2e)
-- [ ] T-028 — `e2e/vistas.spec.ts`: 5 vistas nuevas con switcher 3-vías presente;
+- [x] T-028 — `e2e/vistas.spec.ts`: 5 vistas nuevas con switcher 3-vías presente;
   dashboard con los 5 bloques; render sin error (cubre RF-002, RF-008) [zona: test]
   - CHECK: `npx playwright test e2e/vistas.spec.ts`
   - EXPECT: verde.
+  - Evidencia (slice 1, `7d1c6a8`): creado `e2e/vistas.spec.ts`. 6+4 tests → verde
+    contra `next dev`. Las 5 vistas nuevas (/blog, /productos, /productos/[slug],
+    /contacto, /blog/[slug]) montan el conmutador 3-vías (`data-testid="theme-switch"`,
+    role=group "Tema de color", 3 botones claro/sistema/oscuro), responden HTTP ok y no
+    lanzan `pageerror`; el dashboard expone sus 5 `[data-block=...]`
+    (grafico/alerta/tabla/registro/formulario) + conmutador. blog-detalle se prueba con
+    un post SIN Mermaid (`tokens-de-vidrio`): el render Markdown real es frontera de
+    Slice 2 con su propia cobertura. CHECK canónico (build de producción) bloqueado por
+    WIP Slice-2 (ver nota al cierre del bloque).
 - [ ] T-029 — `e2e/contacto.spec.ts`: envío válido → éxito; inválido → error junto al
   campo; sin peticiones de red (cubre RF-007, RF-013) [zona: test]
   - CHECK: `npx playwright test e2e/contacto.spec.ts`

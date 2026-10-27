@@ -105,4 +105,43 @@ describe.each(Object.entries(themes))("tema %s", (_name, vars) => {
   it("--on-primary cumple AA sobre --primary-solid (botones)", () => {
     expect(contrast(parseColor(vars["--on-primary"]), parseColor(vars["--primary-solid"]))).toBeGreaterThanOrEqual(4.5);
   });
+
+  // RF-009 / RNF-004 · pares que estrenan las clases/componentes nuevos de SPEC-0002
+  // (post-card, product-card, field + field-error, empty-state, .md-content*).
+  // Plan §2 Zona B: esas clases reusan solo tokens P3 ya declarados — ningún valor de
+  // color nuevo. Por eso este bloque NO añade tokens al diccionario P3: valida pares
+  // (fg sobre bg) ya existentes bajo el uso nuevo que les dan las vistas.
+
+  it("--error-text cumple AA como texto de error inline (RF-013) sobre --bg-card", () => {
+    // Error junto al campo, no como badge: el error vive directo sobre la superficie
+    // de la tarjeta/formulario (--bg-card), no sobre el tinte --error-bg.
+    expect(contrast(parseColor(vars["--error-text"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("--text-muted cumple AA como texto secundario de empty-state / fecha de post / precio de producto sobre --bg-card", () => {
+    // Ya cubierto en el bloque P3 de arriba para bg-primary/bg-card/bg-glass, pero se
+    // deja explícito aquí como contrato de las vistas nuevas (RF-003/005/012).
+    expect(contrast(parseColor(vars["--text-muted"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("código inline/bloque de .md-content (--text-secondary) cumple AA sobre --bg-tertiary", () => {
+    const codeSurface = over(parseColor(vars["--bg-tertiary"]), bg());
+    expect(contrast(parseColor(vars["--text-secondary"]), codeSurface)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("blockquote de .md-content (--text-secondary) cumple AA sobre --bg-card", () => {
+    expect(contrast(parseColor(vars["--text-secondary"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it("enlace de .md-content (--primary-text, decidido en prose.ts T-012) cumple AA sobre --bg-card", () => {
+    // Reconciliado en T-019: el enlace de `.md-content` NO usa `--primary-color`
+    // (`text-primary`, falla AA en oscuro: 3.78:1 < 4.5). `components/markdown/prose.ts`
+    // (T-012) aplica `text-primary-ink`, que Tailwind resuelve a `--color-primary-ink`
+    // (`app/globals.css`) → `--primary-text` (`app/tokens.css`). Por eso esta aserción
+    // valida el token que el enlace REALMENTE consume (`--primary-text`, 6.69:1 claro /
+    // 8.68:1 oscuro sobre --bg-card), no el placeholder `--primary-color` del contrato
+    // original de T-004. Sigue siendo discriminante: si `--primary-text` cambiara a un
+    // valor sin AA, este test volvería a fallar.
+    expect(contrast(parseColor(vars["--primary-text"]), surfaces()["--bg-card"])).toBeGreaterThanOrEqual(4.5);
+  });
 });

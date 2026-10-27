@@ -3,64 +3,66 @@
 import { useCallback, useState } from "react";
 
 import { AuroraBackground } from "@/components/background/aurora-background";
-import { Alert } from "@/components/glass/alert";
 import { Breadcrumb, NotificationBell, ProfileChip, SearchField } from "@/components/glass/app-bar";
 import { Identity } from "@/components/glass/avatar";
-import { Badge } from "@/components/glass/badge";
 import { Button } from "@/components/glass/button";
 import { ChatPanel } from "@/components/glass/chat-panel";
-import { DataTable, type Column } from "@/components/glass/data-table";
-import { GlassCard } from "@/components/glass/glass-card";
 import {
   ActivityIcon,
   ArrowLeftIcon,
   ChatIcon,
   DashboardIcon,
   DownloadIcon,
+  LayersIcon,
   MenuIcon,
   PlusIcon,
   SettingsIcon,
   TokensIcon,
 } from "@/components/glass/icons";
 import { LogoMark } from "@/components/glass/logo";
-import { Metric } from "@/components/glass/metric";
 import { BarButton, Navbar } from "@/components/glass/navbar";
 import { Sidebar, SidebarItem, SidebarLabel } from "@/components/glass/sidebar";
 import { ThemeSwitch } from "@/components/glass/theme-switch";
 import {
-  alert,
   breadcrumb,
   chat,
+  dashboardViews,
   header,
-  menu,
   searchPlaceholder,
-  services,
-  stats,
-  tableCaption,
   user,
-  type ServiceRow,
+  type DashboardViewId,
 } from "@/content/dashboard";
+
+import { ViewControles } from "./views/view-controles";
+import { ViewFormulario } from "./views/view-formulario";
+import { ViewMarkdown } from "./views/view-markdown";
+import { ViewMetricas } from "./views/view-metricas";
+import { ViewTabla } from "./views/view-tabla";
+import { ViewTareas } from "./views/view-tareas";
 
 const ICONS = {
   dashboard: <DashboardIcon />,
   activity: <ActivityIcon />,
   tokens: <TokensIcon />,
+  layers: <LayersIcon />,
+  plus: <PlusIcon />,
   settings: <SettingsIcon />,
-};
+} as const;
 
-const columns: Column<ServiceRow>[] = [
-  { key: "name", header: "Servicio / capa", cell: (r) => <strong className="font-semibold">{r.name}</strong> },
-  { key: "status", header: "Estado actual", cell: (r) => <Badge tone={r.status.tone}>{r.status.label}</Badge> },
-  { key: "token", header: "Token asignado", cell: (r) => <Badge tone={r.token.tone}>{r.token.label}</Badge> },
-  { key: "checked", header: "Última verificación", cell: (r) => r.checkedAt, className: "font-mono text-muted" },
-];
-
-/** Dashboard: mismos componentes base que el landing con otra composición (RF-007). */
-export function DashboardShell() {
+/**
+ * Dashboard (RF-002, enmienda 2026-10-25): mismos componentes base que el landing con otra
+ * composición (RF-007). El sidebar-left activa una de las vistas de `dashboardViews` en el
+ * main-content (catálogo conmutable, ya no 5 bloques fijos). El contenido Markdown lo
+ * renderiza el `page.tsx` server y llega por `markdownSlot` (ver `ViewMarkdown`).
+ */
+export function DashboardShell({ markdownSlot }: { markdownSlot?: React.ReactNode }) {
   const [leftOpen, setLeftOpen] = useState(false);
   const [rightOpen, setRightOpen] = useState(false);
+  const [view, setView] = useState<DashboardViewId>("tabla");
   const closeLeft = useCallback(() => setLeftOpen(false), []);
   const closeRight = useCallback(() => setRightOpen(false), []);
+
+  const activeView = dashboardViews.find((v) => v.id === view) ?? dashboardViews[0];
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
@@ -77,7 +79,7 @@ export function DashboardShell() {
           <MenuIcon />
         </BarButton>
         <LogoMark className="hidden lg:flex" />
-        <Breadcrumb root={breadcrumb.root} current={breadcrumb.current} />
+        <Breadcrumb root={breadcrumb.root} current={activeView.label} />
         <SearchField placeholder={searchPlaceholder} className="mx-auto hidden md:flex" />
         <div className="ml-auto flex items-center gap-1 sm:gap-2 md:ml-0">
           <BarButton
@@ -103,22 +105,21 @@ export function DashboardShell() {
           onClose={closeLeft}
           dockAt="lg"
         >
-          <nav aria-label="Secciones del panel" className="flex flex-col gap-1 p-4 lg:pt-6">
-            {menu.map((group) => (
-              <div key={group.label} className="flex flex-col gap-1 pb-4">
-                <SidebarLabel>{group.label}</SidebarLabel>
-                {group.items.map((item) => (
-                  <SidebarItem
-                    key={item.label}
-                    href={item.href}
-                    active={"active" in item && item.active}
-                    icon={ICONS[item.icon]}
-                    onNavigate={closeLeft}
-                  >
-                    {item.label}
-                  </SidebarItem>
-                ))}
-              </div>
+          <nav aria-label="Vistas del panel" className="flex flex-col gap-1 p-4 lg:pt-6">
+            <SidebarLabel>Catálogo de vistas</SidebarLabel>
+            {dashboardViews.map((item) => (
+              <SidebarItem
+                key={item.id}
+                active={item.id === view}
+                icon={ICONS[item.icon]}
+                controls="dashboard-view-panel"
+                onSelect={() => {
+                  setView(item.id);
+                  closeLeft();
+                }}
+              >
+                {item.label}
+              </SidebarItem>
             ))}
           </nav>
           <div className="mt-auto flex flex-col gap-4 p-4 pt-0">
@@ -135,7 +136,7 @@ export function DashboardShell() {
             <header className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
               <div className="flex flex-col gap-1">
                 <h1 className="text-2xl font-bold tracking-tight text-fg sm:text-[1.75rem]">{header.title}</h1>
-                <p className="text-sm text-fg-2">{header.subtitle}</p>
+                <p className="text-sm text-fg-2">{activeView.caption}</p>
               </div>
               <div className="grid gap-3 sm:flex">
                 <Button variant="secondary">
@@ -149,17 +150,17 @@ export function DashboardShell() {
               </div>
             </header>
 
-            <section aria-label="Métricas" className="grid grid-cols-[repeat(auto-fit,minmax(13.5rem,1fr))] gap-4">
-              {stats.map((s) => (
-                <GlassCard key={s.label} as="div" className="p-6">
-                  <Metric {...s} />
-                </GlassCard>
-              ))}
+            {/* RF-002: el main-content muestra la vista activa del catálogo. `data-view`
+                ancla los tests de navegación (e2e) y de paridad vanilla↔react. */}
+            <section id="dashboard-view-panel" data-view={view} aria-live="polite">
+              <h2 className="sr-only">{activeView.label}</h2>
+              {view === "tabla" && <ViewTabla />}
+              {view === "metricas" && <ViewMetricas />}
+              {view === "markdown" && <ViewMarkdown slot={markdownSlot} />}
+              {view === "tareas" && <ViewTareas />}
+              {view === "formulario" && <ViewFormulario />}
+              {view === "controles" && <ViewControles />}
             </section>
-
-            <Alert label={alert.label} message={alert.message} action={<Button size="sm">{alert.action}</Button>} />
-
-            <DataTable caption={tableCaption} columns={columns} rows={services} rowKey={(r) => r.id} />
           </div>
         </main>
 
