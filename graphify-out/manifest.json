@@ -1858,5 +1858,17 @@
     "seen": 1793123959.300701,
     "ast_hash": "8c3fbfb2a949edc745f723a2cc2771ce",
     "semantic_hash": ""
+  },
+  "caddy.json": {
+    "mtime": 1793124326.199525,
+    "seen": 1793151838.0105274,
+    "ast_hash": "babbb1bcf400bd41e78f140ae4a3d0cd",
+    "semantic_hash": ""
+  },
+  "docker-compose.yml": {
+    "mtime": 1793124288.459691,
+    "seen": 1793151838.0110457,
+    "ast_hash": "87a232e80bc1c5ae84d8abaf81211157",
+    "semantic_hash": ""
   }
 }
