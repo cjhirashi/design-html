@@ -22,32 +22,62 @@
     "*.min.js"
   ],
   "tools": {
-    "allowed": ["Bash", "Read", "Edit", "Write", "Agent"],
+    "allowed": [
+      "Bash",
+      "Read",
+      "Edit",
+      "Write",
+      "Agent"
+    ],
     "restrictions": {
       "Bash": "Sin --no-verify ni --force-push. Gate check.sh debe pasar (P1). Validar contraste AA (P4)."
     }
   },
   "skills": {
-    "_nota": "Instalados en .claude/skills/ vía `npx ui-ux-pro-max-cli@latest init --ai claude` (2026-10-16). Claude Code los auto-detecta por SKILL.md; esta lista es solo referencia para el equipo, no la lee ningún script del harness.",
-    "ui-ux-pro-max": "Design intelligence: 79 estilos UI, 192 paletas, 74 pares tipográficos, 119 guías UX, validación WCAG AA — el motor principal para P3/P4 de este proyecto.",
-    "design-system": "Tokens de 3 capas (primitivo→semántico→componente), specs de componentes, generación de slides con tokens de marca.",
-    "ui-styling": "Implementación con shadcn/ui + Tailwind; no aplica directo aquí (P5/P6 prohíben dependencias de red y frameworks de componentes), referencia solo si cambia la arquitectura.",
-    "design": "Paquete agregador: branding, logo/ícono con IA generativa, banners, presentaciones HTML.",
-    "brand": "Voz de marca, identidad visual, checklist de consistencia — útil si design-html define una identidad propia más allá del catálogo de estilos.",
-    "banner-design": "Banners para redes/ads/web/impresión — fuera de alcance de design-html (sin marketing assets), queda instalado por venir empaquetado con el resto.",
-    "slides": "Presentaciones HTML estratégicas con Chart.js — fuera de alcance directo, mismo caso que banner-design."
+    "_nota": "Instalados en .claude/skills/ v\u00eda `npx ui-ux-pro-max-cli@latest init --ai claude` (2026-10-16). Claude Code los auto-detecta por SKILL.md; esta lista es solo referencia para el equipo, no la lee ning\u00fan script del harness.",
+    "ui-ux-pro-max": "Design intelligence: 79 estilos UI, 192 paletas, 74 pares tipogr\u00e1ficos, 119 gu\u00edas UX, validaci\u00f3n WCAG AA \u2014 el motor principal para P3/P4 de este proyecto.",
+    "design-system": "Tokens de 3 capas (primitivo\u2192sem\u00e1ntico\u2192componente), specs de componentes, generaci\u00f3n de slides con tokens de marca.",
+    "ui-styling": "Implementaci\u00f3n con shadcn/ui + Tailwind; no aplica directo aqu\u00ed (P5/P6 proh\u00edben dependencias de red y frameworks de componentes), referencia solo si cambia la arquitectura.",
+    "design": "Paquete agregador: branding, logo/\u00edcono con IA generativa, banners, presentaciones HTML.",
+    "brand": "Voz de marca, identidad visual, checklist de consistencia \u2014 \u00fatil si design-html define una identidad propia m\u00e1s all\u00e1 del cat\u00e1logo de estilos.",
+    "banner-design": "Banners para redes/ads/web/impresi\u00f3n \u2014 fuera de alcance de design-html (sin marketing assets), queda instalado por venir empaquetado con el resto.",
+    "slides": "Presentaciones HTML estrat\u00e9gicas con Chart.js \u2014 fuera de alcance directo, mismo caso que banner-design."
   },
   "context_gates": {
     "before_touching_code": [
-      "Ejecuta bash .harness/gate/check.sh — si cierra en rojo, DETENTE",
+      "Ejecuta bash .harness/gate/check.sh \u2014 si cierra en rojo, DETENTE",
       "Lee .harness/memory/state.md (correcciones de Carlos)",
-      "Aplica rúbrica de method.md §2",
-      "¿Hay spec.md que lo cubra? Si no → carril SDD Specify"
+      "Aplica r\u00fabrica de method.md \u00a72",
+      "\u00bfHay spec.md que lo cubra? Si no \u2192 carril SDD Specify"
     ],
     "after_each_session": [
       "Actualiza .harness/memory/history.md con Session-End",
       "Gate: bash .harness/gate/check.sh debe pasar",
-      "Registra rebotes, decisiones, próximo paso"
+      "Registra rebotes, decisiones, pr\u00f3ximo paso"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/cjhirashi/.local/bin/graphify hook-guard search",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/cjhirashi/.local/bin/graphify hook-guard read",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }

@@ -1,0 +1,17 @@
+name: design-html
+
+services:
+  glassmorphism:
+    build:
+      context: ./react/glassmorphism
+      dockerfile: Dockerfile
+    container_name: design-html-glassmorphism
+    restart: unless-stopped
+    ports:
+      - "3100:3000"
+    networks:
+      - net-design-html
+
+networks:
+  net-design-html:
+    external: true

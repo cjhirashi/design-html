@@ -1,0 +1,53 @@
+{
+  "readFiles": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".harness/constitution.md",
+    ".harness/method.md",
+    ".harness/memory/state.md",
+    ".harness/specs/",
+    "index.html",
+    "dashboard.html"
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    ".git/",
+    ".venv/",
+    "dist/",
+    "build/",
+    "*.pyc",
+    "__pycache__/",
+    ".env",
+    "*.min.css",
+    "*.min.js"
+  ],
+  "tools": {
+    "allowed": ["Bash", "Read", "Edit", "Write", "Agent"],
+    "restrictions": {
+      "Bash": "Sin --no-verify ni --force-push. Gate check.sh debe pasar (P1). Validar contraste AA (P4)."
+    }
+  },
+  "skills": {
+    "_nota": "Instalados en .claude/skills/ vía `npx ui-ux-pro-max-cli@latest init --ai claude` (2026-10-16). Claude Code los auto-detecta por SKILL.md; esta lista es solo referencia para el equipo, no la lee ningún script del harness.",
+    "ui-ux-pro-max": "Design intelligence: 79 estilos UI, 192 paletas, 74 pares tipográficos, 119 guías UX, validación WCAG AA — el motor principal para P3/P4 de este proyecto.",
+    "design-system": "Tokens de 3 capas (primitivo→semántico→componente), specs de componentes, generación de slides con tokens de marca.",
+    "ui-styling": "Implementación con shadcn/ui + Tailwind; no aplica directo aquí (P5/P6 prohíben dependencias de red y frameworks de componentes), referencia solo si cambia la arquitectura.",
+    "design": "Paquete agregador: branding, logo/ícono con IA generativa, banners, presentaciones HTML.",
+    "brand": "Voz de marca, identidad visual, checklist de consistencia — útil si design-html define una identidad propia más allá del catálogo de estilos.",
+    "banner-design": "Banners para redes/ads/web/impresión — fuera de alcance de design-html (sin marketing assets), queda instalado por venir empaquetado con el resto.",
+    "slides": "Presentaciones HTML estratégicas con Chart.js — fuera de alcance directo, mismo caso que banner-design."
+  },
+  "context_gates": {
+    "before_touching_code": [
+      "Ejecuta bash .harness/gate/check.sh — si cierra en rojo, DETENTE",
+      "Lee .harness/memory/state.md (correcciones de Carlos)",
+      "Aplica rúbrica de method.md §2",
+      "¿Hay spec.md que lo cubra? Si no → carril SDD Specify"
+    ],
+    "after_each_session": [
+      "Actualiza .harness/memory/history.md con Session-End",
+      "Gate: bash .harness/gate/check.sh debe pasar",
+      "Registra rebotes, decisiones, próximo paso"
+    ]
+  }
+}

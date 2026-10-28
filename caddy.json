@@ -1,0 +1,35 @@
+{
+  "formato": 1,
+  "_lee": "Contrato con cjhirashi-srv (proxy Caddy + Cloudflare Tunnel). cjhirashi-srv escribe 'cjhirashi_srv' (NO editar). Tu proyecto rellena 'servicios'. Validar: python3 bin/caddy-sync /mnt/disco2/cjhirashi-data/proyectos/design-html/caddy.json",
+  "proyecto": "design-html",
+  "cjhirashi_srv": {
+    "red": "net-design-html",
+    "conecta_tus_contenedores_a_esta_red": true,
+    "declarala_external_en_tu_compose": true,
+    "hosts": {
+      "web": "design-html.cjhirashi.com"
+    },
+    "estado": "validado",
+    "ultima_sync": "2026-10-27"
+  },
+  "servicios": [
+    {
+      "nombre": "web",
+      "tipo": "docker",
+      "contenedor": "design-html-glassmorphism",
+      "puerto": 3000,
+      "protocolo": "http",
+      "sse": false,
+      "healthcheck": "/",
+      "headers_up": [
+        "X-Forwarded-Proto https"
+      ],
+      "rutas": [
+        {
+          "prefijo": "/"
+        }
+      ]
+    }
+  ],
+  "mensajes": []
+}
