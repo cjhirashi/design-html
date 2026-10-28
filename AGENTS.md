@@ -35,7 +35,7 @@ design-html/
 
 ## Cómo Trabajas Aquí
 
-Todo cambio no trivial entra por `.harness/specs/NNNN-slug/` (spec → plan → tasks). Prefijos: `0NNN-*` para HTML/CSS/componentes compartidos (afectan los 21 estilos), `1NNN-estilo-*` para un estilo específico. Ver la matriz abajo para el patrón de tareas de cada tipo; los roles y fases exactas están en `.harness/method.md §1-4` (no se repiten aquí).
+Este repo usa **Slice Development** (piloto desde 2026-10-25, reemplaza a SDD Anchored — `.harness/method.md §0`). Todo cambio no trivial entra por `.harness/specs/NNNN-slug/backlog.md` como historias/slices chicas ("Slice N"), refinadas solo al tomarlas — nunca como spec completa planificada de punta a punta. Prefijos: `0NNN-*` para HTML/CSS/componentes compartidos (afectan los 21 estilos), `1NNN-estilo-*` para un estilo específico. Ver la matriz abajo para el patrón de tareas de cada tipo; los roles y fases exactas están en `.harness/method.md §1-4` (no se repiten aquí).
 
 ### Matriz de Cambios Típicos
 
@@ -102,10 +102,10 @@ Viven en `.harness/constitution.md` Art. 8 — **canon único, no se repiten aqu
 - [ ] `bash .harness/gate/check.sh` en verde
 - [ ] Leí `.harness/memory/state.md` (fase y correcciones vigentes)
 - [ ] Leí `.harness/constitution.md` Art. 2 y 8
-- [ ] Hay spec que cubre mi cambio (o lo voy a crear — no hay vía libre sin spec)
+- [ ] Hay una historia/slice en `backlog.md` que cubre mi cambio (o la voy a agregar — no hay vía libre sin ella)
 
 ---
 
 **Proyecto:** design-html — Galería de Sistemas de Diseño
-**Método:** SDD Anchored
+**Método:** Slice Development (piloto desde 2026-10-25)
 **Fase vigente:** ver `.harness/memory/state.md` (no se repite aquí para evitar que quede obsoleto)
