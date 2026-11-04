@@ -50,17 +50,21 @@ Este repo usa **Slice Development** (piloto desde 2026-10-25, reemplaza a SDD An
 
 ## 🏛️ Agentes de Claude Code (`.claude/agents/`)
 
-Roles y responsabilidades completos en `.harness/method.md §8` (canon único, no se repite aquí). Modelo por rol:
+Roles y responsabilidades completos en `.harness/method.md §8` (canon único, no se repite aquí). Modelo por rol — **id explícito, nunca alias** (`method.md §7`: `sonnet` resuelve a `claude-sonnet-5`, `haiku` a `claude-haiku-4-5-20251001`, `opus` a `claude-opus-4-8`, así que un `model: sonnet` en `.claude/agents/` cuenta como defecto de configuración):
 
-| Rol | Modelo |
-|-----|--------|
-| `orquestador` | sonnet |
-| `autor-de-spec` | **opus** (método §7) |
-| `arquitecto` | **opus** (método §7) |
-| `implementador` | sonnet |
-| `revisor` | sonnet |
-| `explorador` | haiku |
-| `experto-ux-ui` (dominio, ver abajo) | sonnet |
+| Rol | Modelo | Por qué |
+|-----|--------|---|
+| `orquestador` | `claude-sonnet-5-5` | Clasifica con rúbrica escrita y sostiene las puertas; decide qué se delega, no diseña |
+| `autor-de-spec` | `claude-opus-5` | Fase 1 · elicitación: la fase de mayor juicio y la más cara de deshacer (método §7) |
+| `arquitecto` | `claude-opus-5` | Fase 2 · diseño y contratos — el caso que justifica Opus (método §7) |
+| `implementador` | `claude-haiku-5-5` | TDD paso a paso sobre `tasks.md` ya aprobado: el plan trae el razonamiento. Si no resuelve una falla, vuelve a `arquitecto`/`autor-de-spec`; no sube de modelo por su cuenta |
+| `revisor` | `claude-sonnet-5-5` | Veredicto adversarial: juzgar si la tarea está mal es razonamiento |
+| `explorador` | `claude-haiku-5-5` | Búsqueda read-only acotada, salida de 5–15 líneas |
+| `experto-ux-ui` (dominio, ver abajo) | `claude-sonnet-5-5` | Criterio visual contra estándar escrito (WCAG AA, consistencia), no arquitectura |
+
+`claude-opus-5-5` todavía no se usa: devuelve HTTP 400 con el binario `claude` 2.1.197 que gana el PATH del Gateway (Opus 5.5 exige ≥ 2.1.280).
+
+**Subagentes ad-hoc:** toda llamada `Task`/Agent que **no** invoque uno de estos roles **debe** declarar `model` explícito — sin la clave hereda el modelo de la sesión padre, y el heredado casi nunca es el que la tarea pide. Defaults por forma de tarea en `.harness/method.md §7`; investigación read-only y reporte mecánico van a `claude-haiku-5-5`. Si la tarea cabe en un rol de la tabla, usa el rol: `explorador` cubre toda la investigación read-only. Precedente medido 2026-10-30: la revisión UX/UI de este proyecto corrió en Opus ($64.36 de valoración a precio de lista) cuando la tabla ya decía Sonnet.
 
 ---
 
@@ -109,3 +113,8 @@ Viven en `.harness/constitution.md` Art. 8 — **canon único, no se repiten aqu
 **Proyecto:** design-html — Galería de Sistemas de Diseño
 **Método:** Slice Development (piloto desde 2026-10-25)
 **Fase vigente:** ver `.harness/memory/state.md` (no se repite aquí para evitar que quede obsoleto)
+
+## Documentación
+
+- 🔴 **Docs en el mismo commit:** todo cambio de código actualiza los README/docs que deja obsoletos
+  (mapa de documentación) o declara `Docs actualizadas: ninguna — <motivo>`. El gate lo exige.

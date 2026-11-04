@@ -1,8 +1,8 @@
 ---
 titulo: Método del arnés — Slice Development
 tipo: metodo
-estado: piloto-v0.1
-version_arnes: 0.1
+estado: piloto-v0.2
+version_arnes: 0.2
 base: reemplaza a SDD Anchored v1.9 (`skills/sdd-anchored/references/method.md`)
   para los proyectos piloto synapse y design-html — ver §12 Procedencia
 ---
@@ -114,9 +114,9 @@ Al tomar `H-NNN` del backlog (nunca antes):
    CLARIFICATION] = 0` y el usuario confirma "así es".
 3. **Plan de ESA historia solamente** (no del proyecto, no de un épico): qué
    componentes del patrón de arquitectura tocar, contratos si aplica,
-   estrategia de prueba, pasos TDD ordenados (ver §4), y si toca documentación
-   del mapa (Art. 11) — igual que `plan.md §Impacto` de SDD Anchored, a
-   escala de historia.
+   estrategia de prueba, pasos TDD ordenados (ver §4), y **las rutas exactas de
+   los README/docs del mapa (Art. 11) que la historia deja obsoletos** —
+   cada ruta es un paso `[doc]` — o `no toca doc` explícito con su motivo.
 4. Fija `covers` en el front-matter de `historia.md`: globs de archivos que
    esta historia posee — mismo mecanismo de anclaje/drift de SDD Anchored,
    sin cambios.
@@ -173,10 +173,19 @@ Mismo mecanismo de SDD Anchored (`gate/check.sh`, §8), pero su alcance es
   solución de raíz, revisión humana por *git diff*, y solo tras aprobación
   se regeneran los pasos afectados. Prohibido el parche silencioso.
 
+### Regla 🔴 — todo cambio queda documentado (v0.2, 2026-11-04)
+
+Cada paso de la historia que cambia código actualiza, **en el mismo commit**, los
+README/docs del mapa (Art. 11) que deja obsoletos; si no toca ninguno, declara
+`Docs actualizadas: ninguna — <motivo>` (Session-End o mensaje del commit). El gate
+cierra la compuerta sin una de las dos cosas y el verificador comprueba que el
+contenido describa el comportamiento nuevo. Una historia con docs viejas no se
+cierra, aunque el resto esté en verde.
+
 ### Cierre de historia (Session-End)
 
-Idéntico formato de 5 partes de SDD Anchored (Claim/Evidencia/Línea
-base/Gaps/Riesgo residual/Próximo paso) en `memory/history.md`, a escala de
+Formato de 6 partes (Claim/Evidencia/Línea base/Gaps/**Docs actualizadas**/
+Riesgo residual/Próximo paso) en `memory/history.md`, a escala de
 historia. `estado:` de `historia.md` → `implemented`/`verified`.
 **Checkpoint demostrable:** antes de marcar `verified`, el usuario (o quien
 tenga autoridad delegada) vio o probó el resultado funcionando — no solo leyó
@@ -228,7 +237,9 @@ mismo argumento que SDD Anchored usaba para Specify/Plan en Opus.
 
 ## §8 · La compuerta — `gate/check.sh`
 
-Mismo mecanismo de SDD Anchored §6, sin cambios de bloques fijos (integridad,
+Mismo mecanismo de SDD Anchored §6 (bloque «anclaje+docs+raíz» **bloqueante** para
+docs desde v0.2: código de producto cambiado sin doc del mapa tocado ni exención
+declarada = ❌), sin cambios de bloques fijos (integridad,
 trazabilidad, anclaje+docs+raíz, presupuesto) ni de bloques por perfil de
 arquitectura. El único ajuste: "Trazabilidad" verifica la tabla de cobertura
 de `historia.md` en vez de `tasks.md` — misma exigencia (100% de criterios
@@ -254,8 +265,8 @@ Constitución.
 ### Gate 2 — Converge de la historia (§5)
 Dos corridas consecutivas del verificador sin hallazgos nuevos · 0
 hallazgos Critical sin resolver · commits citan `H-NNN` · solución de raíz
-(sin *workarounds*, sin `TODO`/`FIXME` sin ticket) · docs sincronizadas si
-la historia tocó superficie observable · **checkpoint demostrable** cumplido
+(sin *workarounds*, sin `TODO`/`FIXME` sin ticket) · docs sincronizadas
+(contenido verificado contra el diff; exención declarada solo con motivo real) · **checkpoint demostrable** cumplido
 (el usuario vio/probó el resultado) · `memory/state.md`/`history.md`
 actualizados · aprobación humana del PR (o autoridad delegada explícita,
 "Modo 2").
